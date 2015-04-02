@@ -1,0 +1,16 @@
+---
+- name: Install openvswitch
+  apt: name=openvswitch-switch state=latest
+  sudo: true
+
+- name: Install bridge-utils
+  apt: name=bridge-utils state=latest
+  sudo: true
+
+- name: Install traceroute
+  apt: name=traceroute state=latest
+  sudo: true
+
+- name: Install tcpdump
+  apt: name=tcpdump state=latest
+  sudo: true

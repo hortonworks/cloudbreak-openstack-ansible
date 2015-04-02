@@ -1,0 +1,7 @@
+- name: Provision ovs
+  hosts: all
+  roles:
+    - common
+#    - docker
+    - ovs
+    - virt

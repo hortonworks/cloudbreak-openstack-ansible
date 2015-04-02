@@ -1,0 +1,6 @@
+---
+- name: Install docker
+  shell: curl -sSL https://get.docker.com/ | sh
+  args:
+    creates: /usr/bin/docker
+  sudo: true

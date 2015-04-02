@@ -1,0 +1,16 @@
+---
+- name: reboot when there has been a kernel upgrade
+  command: shutdown -r now "Ansible updates triggered"
+  sudo: true
+
+- name: waiting for server to come back
+  sudo: false
+  local_action:
+    wait_for
+      host={{ ansible_ssh_host }}
+      port={{ ansible_ssh_port }}
+      delay=5
+      timeout=300
+
+- name: Wait a bit to make sure that the sshd is ready
+  pause: seconds=15

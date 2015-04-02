@@ -1,0 +1,12 @@
+---
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt: update_cache=yes
+  sudo: true
+
+- name: Update all packages to the latest version
+  apt: upgrade=dist
+  sudo: true
+
+- name: Install sysstat
+  apt: name=sysstat state=latest
+  sudo: true

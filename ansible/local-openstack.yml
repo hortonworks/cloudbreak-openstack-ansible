@@ -1,0 +1,10 @@
+- name: Provision Openstack
+  hosts: all
+  roles:
+    - updates
+    - common
+
+- name: Provision Controller
+  hosts: controller
+  roles:
+    - ovs

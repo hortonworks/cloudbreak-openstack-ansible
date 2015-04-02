@@ -1,0 +1,4 @@
+---
+- name: Install sysstat
+  apt: name=sysstat state=latest
+  sudo: true
