@@ -1,0 +1,4 @@
+---
+host_dns_name: compute1
+management_ip: 10.0.0.31
+

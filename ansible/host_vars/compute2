@@ -1,0 +1,5 @@
+---
+host_dns_name: compute2
+management_ip: 10.0.0.32
+
+

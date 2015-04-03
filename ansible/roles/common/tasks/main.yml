@@ -1,8 +1,20 @@
 ---
+- name: Install tree
+  apt: name=tree state=latest
+  sudo: true
+
 - name: Install sysstat
   apt: name=sysstat state=latest
   sudo: true
 
 - name: Install ntp
   apt: name=ntp state=latest
+  sudo: true
+
+- name: Creates installed
+  file: path={{ installed_dir }} state=directory
+  sudo: true
+
+- name: write the mariadb config file
+  template: src=hosts.j2 dest=/etc/hosts
   sudo: true

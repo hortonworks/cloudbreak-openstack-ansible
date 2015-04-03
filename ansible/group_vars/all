@@ -1,5 +1,19 @@
 ---
-controller_mgmt_ip: 10.0.0.11
-network1_mgmt_ip: 10.0.0.21
-compute1_mgmt_ip: 10.0.0.31
-compute2_mgmt_ip: 10.0.0.32
+installed_dir: /etc/installed
+
+rabbit_password: rabbitpw
+keystone_db_password: keystonepw
+
+os_hosts:
+  controller:
+    dns_name: controller
+    management_ip: 10.0.0.11
+  network1:
+    dns_name: network1
+    management_ip: 10.0.0.21
+  compute1:
+    dns_name: compute1
+    management_ip: 10.0.0.31
+  compute2:
+    dns_name: compute2
+    management_ip: 10.0.0.32

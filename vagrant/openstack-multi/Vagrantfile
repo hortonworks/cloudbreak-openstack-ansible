@@ -36,6 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provision :ansible do |ansible|
         ansible.playbook = "../../ansible/openstack-multi.yml"
+        ansible.raw_arguments = "--diff"
         #ansible.verbose = "vvv"
         #ansible.skip_tags = ["configuration"]
         #ansible.tags = ["debug"]
