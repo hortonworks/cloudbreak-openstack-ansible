@@ -3,7 +3,6 @@
   roles:
     - updates
     - common
-    
 
 - name: Provision Controller
   include: os-controller.yml

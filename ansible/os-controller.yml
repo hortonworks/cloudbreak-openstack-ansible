@@ -2,4 +2,5 @@
   hosts: controller
   roles:
     - mariadb
+    - rabbitmq
     - keystone

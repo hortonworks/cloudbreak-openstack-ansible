@@ -1,0 +1,10 @@
+---
+- name: Install rabbitmq-server
+  apt: name=rabbitmq-server=3.2.* state=present
+  sudo: true
+
+- name: Configure rabbitmq guest pw
+  shell: "rabbitmqctl change_password guest {{ rabbit_password }} && touch {{ installed_dir }}/rabbit_guest_pw"
+  sudo: true
+  args:
+    creates: "{{installed_dir }}/rabbit_guest_pw"
