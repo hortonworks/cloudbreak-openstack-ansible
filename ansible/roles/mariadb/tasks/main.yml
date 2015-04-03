@@ -1,0 +1,39 @@
+---
+- name: install mariadb
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - mariadb-server
+    - python-mysqldb
+
+- name: write the mariadb config file
+  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf
+  sudo: true
+  notify:
+    - restart mariadb
+
+#  This can be executed nnon ineractively only in version 5.7.x
+#- name: secure installation
+#  sudo: true
+#  command: mysql_secure_installation && touch /etc/mysql/mysql_secure_installation
+#  args:
+#    creates: /etc/mysql/mysql_secure_installation
+
+
+# mysql_secure_installation
+
+- name: delete anonymous MariaDB server user for {{ ansible_hostname }}
+  mysql_user:
+    name: ""
+    host: "{{ item }}"
+    state: absent
+  with_items:
+    - "{{ ansible_hostname }}"
+    - "{{ inventory_hostname }}"
+    - localhost
+    - 127.0.0.1
+    - ::1
+    - "%"
+
+- name: remove the MariaDB test database
+  mysql_db: db=test state=absent

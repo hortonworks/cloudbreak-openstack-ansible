@@ -16,26 +16,26 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.define "controller" do |controller|
     controller.vm.hostname = "controller"
-    controller.vm.network "private_network", ip: "192.168.70.10"
+    controller.vm.network "private_network", ip: "10.0.0.11"
   end
 
   config.vm.define "network1" do |network1|
     network1.vm.hostname = "network1"
-    network1.vm.network "private_network", ip: "192.168.70.21"
+    network1.vm.network "private_network", ip: "10.0.0.21"
   end
 
   config.vm.define "compute1" do |compute1|
     compute1.vm.hostname = "compute1"
-    compute1.vm.network "private_network", ip: "192.168.70.31"
+    compute1.vm.network "private_network", ip: "10.0.0.31"
   end
 
   config.vm.define "compute2" do |compute2|
     compute2.vm.hostname = "compute2"
-    compute2.vm.network "private_network", ip: "192.168.70.32"
+    compute2.vm.network "private_network", ip: "10.0.0.32"
   end
 
   config.vm.provision :ansible do |ansible|
-        ansible.playbook = "../../ansible/local-openstack.yml"
+        ansible.playbook = "../../ansible/openstack-multi.yml"
         #ansible.verbose = "vvv"
         #ansible.skip_tags = ["configuration"]
         #ansible.tags = ["debug"]

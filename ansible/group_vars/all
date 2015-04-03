@@ -1,0 +1,5 @@
+---
+controller_mgmt_ip: 10.0.0.11
+network1_mgmt_ip: 10.0.0.21
+compute1_mgmt_ip: 10.0.0.31
+compute2_mgmt_ip: 10.0.0.32

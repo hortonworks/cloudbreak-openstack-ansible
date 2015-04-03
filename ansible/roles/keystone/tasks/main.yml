@@ -1,0 +1,4 @@
+---
+- name: MySQL setup for Keystone
+  include: mysql.yml
+  sudo: true

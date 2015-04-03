@@ -1,0 +1,5 @@
+---
+mariadb_bind_ip: 10.0.0.11
+
+keystone_db_password: keystonepw
+

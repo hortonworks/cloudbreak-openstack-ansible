@@ -3,8 +3,7 @@
   roles:
     - updates
     - common
+    
 
 - name: Provision Controller
-  hosts: controller
-  roles:
-    - ovs
+  include: os-controller.yml

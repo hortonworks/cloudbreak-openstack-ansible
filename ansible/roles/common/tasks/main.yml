@@ -2,3 +2,7 @@
 - name: Install sysstat
   apt: name=sysstat state=latest
   sudo: true
+
+- name: Install ntp
+  apt: name=ntp state=latest
+  sudo: true

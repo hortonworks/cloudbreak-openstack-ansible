@@ -1,0 +1,5 @@
+- name: Provision Controller
+  hosts: controller
+  roles:
+    - mariadb
+    - keystone
