@@ -1,0 +1,8 @@
+---
+- name: populate identitydb
+  sudo: true
+  shell: su -s /bin/sh -c "keystone-manage db_sync" keystone
+
+- name: restart keystone
+  sudo: true
+  service: name=keystone state=restarted

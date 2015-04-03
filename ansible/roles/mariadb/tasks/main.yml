@@ -12,6 +12,9 @@
   notify:
     - restart mariadb
 
+- name: Trigger handlers
+  meta: flush_handlers
+
 #  This can be executed nnon ineractively only in version 5.7.x
 #- name: secure installation
 #  sudo: true

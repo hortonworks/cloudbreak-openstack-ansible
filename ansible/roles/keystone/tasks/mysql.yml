@@ -1,4 +1,0 @@
----
-- name: Create a new database with name 'keystone'
-  mysql_db: name=keystone state=present
-

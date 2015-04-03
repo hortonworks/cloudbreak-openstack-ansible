@@ -4,6 +4,9 @@ installed_dir: /etc/installed
 rabbit_password: rabbitpw
 keystone_db_password: keystonepw
 
+
+keystone_admin_token: 7f5ad4e1bdfd216bf944
+
 os_hosts:
   controller:
     dns_name: controller

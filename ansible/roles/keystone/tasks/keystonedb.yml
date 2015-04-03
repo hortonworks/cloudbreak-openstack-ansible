@@ -1,0 +1,16 @@
+---
+- name: Create a new database with name 'keystone'
+  mysql_db: name=keystone state=present
+
+- name: create db user for keystone
+  mysql_user:
+    name: "keystone"
+    password: "{{ keystone_db_password }}"
+    host: "{{ item }}"
+    state: present
+    priv: keystone.*:ALL
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+    - "%"
