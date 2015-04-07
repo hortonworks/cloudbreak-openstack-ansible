@@ -25,8 +25,9 @@
   shell: crontab -l -u keystone 2>&1 | grep -q token_flush || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
   changed_when: false
 
-- name: write shell profile
-  template: src=profile.j2 dest=~/.profile
-
 - name: Setup Keystone entities
   include: keystone-init.yml
+
+
+- name: write shell profile
+  template: src=profile.j2 dest=~/.profile

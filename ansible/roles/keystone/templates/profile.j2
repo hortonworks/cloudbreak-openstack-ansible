@@ -21,5 +21,4 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-export OS_SERVICE_TOKEN={{ keystone_admin_token }}
-export OS_SERVICE_ENDPOINT=http://controller:35357/v2.0
+source scripts/admin-openrc.sh

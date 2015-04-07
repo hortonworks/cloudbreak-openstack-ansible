@@ -4,6 +4,15 @@ installed_dir: /etc/installed
 rabbit_password: rabbitpw
 keystone_db_password: keystonepw
 
+os_users:
+  admin:
+    username: admin
+    password: Openstack01
+    email: admin@openstack.com
+  demo:
+    username: demo
+    password: Openstack01
+    email: demo@openstack.com
 
 keystone_admin_token: 7f5ad4e1bdfd216bf944
 

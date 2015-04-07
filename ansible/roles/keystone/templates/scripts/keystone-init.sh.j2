@@ -13,6 +13,21 @@ keystone user-role-list --user admin --tenant admin | grep -q admin || keystone 
 keystone tenant-list | grep -q demo || keystone tenant-create --name demo --description "Demo Tenant"
 keystone user-list | grep -q demo || keystone user-create --name demo --tenant demo --pass Openstack01 --email demo@openstack.com
 
-#OpenStack services also require a tenant,
+echo OpenStack services also require a tenant,
 keystone tenant-list | grep -q service || keystone tenant-create --name service --description "Service Tenant"
 
+
+echo "Create the service entity and API endpoints for the Identity service."
+keystone service-list | grep -q keystone || keystone service-create --name keystone --type identity --description "OpenStack Identity"
+
+
+#Create the Identity service API endpoints:
+echo "http://{{ os_hosts.controller.management_ip }}:5000/v2.0"
+
+keystone endpoint-list | grep -q "http://{{ os_hosts.controller.management_ip }}:5000/v2.0" || \
+  keystone endpoint-create \
+  --service-id $(keystone service-list | awk '/ identity / {print $2}') \
+  --publicurl http://{{ os_hosts.controller.management_ip }}:5000/v2.0 \
+  --internalurl http://{{ os_hosts.controller.management_ip }}:5000/v2.0 \
+  --adminurl http://{{ os_hosts.controller.management_ip }}:35357/v2.0 \
+  --region regionOne
