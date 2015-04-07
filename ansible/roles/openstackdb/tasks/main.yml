@@ -2,12 +2,13 @@
 - name: install mariadb
   apt: name={{ item }} state=latest
   sudo: true
+  register: mariadb_updated
   with_items:
     - mariadb-server
     - python-mysqldb
 
 - name: write the mariadb config file
-  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf
+  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf backup=yes
   sudo: true
   notify:
     - restart mariadb
@@ -37,6 +38,12 @@
     - 127.0.0.1
     - ::1
     - "%"
+  when: mariadb_updated.changed
 
 - name: remove the MariaDB test database
   mysql_db: db=test state=absent
+  when: mariadb_updated.changed
+
+
+- name: MySQL setup for Keystone
+  include: keystonedb.yml

@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+export OS_SERVICE_TOKEN={{ keystone_admin_token }}
+export OS_SERVICE_ENDPOINT=http://controller:35357/v2.0
+
+keystone tenant-list | grep -q admin || keystone tenant-create --name admin --description "Admin Tenant"
+keystone user-list | grep -q admin || keystone user-create --name admin --pass Openstack01 --email admin@openstack.com
+keystone role-list | grep -q admin || keystone role-create --name admin
+
+#Add the admin role to the admin tenant and user:
+keystone user-role-list --user admin --tenant admin | grep -q admin || keystone user-role-add --user admin --tenant admin --role admin
+
+keystone tenant-list | grep -q demo || keystone tenant-create --name demo --description "Demo Tenant"
+keystone user-list | grep -q demo || keystone user-create --name demo --tenant demo --pass Openstack01 --email demo@openstack.com
+
+#OpenStack services also require a tenant,
+keystone tenant-list | grep -q service || keystone tenant-create --name service --description "Service Tenant"
+

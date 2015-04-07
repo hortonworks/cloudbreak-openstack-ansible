@@ -1,6 +1,6 @@
 - name: Provision Controller
   hosts: controller
   roles:
-    - mariadb
+    - openstackdb
     - rabbitmq
     - keystone

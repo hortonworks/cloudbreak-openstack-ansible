@@ -1,17 +1,13 @@
 ---
-- name: Install tree
-  apt: name=tree state=latest
+- name: install basic utilities
+  apt: name={{ item }} state=latest
   sudo: true
+  with_items:
+    - ntp
+    - sysstat
+    - tree
 
-- name: Install sysstat
-  apt: name=sysstat state=latest
-  sudo: true
-
-- name: Install ntp
-  apt: name=ntp state=latest
-  sudo: true
-
-- name: Creates installed
+- name: creates installed directory to keep track what has been installed already
   file: path={{ installed_dir }} state=directory
   sudo: true
 

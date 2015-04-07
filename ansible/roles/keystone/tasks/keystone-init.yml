@@ -1,0 +1,11 @@
+---
+- name: Creates scripts
+  file: path=~/scripts state=directory
+
+- name: create keystone-entities
+  template: src=scripts/keystone-init.sh.j2 dest=~/scripts/keystone-init.sh mode="u+x"
+  register: keystone_entities
+
+- name: execute keystone-entities
+  shell: ~/scripts/keystone-init.sh
+  when: keystone_entities.changed
