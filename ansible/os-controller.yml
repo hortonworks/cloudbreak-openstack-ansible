@@ -4,3 +4,4 @@
     - openstackdb
     - rabbitmq
     - keystone
+    - glance

@@ -82,7 +82,7 @@ limit_param_default = 25
 
 # Driver or drivers to handle sending notifications. Set to
 # 'messaging' to send notifications to a message queue.
-# notification_driver = noop
+notification_driver = noop
 
 # Default publisher_id for outgoing notifications.
 # default_publisher_id = image.localhost
@@ -140,7 +140,7 @@ backend = sqlalchemy
 # Deprecated group/name - [DEFAULT]/sql_connection
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
-#connection = <None>
+connection = mysql://glance:{{ os_dbs.glance.password }}@controller/glance
 
 # The SQL mode to be used for MySQL sessions. This option,
 # including the default, overrides any server-set SQL mode. To
@@ -221,10 +221,11 @@ backend = sqlalchemy
 #db_max_retries = 20
 
 [keystone_authtoken]
-identity_uri = http://127.0.0.1:35357
-admin_tenant_name = %SERVICE_TENANT_NAME%
-admin_user = %SERVICE_USER%
-admin_password = %SERVICE_PASSWORD%
+auth_uri = http://controller:5000/v2.0
+identity_uri = http://controller:35357
+admin_tenant_name = service
+admin_user = glance
+admin_password = {{ os_dbs.glance.password }}
 
 [paste_deploy]
 # Name of the paste configuration file that defines the available pipelines
@@ -234,7 +235,7 @@ admin_password = %SERVICE_PASSWORD%
 # service name removed. For example, if your paste section name is
 # [pipeline:glance-registry-keystone], you would configure the flavor below
 # as 'keystone'.
-#flavor=
+flavor = keystone
 
 [profiler]
 # If False fully disable profiling feature.

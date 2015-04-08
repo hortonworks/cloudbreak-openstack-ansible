@@ -630,7 +630,7 @@ log_dir=/var/log/keystone
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
 # connection=sqlite:////var/lib/keystone/keystone.db
-connection=mysql://keystone:{{ keystone_db_password }}@controller/keystone
+connection=mysql://keystone:{{ os_dbs.keystone.password }}@controller/keystone
 
 # The SQLAlchemy connection string to use to connect to the
 # slave database. (string value)

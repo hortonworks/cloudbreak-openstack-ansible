@@ -1,0 +1,28 @@
+---
+- name: install glance
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - glance
+    - python-glanceclient
+
+- name: write glance-api.conf file
+  template: src=glance-api.conf.j2 dest=/etc/glance/glance-api.conf backup=yes
+  sudo: true
+  notify:
+    - populate glancedb
+    - restart glance-api
+
+- name: write glance-registry.conf file
+  template: src=glance-registry.conf.j2 dest=/etc/glance/glance-registry.conf backup=yes
+  sudo: true
+  notify:
+    - populate glancedb
+    - restart glance-registry
+
+- name: Trigger handlers
+  meta: flush_handlers
+
+- name: remove unused sqlite database
+  sudo: true
+  file: path=/var/lib/glance/glance.sqlite state=absent

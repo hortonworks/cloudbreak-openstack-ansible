@@ -1,6 +1,6 @@
 [DEFAULT]
 # Show more verbose log output (sets INFO log level output)
-#verbose = False
+verbose = True
 
 # Show debugging output in logs (sets DEBUG log level output)
 #debug = False
@@ -207,7 +207,7 @@ registry_client_protocol = http
 
 # Driver or drivers to handle sending notifications. Set to
 # 'messaging' to send notifications to a message queue.
-# notification_driver = noop
+notification_driver = noop
 
 # Default publisher_id for outgoing notifications.
 # default_publisher_id = image.localhost
@@ -286,7 +286,7 @@ image_cache_dir = /var/lib/glance/image-cache/
 
 [database]
 # The file name to use with SQLite (string value)
-sqlite_db = /var/lib/glance/glance.sqlite
+# sqlite_db = /var/lib/glance/glance.sqlite
 
 # If True, SQLite uses synchronous mode (boolean value)
 #sqlite_synchronous = True
@@ -300,7 +300,8 @@ backend = sqlalchemy
 # Deprecated group/name - [DEFAULT]/sql_connection
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
-#connection = <None>
+
+connection = mysql://glance:{{ os_dbs.glance.password }}@controller/glance
 
 # The SQL mode to be used for MySQL sessions. This option,
 # including the default, overrides any server-set SQL mode. To
@@ -381,10 +382,11 @@ backend = sqlalchemy
 #db_max_retries = 20
 
 [keystone_authtoken]
-identity_uri = http://127.0.0.1:35357
-admin_tenant_name = %SERVICE_TENANT_NAME%
-admin_user = %SERVICE_USER%
-admin_password = %SERVICE_PASSWORD%
+auth_uri = http://controller:5000/v2.0
+identity_uri = http://controller:35357
+admin_tenant_name = service
+admin_user = glance
+admin_password = {{ os_dbs.glance.password }}
 revocation_cache_time = 10
 
 [paste_deploy]
@@ -395,7 +397,7 @@ revocation_cache_time = 10
 # service name removed. For example, if your paste section name is
 # [pipeline:glance-api-keystone], you would configure the flavor below
 # as 'keystone'.
-#flavor=
+flavor = keystone
 
 [store_type_location_strategy]
 # The scheme list to use to get store preference order. The scheme must be

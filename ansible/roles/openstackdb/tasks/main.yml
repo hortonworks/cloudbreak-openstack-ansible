@@ -16,7 +16,7 @@
 - name: Trigger handlers
   meta: flush_handlers
 
-#  This can be executed nnon ineractively only in version 5.7.x
+#  This can be executed non ineractively only in version 5.7.x
 #- name: secure installation
 #  sudo: true
 #  command: mysql_secure_installation && touch /etc/mysql/mysql_secure_installation
@@ -44,6 +44,8 @@
   mysql_db: db=test state=absent
   when: mariadb_updated.changed
 
-
-- name: MySQL setup for Keystone
+- name: DB setup for Keystone
   include: keystonedb.yml
+
+- name: DB setup for Glance
+  include: glancedb.yml

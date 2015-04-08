@@ -1,0 +1,12 @@
+---
+- name: populate glancedb
+  sudo: true
+  shell: su -s /bin/sh -c "glance-manage db_sync" glance
+
+- name: restart glance-api
+  sudo: true
+  service: name=glance-api state=restarted
+
+- name: restart glance-registry
+  sudo: true
+  service: name=glance-registry state=restarted

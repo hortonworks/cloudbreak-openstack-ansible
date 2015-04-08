@@ -2,7 +2,13 @@
 installed_dir: /etc/installed
 
 rabbit_password: rabbitpw
-keystone_db_password: keystonepw
+
+os_dbs:
+  keystone:
+    password: keystonepw
+  glance:
+    password: glancepw
+
 
 os_users:
   admin:

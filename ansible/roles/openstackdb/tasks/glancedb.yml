@@ -1,0 +1,17 @@
+---
+- name: Create a new database with name 'glance'
+  mysql_db: name=glance state=present
+  register: glanceschema
+
+- name: create db user for glance
+  mysql_user:
+    name: glance
+    password: "{{ os_dbs.glance.password }}"
+    host: "{{ item }}"
+    state: present
+    priv: "glance.*:ALL"
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+    - "%"
