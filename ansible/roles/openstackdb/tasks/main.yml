@@ -49,3 +49,6 @@
 
 - name: DB setup for Glance
   include: glancedb.yml
+
+- name: DB setup for Nova
+  include: novadb.yml

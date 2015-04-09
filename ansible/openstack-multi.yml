@@ -6,3 +6,6 @@
 
 - name: Provision Controller
   include: os-controller.yml
+
+- name: Provision Compute
+  include: os-compute.yml

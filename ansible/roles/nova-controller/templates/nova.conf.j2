@@ -1,0 +1,38 @@
+[DEFAULT]
+verbose = True
+
+
+dhcpbridge_flagfile=/etc/nova/nova.conf
+dhcpbridge=/usr/bin/nova-dhcpbridge
+logdir=/var/log/nova
+state_path=/var/lib/nova
+lock_path=/var/lock/nova
+force_dhcp_release=True
+libvirt_use_virtio_for_bridges=True
+verbose=True
+ec2_private_dns_show_ip=True
+api_paste_config=/etc/nova/api-paste.ini
+enabled_apis=ec2,osapi_compute,metadata
+
+rpc_backend = rabbit
+rabbit_host = controller
+rabbit_password = {{ rabbit_password }}
+
+auth_strategy = keystone
+
+auth_uri = http://controller:5000/v2.0
+identity_uri = http://controller:35357
+admin_tenant_name = service
+admin_user = nova
+admin_password = {{ service_users.nova.password }}
+
+my_ip = {{ os_hosts.controller.management_ip }}
+
+vncserver_listen = {{ os_hosts.controller.management_ip }}
+vncserver_proxyclient_address = {{ os_hosts.controller.management_ip }}
+
+[glance]
+host = controller
+
+[database]
+connection = mysql://nova:{{ os_dbs.nova.password }}@controller/nova

@@ -1,0 +1,37 @@
+---
+- name: install nova components
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - nova-api
+    - nova-cert
+    - nova-conductor
+    - nova-consoleauth
+    - nova-novncproxy
+    - nova-scheduler
+    - python-novaclient
+
+- name: Creates scripts
+  file: path=~/scripts state=directory
+
+- name: create nova-entities
+  template: src=scripts/nova-init.sh.j2 dest=~/scripts/nova-init.sh mode="u+x"
+  register: nova_entities
+
+- name: execute nova-entities
+  shell: ~/scripts/nova-init.sh
+  when: nova_entities.changed
+
+- name: write the nova config file
+  template: src=nova.conf.j2 dest=/etc/nova/nova.conf backup=yes
+  sudo: true
+  notify:
+    - populate novadb
+    - restart nova controller
+
+- name: Trigger handlers
+  meta: flush_handlers
+
+- name: remove unused sqlite database
+  sudo: true
+  file: path=/var/lib/nova/nova.sqlite state=absent

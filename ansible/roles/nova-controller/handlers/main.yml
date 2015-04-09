@@ -1,0 +1,15 @@
+---
+- name: populate novadb
+  sudo: true
+  shell: su -s /bin/sh -c "nova-manage db sync" nova
+
+- name: restart nova controller
+  sudo: true
+  service: name={{ item }} state=restarted
+  with_items:
+    - nova-api
+    - nova-cert
+    - nova-consoleauth
+    - nova-scheduler
+    - nova-conductor
+    - nova-novncproxy

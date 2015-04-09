@@ -10,10 +10,15 @@ os_dbs:
     password: keystonepw
   glance:
     password: glancepw
+  nova:
+    password: novapw
 
 service_users:
   glance:
     username: glance
+    password: Openstack01
+  nova:
+    username: nova
     password: Openstack01
 
 

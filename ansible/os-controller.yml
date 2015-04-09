@@ -5,3 +5,4 @@
     - rabbitmq
     - keystone
     - glance
+    - nova-controller
