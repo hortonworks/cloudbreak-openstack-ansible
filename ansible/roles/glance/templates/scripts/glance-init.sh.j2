@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+export OS_SERVICE_TOKEN={{ keystone_admin_token }}
+export OS_SERVICE_ENDPOINT=http://controller:35357/v2.0
+
+source scripts/admin-openrc.sh
+
+keystone user-list | grep -q glance || keystone user-create --name glance --pass {{ service_users.glance.password }}
+keystone user-role-list --user glance --tenant service | grep -q admin || keystone user-role-add --user glance --tenant service --role admin
+
+echo "Create the service entity and API endpoints for the Identity service."
+keystone service-list | grep -q glance || keystone service-create --name glance --type image --description "OpenStack Image Service"
+
+
+#Create the Glance endpoints:
+
+keystone endpoint-list | grep -q "http://{{ os_hosts.controller.management_ip }}:9292" || \
+  keystone endpoint-create \
+    --service-id $(keystone service-list | awk '/ image / {print $2}') \
+    --publicurl http://{{ os_hosts.controller.management_ip }}:9292 \
+    --internalurl http://{{ os_hosts.controller.management_ip }}:9292 \
+    --adminurl http://{{ os_hosts.controller.management_ip }}:9292 \
+    --region regionOne
+
+
+
+glance image-list | grep -q cirros || glance image-create --name "cirros-0.3.3-x86" --file ~/images/cirros-0.3.3-x86_64-disk.img --disk-format qcow2 --container-format bare --is-public True --progress

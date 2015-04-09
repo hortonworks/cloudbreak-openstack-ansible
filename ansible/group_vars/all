@@ -1,6 +1,8 @@
 ---
 installed_dir: /etc/installed
 
+keystone_admin_token: 7f5ad4e1bdfd216bf944
+
 rabbit_password: rabbitpw
 
 os_dbs:
@@ -8,6 +10,11 @@ os_dbs:
     password: keystonepw
   glance:
     password: glancepw
+
+service_users:
+  glance:
+    username: glance
+    password: Openstack01
 
 
 os_users:
@@ -20,7 +27,6 @@ os_users:
     password: Openstack01
     email: demo@openstack.com
 
-keystone_admin_token: 7f5ad4e1bdfd216bf944
 
 os_hosts:
   controller:

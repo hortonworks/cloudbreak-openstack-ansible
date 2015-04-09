@@ -386,7 +386,7 @@ auth_uri = http://controller:5000/v2.0
 identity_uri = http://controller:35357
 admin_tenant_name = service
 admin_user = glance
-admin_password = {{ os_dbs.glance.password }}
+admin_password = {{ service_users.glance.password }}
 revocation_cache_time = 10
 
 [paste_deploy]

@@ -1,0 +1,20 @@
+---
+- name: Creates images directory
+  file: path=~/images state=directory
+
+- name: Download cirros
+  get_url: url=http://cdn.download.cirros-cloud.net/0.3.3/cirros-0.3.3-x86_64-disk.img dest=~/images/cirros-0.3.3-x86_64-disk.img
+
+- name: Creates scripts
+  file: path=~/scripts state=directory
+
+- name: create glance-entities
+  template: src=scripts/glance-init.sh.j2 dest=~/scripts/glance-init.sh mode="u+x"
+  register: glance_entities
+
+- name: execute glance-entities
+  shell: ~/scripts/glance-init.sh
+  when: glance_entities.changed
+
+
+
