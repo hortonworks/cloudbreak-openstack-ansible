@@ -1,4 +1,11 @@
 ---
+- name: install qemu
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - qemu
+  when: virt_type == 'qemu'
+
 - name: install nova components
   apt: name={{ item }} state=latest
   sudo: true

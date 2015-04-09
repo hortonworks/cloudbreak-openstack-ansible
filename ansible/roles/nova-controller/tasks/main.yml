@@ -1,5 +1,5 @@
 ---
-- name: install nova components
+- name: install nova controller components
   apt: name={{ item }} state=latest
   sudo: true
   with_items:

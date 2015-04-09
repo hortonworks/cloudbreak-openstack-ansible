@@ -9,6 +9,6 @@ ff02::2 ip6-allrouters
 ff02::3 ip6-allhosts
 
 {% for key, value in  os_hosts.iteritems() %}
-{{ value.dns_name }} {{ value.management_ip }}
+{{ value.management_ip }} {{ value.dns_name }}
 {% endfor %}
 

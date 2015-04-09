@@ -1,4 +1,4 @@
 - name: Provision Compute node
-  hosts: compute1
+  hosts: compute*
   roles:
     - nova
