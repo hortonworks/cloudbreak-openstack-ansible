@@ -17,10 +17,12 @@ rabbit_password = {{ rabbit_password }}
 
 auth_strategy = keystone
 
-my_ip = {{ os_hosts.controller.management_ip }}
+my_ip = {{ management_ip }}
 
-vncserver_listen = {{ os_hosts.controller.management_ip }}
-vncserver_proxyclient_address = {{ os_hosts.controller.management_ip }}
+vnc_enabled = True
+vncserver_listen = 0.0.0.0
+vncserver_proxyclient_address = {{ management_ip }}
+novncproxy_base_url = http://controller:6080/vnc_auto.html
 
 [keystone_authtoken]
 auth_uri = http://controller:5000/v2.0
@@ -31,6 +33,3 @@ admin_password = {{ service_users.nova.password }}
 
 [glance]
 host = controller
-
-[database]
-connection = mysql://nova:{{ os_dbs.nova.password }}@controller/nova

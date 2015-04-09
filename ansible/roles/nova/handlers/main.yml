@@ -1,0 +1,4 @@
+---
+- name: restart nova compute
+  sudo: true
+  service: name=nova-compute state=restarted

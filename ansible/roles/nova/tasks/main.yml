@@ -3,11 +3,21 @@
   apt: name={{ item }} state=latest
   sudo: true
   with_items:
-    - nova-api
-    - nova-cert
-    - nova-conductor
-    - nova-consoleauth
-    - nova-novncproxy
-    - nova-scheduler
-    - python-novaclient
+    - nova-compute
+    - sysfsutils
 
+- name: write the nova config file
+  template: src={{ item }}.j2 dest=/etc/nova/{{ item }} backup=yes
+  sudo: true
+  notify:
+    - restart nova compute
+  with_items:
+    - nova.conf
+    - nova-compute.conf
+
+- name: Trigger handlers
+  meta: flush_handlers
+
+- name: remove unused sqlite database
+  sudo: true
+  file: path=/var/lib/nova/nova.sqlite state=absent
