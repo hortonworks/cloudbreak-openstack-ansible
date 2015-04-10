@@ -1,0 +1,51 @@
+---
+- name: copy sysctl.conf
+  copy: src=sysctl.conf dest=/etc/sysctl.conf
+  sudo: true
+  register: sysctl_copy
+
+- name: execute neutron-entities
+  shell: sysctl -p
+  sudo: true
+  when: sysctl_copy.changed
+
+- name: install neutron
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - neutron-plugin-ml2
+    - neutron-plugin-openvswitch-agent
+    - neutron-l3-agent
+    - neutron-dhcp-agent
+
+- name: write the neutron config file
+  template: src={{ item }}.j2 dest=/etc/neutron/{{ item }}
+  sudo: true
+  with_items:
+    - neutron.conf
+    - l3_agent.ini
+    - dhcp_agent.ini
+    - metadata_agent.ini
+  notify:
+    - restart neutron server
+
+- name: write the neutron ml2 file
+  template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
+  sudo: true
+  notify:
+    - restart neutron server
+
+- name: Creates scripts
+  file: path=~/scripts state=directory
+
+- name: create ovs-init
+  template: src=scripts/ovs-init.sh.j2 dest=~/scripts/ovs-init.sh mode="u+x"
+  register: ovs_init
+
+- name: execute ovs-init
+  sudo: true
+  shell: scripts/ovs-init.sh
+  when: ovs_init.changed
+
+- name: Trigger handlers
+  meta: flush_handlers

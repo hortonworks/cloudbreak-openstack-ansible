@@ -52,3 +52,6 @@
 
 - name: DB setup for Nova
   include: novadb.yml
+
+- name: DB setup for Neutron
+  include: neutrondb.yml

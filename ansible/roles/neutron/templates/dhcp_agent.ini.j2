@@ -1,6 +1,8 @@
 [DEFAULT]
 # Show debugging output in log (sets DEBUG log level output)
 # debug = False
+verbose = True
+
 
 # The DHCP agent will resync its state with Neutron to recover from any
 # transient notification or rpc errors. The interval is number of
@@ -10,6 +12,11 @@
 # The DHCP agent requires an interface driver be set. Choose the one that best
 # matches your plugin.
 # interface_driver =
+
+interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver
+dhcp_driver = neutron.agent.linux.dhcp.Dnsmasq
+use_namespaces = True
+dhcp_delete_namespaces = True
 
 # Example of interface_driver option for OVS based plugins(OVS, Ryu, NEC, NVP,
 # BigSwitch/Floodlight)

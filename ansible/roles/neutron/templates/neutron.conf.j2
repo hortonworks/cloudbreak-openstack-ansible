@@ -2,8 +2,6 @@
 # Print more verbose output (set logging level to INFO instead of default WARNING level).
 verbose = True
 
-# Set verbosity
-
 # =========Start Global Config Option for Distributed L3 Router===============
 # Setting the "router_distributed" flag to "True" will default to the creation
 # of distributed tenant routers. The admin can override this flag by specifying
@@ -84,6 +82,8 @@ allow_overlapping_ips = True
 # auth_strategy = keystone
 
 auth_strategy = keystone
+
+
 
 # Base MAC address. The first 3 octets will remain unchanged. If the
 # 4h octet is not 00, it will also be used. The others will be
@@ -252,15 +252,6 @@ auth_strategy = keystone
 # ======== neutron nova interactions ==========
 # Send notification to nova when port status is active.
 # notify_nova_on_port_status_changes = True
-notify_nova_on_port_status_changes = True
-notify_nova_on_port_data_changes = True
-nova_url = http://controller:8774/v2
-nova_admin_auth_url = http://controller:35357/v2.0
-nova_region_name = regionOne
-nova_admin_username = nova
-nova_admin_tenant_id = SERVICE_TENANT_ID
-nova_admin_password = {{ service_users.nova.password }}
-
 
 # Send notifications to nova when port data (fixed_ips/floatingips) change
 # so nova can update it's cache.
@@ -474,6 +465,7 @@ rpc_backend = rabbit
 rabbit_host = controller
 rabbit_password = {{ rabbit_password }}
 
+
 # The default exchange under which topics are scoped. May be
 # overridden by an exchange name specified in the
 # transport_url option. (string value)
@@ -596,9 +588,7 @@ admin_password = {{ service_users.neutron.password }}
 # connection = mysql://root:pass@127.0.0.1:3306/neutron
 # Replace 127.0.0.1 above with the IP address of the database used by the
 # main neutron server. (Leave it as is if the database runs on this host.)
-#connection = sqlite:////var/lib/neutron/neutron.sqlite
-connection = mysql://neutron:{{ os_dbs.neutron.password }}@controller/neutron
-
+connection = sqlite:////var/lib/neutron/neutron.sqlite
 # NOTE: In deployment the [database] section and its connection attribute may
 # be set in the corresponding core plugin '.ini' file. However, it is suggested
 # to put the [database] section and its connection attribute in this

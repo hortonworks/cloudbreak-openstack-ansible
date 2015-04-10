@@ -22,6 +22,11 @@ my_ip = {{ os_hosts.controller.management_ip }}
 vncserver_listen = {{ os_hosts.controller.management_ip }}
 vncserver_proxyclient_address = {{ os_hosts.controller.management_ip }}
 
+network_api_class = nova.network.neutronv2.api.API
+security_group_api = neutron
+linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+
 [keystone_authtoken]
 auth_uri = http://controller:5000/v2.0
 identity_uri = http://controller:35357
@@ -34,3 +39,14 @@ host = controller
 
 [database]
 connection = mysql://nova:{{ os_dbs.nova.password }}@controller/nova
+
+[neutron]
+url = http://controller:9696
+auth_strategy = keystone
+admin_auth_url = http://controller:35357/v2.0
+admin_tenant_name = service
+admin_username = neutron
+admin_password = {{ os_dbs.neutron.password }}
+
+service_metadata_proxy = True
+metadata_proxy_shared_secret = {{ metadata_proxy_shared_secret }}

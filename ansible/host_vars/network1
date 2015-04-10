@@ -3,5 +3,9 @@ host_dns_name: network1
 management_ip: 10.0.0.21
 
 
+tunnel_if_ip: 10.0.0.21
+external_net_if: eth0
+
+
 
 

@@ -6,3 +6,4 @@
     - keystone
     - glance
     - nova-controller
+    - neutron-controller

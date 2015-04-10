@@ -1,0 +1,4 @@
+- name: Provision Compute node
+  hosts: network*
+  roles:
+    - neutron

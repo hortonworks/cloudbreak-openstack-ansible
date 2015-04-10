@@ -5,6 +5,7 @@ installed_dir: /etc/installed
 
 keystone_admin_token: 7f5ad4e1bdfd216bf944
 
+metadata_proxy_shared_secret: metasecret01
 rabbit_password: rabbitpw
 
 os_dbs:
@@ -14,6 +15,8 @@ os_dbs:
     password: glancepw
   nova:
     password: novapw
+  neutron:
+    password: neutronpw
 
 service_users:
   glance:
@@ -22,7 +25,9 @@ service_users:
   nova:
     username: nova
     password: Openstack01
-
+  neutron:
+    username: neutron
+    password: Openstack01
 
 os_users:
   admin:
@@ -42,6 +47,7 @@ os_hosts:
   network1:
     dns_name: network1
     management_ip: 10.0.0.21
+    tunnel_if_ip: 10.0.0.21
   compute1:
     dns_name: compute1
     management_ip: 10.0.0.31

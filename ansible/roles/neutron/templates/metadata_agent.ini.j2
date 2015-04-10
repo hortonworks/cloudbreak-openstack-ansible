@@ -3,21 +3,17 @@
 # debug = True
 
 # The Neutron user information for accessing the Neutron API.
-auth_url = http://localhost:5000/v2.0
-auth_region = RegionOne
-# Turn off verification of the certificate for ssl
-# auth_insecure = False
-# Certificate Authority public key (CA cert) file for ssl
-# auth_ca_cert =
-admin_tenant_name = %SERVICE_TENANT_NAME%
-admin_user = %SERVICE_USER%
-admin_password = %SERVICE_PASSWORD%
+auth_url = http://controller:5000/v2.0
+auth_region = regionOne
+admin_tenant_name = service
+admin_user = neutron
+admin_password = {{ service_users.neutron.password }}
 
 # Network service endpoint type to pull from the keystone catalog
 # endpoint_type = adminURL
 
 # IP address used by Nova metadata server
-# nova_metadata_ip = 127.0.0.1
+nova_metadata_ip = controller
 
 # TCP Port used by Nova metadata server
 # nova_metadata_port = 8775
@@ -41,6 +37,8 @@ admin_password = %SERVICE_PASSWORD%
 # but it must match here and in the configuration used by the Nova Metadata
 # Server. NOTE: Nova uses a different key: neutron_metadata_proxy_shared_secret
 # metadata_proxy_shared_secret =
+
+metadata_proxy_shared_secret = {{ metadata_proxy_shared_secret }}
 
 # Location of Metadata Proxy UNIX domain socket
 # metadata_proxy_socket = $state_path/metadata_proxy

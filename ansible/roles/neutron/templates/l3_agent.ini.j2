@@ -1,10 +1,16 @@
 [DEFAULT]
 # Show debugging output in log (sets DEBUG log level output)
 # debug = False
+verbose = True
 
 # L3 requires that an interface driver be set. Choose the one that best
 # matches your plugin.
 # interface_driver =
+
+interface_driver = neutron.agent.linux.interface.OVSInterfaceDriver
+use_namespaces = True
+external_network_bridge = br-ex
+router_delete_namespaces = True
 
 # Example of interface_driver option for OVS based plugins (OVS, Ryu, NEC)
 # that supports L3 agent
