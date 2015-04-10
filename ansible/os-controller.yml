@@ -7,3 +7,4 @@
     - glance
     - nova-controller
     - neutron-controller
+    - horizon

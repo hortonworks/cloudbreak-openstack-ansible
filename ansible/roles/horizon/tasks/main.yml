@@ -1,0 +1,11 @@
+---
+- name: install horizon
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - openstack-dashboard
+    - libapache2-mod-wsgi
+    - memcached
+    - python-memcache
+    - apache2
+
