@@ -1,6 +1,6 @@
 [DEFAULT]
 # Print more verbose output (set logging level to INFO instead of default WARNING level).
-# verbose = False
+verbose = True
 
 # =========Start Global Config Option for Distributed L3 Router===============
 # Setting the "router_distributed" flag to "True" will default to the creation
@@ -60,7 +60,11 @@ lock_path = $state_path/lock
 # previous versions, the class name of a plugin can be specified instead of its
 # entrypoint name.
 #
+
 core_plugin = ml2
+service_plugins = router
+allow_overlapping_ips = True
+
 # Example: core_plugin = ml2
 
 # (ListOpt) List of service plugin entrypoints to be loaded from the
@@ -78,6 +82,8 @@ core_plugin = ml2
 # The strategy to be used for auth.
 # Supported values are 'keystone'(default), 'noauth'.
 # auth_strategy = keystone
+
+auth_strategy = keystone
 
 # Base MAC address. The first 3 octets will remain unchanged. If the
 # 4h octet is not 00, it will also be used. The others will be
@@ -455,6 +461,10 @@ core_plugin = ml2
 # drivers include qpid and zmq. (string value)
 #rpc_backend=rabbit
 
+rpc_backend = rabbit
+rabbit_host = controller
+rabbit_password = {{ rabbit_password }}
+
 # The default exchange under which topics are scoped. May be
 # overridden by an exchange name specified in the
 # transport_url option. (string value)
@@ -565,12 +575,11 @@ root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 # ===========  end of items for agent management extension =====
 
 [keystone_authtoken]
-auth_host = 127.0.0.1
-auth_port = 35357
-auth_protocol = http
-admin_tenant_name = %SERVICE_TENANT_NAME%
-admin_user = %SERVICE_USER%
-admin_password = %SERVICE_PASSWORD%
+auth_uri = http://controller:5000/v2.0
+identity_uri = http://controller:35357
+admin_tenant_name = service
+admin_user = neutron
+admin_password = {{ service_users.neutron.password }}
 
 [database]
 # This line MUST be changed to actually run the plugin.

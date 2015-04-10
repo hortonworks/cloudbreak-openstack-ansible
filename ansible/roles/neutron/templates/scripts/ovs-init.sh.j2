@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 
-ovs-vsctl list-br | grep -q br-ex || service openvswitch-switch restart
+service openvswitch-switch restart
 sleep 5
-ovs-vsctl list-br | grep -q br-ex || ovs-vsctl add-br br-ex
-ovs-vsctl list-br | grep -q br-ex || ovs-vsctl add-port br-ex {{ external_net_if }}
+ovs-vsctl add-br br-ex
+ovs-vsctl add-port br-ex {{ external_net_if }}

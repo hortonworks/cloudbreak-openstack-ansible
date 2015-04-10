@@ -1,0 +1,33 @@
+---
+- name: copy sysctl.conf
+  copy: src=sysctl.conf dest=/etc/sysctl.conf
+  sudo: true
+  register: sysctl_copy
+
+- name: execute sysctl.conf changes apply
+  shell: sysctl -p
+  sudo: true
+  when: sysctl_copy.changed
+
+- name: install neutron compute networking components
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - neutron-plugin-ml2
+    - neutron-plugin-openvswitch-agent
+
+- name: write the neutron config file
+  template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
+  sudo: true
+  register: neutron_config
+  notify:
+    - restart neutron-compute
+
+- name: write the neutron ml2 file
+  template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
+  sudo: true
+  notify:
+    - restart neutron-compute
+
+- name: Trigger handlers
+  meta: flush_handlers

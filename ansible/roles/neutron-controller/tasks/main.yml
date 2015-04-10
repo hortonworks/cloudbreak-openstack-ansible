@@ -10,11 +10,14 @@
 - name: Creates scripts
   file: path=~/scripts state=directory
 
+- name: create network-init
+  template: src=scripts/network-init.sh.j2 dest=~/scripts/network-init.sh mode="u+x"
+
 - name: create neutron-entities
   template: src=scripts/neutron-init.sh.j2 dest=~/scripts/neutron-init.sh mode="u+x"
   register: neutron_entities
 
-- name: execute neutron-entities
+- name: execute sysctl.conf changes apply
   shell: ~/scripts/neutron-init.sh
   when: neutron_entities.changed
 

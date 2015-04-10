@@ -51,6 +51,8 @@ os_hosts:
   compute1:
     dns_name: compute1
     management_ip: 10.0.0.31
+    tunnel_if_ip: 10.0.0.31
   compute2:
     dns_name: compute2
     management_ip: 10.0.0.32
+    tunnel_if_ip: 10.0.0.32

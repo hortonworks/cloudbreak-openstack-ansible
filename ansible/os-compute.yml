@@ -2,3 +2,4 @@
   hosts: compute*
   roles:
     - nova
+    - neutron-compute

@@ -1,0 +1,8 @@
+---
+- name: restart neutron-compute
+  sudo: true
+  service: name={{ item }} state=restarted
+  with_items:
+    - openvswitch-switch
+    - neutron-plugin-openvswitch-agent
+    - nova-compute
