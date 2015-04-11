@@ -6,10 +6,20 @@ neutron net-create ext-net --router:external True  --provider:physical_network e
 #neutron net-create ext-net --router:external True
 neutron subnet-create ext-net --name ext-subnet  --allocation-pool start=172.25.5.101,end=172.25.5.200  --disable-dhcp --gateway 172.25.5.1 172.25.5.0/24
 
-source scripts/demo-openrc.sh
+#source scripts/demo-openrc.sh
 
 neutron net-create demo-net
 neutron subnet-create demo-net --name demo-subnet --gateway 192.168.44.1 192.168.44.0/24
 neutron router-create demo-router
 neutron router-interface-add demo-router demo-subnet
 neutron router-gateway-set demo-router ext-net
+
+
+nova secgroup-add-rule default tcp 1 65535 0.0.0.0/0
+nova secgroup-add-rule default udp 1 65535 0.0.0.0/0
+nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0
+
+
+#cirros-0.3.3-x86
+# nova boot --flavor 1 --image cirros-0.3.3-x86 --security_group default cirr1
+# nova boot --flavor 1 --key_name mykey --image cirros-0.3.3-x86 --security_group default cirr2

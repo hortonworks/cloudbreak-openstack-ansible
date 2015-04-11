@@ -6,12 +6,18 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "ubuntu/trusty64"
+  #config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "trusty64_upd"
+
+  if Vagrant.has_plugin?("vagrant-cachier")
+      config.cache.scope = :box
+  end
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
     vb.customize ["modifyvm", :id, "--cpus", "2"]
     vb.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+    vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
   end
 
 
@@ -24,7 +30,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     network1.vm.hostname = "network1"
     network1.vm.network "private_network", ip: "10.0.0.21"
     network1.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
-    #network1.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 eth2"
+    network1.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 eth2"
   end
 
   config.vm.define "compute1" do |compute1|
