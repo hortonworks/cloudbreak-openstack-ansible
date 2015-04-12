@@ -2,6 +2,8 @@
 - name: Creates scripts
   file: path=~/scripts state=directory
 
+#http://docs.openstack.org/juno/install-guide/install/apt/content/neutron-network-node.html
+
 - name: create mtu-cfg
   template: src=scripts/mtu-cfg.sh.j2 dest=~/scripts/mtu-cfg.sh mode="u+x"
   register: mtu_cfg

@@ -1,6 +1,7 @@
 - name: Provision Compute node
   hosts: compute*
   roles:
-    - netcfg
+# http://docs.openstack.org/juno/install-guide/install/apt/content/neutron-network-node.html
+#    - netcfg
     - nova
     - neutron-compute

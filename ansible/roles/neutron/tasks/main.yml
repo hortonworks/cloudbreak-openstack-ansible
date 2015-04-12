@@ -29,6 +29,18 @@
   notify:
     - restart neutron server
 
+- name: write dnsmasq-neutron file
+  template: src={{ item }}.j2 dest=/etc/neutron/{{ item }}
+  sudo: true
+  with_items:
+    - dnsmasq-neutron.conf
+  register: dnsmasq_neutron
+
+#- name: pkill dnsmasq
+#  shell: pgrep dnsmasq && pkill dnsmasq
+#  sudo: true
+#  when: dnsmasq_neutron.changed
+
 - name: write the neutron ml2 file
   template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
   sudo: true
