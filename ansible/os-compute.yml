@@ -1,5 +1,6 @@
 - name: Provision Compute node
   hosts: compute*
   roles:
+    - netcfg
     - nova
     - neutron-compute

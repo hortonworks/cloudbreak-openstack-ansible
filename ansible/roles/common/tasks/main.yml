@@ -8,7 +8,7 @@
     - tree
     - traceroute
 
-- name: creates installed directory to keep track what has been installed already
+- name: creates installed directory to keep track what has already been installed
   file: path={{ installed_dir }} state=directory
   sudo: true
 

@@ -1,0 +1,12 @@
+---
+- name: Creates scripts
+  file: path=~/scripts state=directory
+
+- name: create mtu-cfg
+  template: src=scripts/mtu-cfg.sh.j2 dest=~/scripts/mtu-cfg.sh mode="u+x"
+  register: mtu_cfg
+
+- name: execute mtu-cfg.sh
+  sudo: true
+  shell: scripts/mtu-cfg.sh
+  when: mtu_cfg.changed

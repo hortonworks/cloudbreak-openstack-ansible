@@ -29,18 +29,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "network1" do |network1|
     network1.vm.hostname = "network1"
     network1.vm.network "private_network", ip: "10.0.0.21"
-    network1.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
-    network1.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 eth2"
+    network1.vm.network "private_network", ip: "10.0.1.21"
+#    network1.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+#    network1.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 eth3"
   end
 
   config.vm.define "compute1" do |compute1|
     compute1.vm.hostname = "compute1"
     compute1.vm.network "private_network", ip: "10.0.0.31"
+    compute1.vm.network "private_network", ip: "10.0.1.31"
   end
 
   config.vm.define "compute2" do |compute2|
     compute2.vm.hostname = "compute2"
     compute2.vm.network "private_network", ip: "10.0.0.32"
+    compute2.vm.network "private_network", ip: "10.0.1.32"
   end
 
   config.vm.provision :ansible do |ansible|

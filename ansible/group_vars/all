@@ -1,6 +1,9 @@
 ---
 virt_type: qemu
 
+
+mtu_size: 1700
+
 installed_dir: /etc/installed
 
 keystone_admin_token: 7f5ad4e1bdfd216bf944
@@ -47,12 +50,12 @@ os_hosts:
   network1:
     dns_name: network1
     management_ip: 10.0.0.21
-    tunnel_if_ip: 10.0.0.21
+    tunnel_if_ip: 10.0.1.21
   compute1:
     dns_name: compute1
     management_ip: 10.0.0.31
-    tunnel_if_ip: 10.0.0.31
+    tunnel_if_ip: 10.0.1.31
   compute2:
     dns_name: compute2
     management_ip: 10.0.0.32
-    tunnel_if_ip: 10.0.0.32
+    tunnel_if_ip: 10.0.1.32

@@ -7,14 +7,7 @@ ovs-vsctl add-br br-ex
 ifconfig br-ex 172.25.5.1 netmask 255.255.255.0
 ifconfig br-ex up
 
-
-#ip addr add 172.25.5.1/24 dev br-ex
-#ip link set br-ex up
-
 #ovs-vsctl add-port br-ex {{ external_net_if }}
 
-#ifconfig {{ external_net_if }} 0
-#dhclient br-ex
-
-#iptables -t nat -A POSTROUTING -o eth2 -j MASQUERADE -m comment --comment "DevstackExt"
-#iptables -t nat -A POSTROUTING -o {{ external_net_if }} -j MASQUERADE -m comment --comment "DevstackExt"
+#iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -m comment --comment "DevstackExt"
+iptables -t nat -A POSTROUTING -o {{ external_net_if }} -j MASQUERADE -m comment --comment "DevstackExt"
