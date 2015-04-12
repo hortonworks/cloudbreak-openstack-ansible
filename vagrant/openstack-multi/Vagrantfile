@@ -18,6 +18,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--cpus", "2"]
     vb.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
     vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
+    vb.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
   end
 
 
@@ -30,7 +31,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     network1.vm.hostname = "network1"
     network1.vm.network "private_network", ip: "10.0.0.21"
     network1.vm.network "private_network", ip: "10.0.1.21"
-#    network1.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
+    network1.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
 #    network1.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 eth3"
   end
 

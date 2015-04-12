@@ -3,8 +3,9 @@
 source scripts/admin-openrc.sh
 
 neutron net-create ext-net --router:external True  --provider:physical_network external --provider:network_type flat
-#neutron net-create ext-net --router:external True
 neutron subnet-create ext-net --name ext-subnet  --allocation-pool start=172.25.5.101,end=172.25.5.200  --disable-dhcp --gateway 172.25.5.1 172.25.5.0/24
+
+#neutron subnet-create ext-net --name ext-subnet  --allocation-pool start=192.168.1.201,end=192.168.1.220  --disable-dhcp --gateway 192.168.1.1 192.168.1.0/24
 
 #source scripts/demo-openrc.sh
 
