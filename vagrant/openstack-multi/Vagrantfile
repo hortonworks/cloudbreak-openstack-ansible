@@ -6,8 +6,8 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  #config.vm.box = "ubuntu/trusty64"
-  config.vm.box = "trusty64_upd"
+  config.vm.box = "ubuntu/trusty64"
+  #config.vm.box = "trusty64_upd"
 
   if Vagrant.has_plugin?("vagrant-cachier")
       config.cache.scope = :box
