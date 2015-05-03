@@ -1,0 +1,42 @@
+---
+- name: install neutron
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - neutron-plugin-ml2
+    - neutron-plugin-openvswitch-agent
+    - neutron-l3-agent
+    - neutron-dhcp-agent
+
+- name: write the neutron config files
+  template: src={{ item }}.j2 dest=/etc/neutron/{{ item }}
+  sudo: true
+  with_items:
+    - l3_agent.ini
+    - dhcp_agent.ini
+    - metadata_agent.ini
+  notify:
+    - restart neutron server
+
+- name: write dnsmasq-neutron file
+  template: src={{ item }}.j2 dest=/etc/neutron/{{ item }}
+  sudo: true
+  with_items:
+    - dnsmasq-neutron.conf
+  register: dnsmasq_neutron
+
+#- name: pkill dnsmasq
+#  shell: pgrep dnsmasq && pkill dnsmasq
+#  sudo: true
+#  when: dnsmasq_neutron.changed
+
+
+- name: create ovs-init
+  template: src=scripts/ovs-init.sh.j2 dest=~/scripts/ovs-init.sh mode="u+x"
+  register: ovs_init
+
+- name: execute ovs-init
+  sudo: true
+  shell: scripts/ovs-init.sh
+  when: ovs_init.changed
+

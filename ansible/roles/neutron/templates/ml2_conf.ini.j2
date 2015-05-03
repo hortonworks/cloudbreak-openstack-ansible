@@ -38,7 +38,11 @@ mechanism_drivers = openvswitch
 # Example:flat_networks = physnet1,physnet2
 # Example:flat_networks = *
 
+{% if neutron_node %}
+
 flat_networks = external
+
+{% endif %}
 
 [ml2_type_vlan]
 # (ListOpt) List of <physical_network>[:<vlan_min>:<vlan_max>] tuples
@@ -80,6 +84,8 @@ enable_security_group = True
 enable_ipset = True
 firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
 
+{% if neutron_node %}
+
 [ovs]
 local_ip = {{ tunnel_if_ip }}
 enable_tunneling = True
@@ -87,3 +93,5 @@ bridge_mappings = external:br-ex
 
 [agent]
 tunnel_types = gre
+
+{% endif %}

@@ -4,6 +4,9 @@ management_ip: 10.0.0.11
 
 mariadb_bind_ip: "{{ management_ip }}"
 
+neutron_controller: true
+neutron_node: false
+
 
 
 

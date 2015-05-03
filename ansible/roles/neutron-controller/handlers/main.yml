@@ -1,9 +1,0 @@
----
-- name: restart neutron controller
-  sudo: true
-  service: name={{ item }} state=restarted
-  with_items:
-    - nova-api
-    - nova-scheduler
-    - nova-conductor
-    - neutron-server

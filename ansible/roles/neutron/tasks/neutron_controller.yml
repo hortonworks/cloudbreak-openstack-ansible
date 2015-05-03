@@ -1,0 +1,23 @@
+---
+- name: install neutron controller components
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - neutron-server
+    - neutron-plugin-ml2
+    - python-neutronclient
+
+
+- name: create network-init
+  template: src=scripts/network-init.sh.j2 dest=~/scripts/network-init.sh mode="u+x"
+
+- name: create neutron-entities
+  template: src=scripts/neutron-init.sh.j2 dest=~/scripts/neutron-init.sh mode="u+x"
+  register: neutron_entities
+
+- name: execute neutron-init.sh
+  shell: ~/scripts/neutron-init.sh
+  when: neutron_entities.changed
+
+
+
