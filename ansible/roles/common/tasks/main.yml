@@ -1,4 +1,15 @@
 ---
+- name: ensure needed repositories are present
+  command: apt-add-repository -y "{{ item }}"
+  with_items:
+      - cloud-archive:juno
+  sudo: true
+  changed_when: false
+
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt: update_cache=yes
+  sudo: true
+
 - name: install basic utilities
   apt: name={{ item }} state=latest
   sudo: true

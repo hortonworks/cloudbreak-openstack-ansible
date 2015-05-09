@@ -1,7 +1,7 @@
 - name: Provision Controller
   hosts: controller
   roles:
-    - openstackdb
+    - openstack-db
     - rabbitmq
     - keystone
     - glance

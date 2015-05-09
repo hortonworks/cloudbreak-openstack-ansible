@@ -1,7 +1,7 @@
 - name: Provision Openstack
   hosts: all
   roles:
-    - updates
+#    - updates
     - common
 
 - name: Provision Controller
