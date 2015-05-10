@@ -462,7 +462,7 @@ auth_strategy = keystone
 #rpc_backend=rabbit
 
 rpc_backend = rabbit
-rabbit_host = controller
+rabbit_host = {{ os_hosts.controller.management_ip }}
 rabbit_password = {{ rabbit_password }}
 
 # The default exchange under which topics are scoped. May be
@@ -575,8 +575,8 @@ root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 # ===========  end of items for agent management extension =====
 
 [keystone_authtoken]
-auth_uri = http://controller:5000/v2.0
-identity_uri = http://controller:35357
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000/v2.0
+identity_uri = http://{{ os_hosts.controller.management_ip }}:35357
 admin_tenant_name = service
 admin_user = neutron
 admin_password = {{ service_users.neutron.password }}

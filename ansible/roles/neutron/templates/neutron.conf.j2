@@ -255,8 +255,8 @@ auth_strategy = keystone
 
 notify_nova_on_port_status_changes = True
 notify_nova_on_port_data_changes = True
-nova_url = http://controller:8774/v2
-nova_admin_auth_url = http://controller:35357/v2.0
+nova_url = http://{{ os_hosts.controller.management_ip }}:8774/v2
+nova_admin_auth_url = http://{{ os_hosts.controller.management_ip }}:35357/v2.0
 nova_region_name = regionOne
 nova_admin_username = nova
 nova_admin_tenant_id = SERVICE_TENANT_ID
@@ -473,7 +473,7 @@ nova_admin_password = {{ service_users.nova.password }}
 #rpc_backend=rabbit
 
 rpc_backend = rabbit
-rabbit_host = controller
+rabbit_host = {{ os_hosts.controller.management_ip }}
 rabbit_password = {{ rabbit_password }}
 
 # The default exchange under which topics are scoped. May be
@@ -586,8 +586,8 @@ root_helper = sudo /usr/bin/neutron-rootwrap /etc/neutron/rootwrap.conf
 # ===========  end of items for agent management extension =====
 
 [keystone_authtoken]
-auth_uri = http://controller:5000/v2.0
-identity_uri = http://controller:35357
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000/v2.0
+identity_uri = http://{{ os_hosts.controller.management_ip }}:35357
 admin_tenant_name = service
 admin_user = neutron
 admin_password = {{ service_users.neutron.password }}
@@ -600,7 +600,7 @@ admin_password = {{ service_users.neutron.password }}
 # main neutron server. (Leave it as is if the database runs on this host.)
 
 {% if neutron_controller %}
-connection = mysql://neutron:{{ os_dbs.neutron.password }}@controller/neutron
+connection = mysql://neutron:{{ os_dbs.neutron.password }}@{{ os_hosts.controller.management_ip }}/neutron
 {% else %}
 connection = sqlite:////var/lib/neutron/neutron.sqlite
 {% endif %}

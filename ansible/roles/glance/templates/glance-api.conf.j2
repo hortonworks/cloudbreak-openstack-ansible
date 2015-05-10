@@ -301,7 +301,7 @@ backend = sqlalchemy
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
 
-connection = mysql://glance:{{ os_dbs.glance.password }}@controller/glance
+connection = mysql://glance:{{ os_dbs.glance.password }}@{{ os_hosts.controller.management_ip }}/glance
 
 # The SQL mode to be used for MySQL sessions. This option,
 # including the default, overrides any server-set SQL mode. To
@@ -382,8 +382,8 @@ connection = mysql://glance:{{ os_dbs.glance.password }}@controller/glance
 #db_max_retries = 20
 
 [keystone_authtoken]
-auth_uri = http://controller:5000/v2.0
-identity_uri = http://controller:35357
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000/v2.0
+identity_uri = http://{{ os_hosts.controller.management_ip }}:35357
 admin_tenant_name = service
 admin_user = glance
 admin_password = {{ service_users.glance.password }}

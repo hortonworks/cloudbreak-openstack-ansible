@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 export OS_SERVICE_TOKEN={{ keystone_admin_token }}
-export OS_SERVICE_ENDPOINT=http://controller:35357/v2.0
+export OS_SERVICE_ENDPOINT=http://{{ os_hosts.controller.management_ip }}:35357/v2.0
 
 keystone tenant-list | grep -q admin || keystone tenant-create --name admin --description "Admin Tenant"
 keystone user-list | grep -q admin || keystone user-create --name admin --pass {{ os_users.admin.password }} --email admin@openstack.com

@@ -23,6 +23,6 @@
   file: path={{ installed_dir }} state=directory
   sudo: true
 
-- name: write hosts file
-  template: src=hosts.j2 dest=/etc/hosts
-  sudo: true
+#- name: write hosts file
+#  template: src=hosts.j2 dest=/etc/hosts
+#  sudo: true
