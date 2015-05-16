@@ -1,0 +1,11 @@
+---
+- name: populate cinderdb
+  sudo: true
+  shell: su -s /bin/sh -c "cinder-manage db sync" cinder
+
+- name: restart cinder controller
+  sudo: true
+  service: name={{ item }} state=restarted
+  with_items:
+    - cinder-scheduler
+    - cinder-api

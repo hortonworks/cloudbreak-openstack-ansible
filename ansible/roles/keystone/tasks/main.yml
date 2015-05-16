@@ -28,6 +28,13 @@
 - name: Creates scripts
   file: path=~/scripts state=directory
 
+- name: write helper scripts
+  template: src=scripts/{{ item }}.j2 dest=~/scripts/{{ item }} mode="u+x"
+  with_items:
+    - admin-openrc.sh
+    - demo-openrc.sh
+    - keystone-helper.sh
+
 - name: create keystone-entities
   template: src=scripts/keystone-init.sh.j2 dest=~/scripts/keystone-init.sh mode="u+x"
   register: keystone_entities
@@ -35,12 +42,6 @@
 - name: execute keystone-entities
   shell: ~/scripts/keystone-init.sh
   when: keystone_entities.changed
-
-- name: write admin-openrc.sh
-  template: src=scripts/admin-openrc.sh.j2 dest=~/scripts/admin-openrc.sh mode="u+x"
-
-- name: write demo-openrc.sh
-  template: src=scripts/demo-openrc.sh.j2 dest=~/scripts/demo-openrc.sh mode="u+x"
 
 - name: write shell profile
   template: src=profile.j2 dest=~/.profile

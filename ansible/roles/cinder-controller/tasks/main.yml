@@ -1,0 +1,33 @@
+---
+- name: install cinder controller components
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - cinder-api
+    - cinder-scheduler
+    - python-cinderclient
+
+- name: Creates scripts
+  file: path=~/scripts state=directory
+
+- name: create cinder-entities
+  template: src=scripts/cinder-init.sh.j2 dest=~/scripts/cinder-init.sh mode="u+x"
+  register: cinder_entities
+
+- name: execute cinder-entities
+  shell: ~/scripts/cinder-init.sh
+  when: cinder_entities.changed
+
+#- name: write the nova config file
+#  template: src=nova.conf.j2 dest=/etc/nova/nova.conf backup=yes
+#  sudo: true
+#  notify:
+#    - populate novadb
+#    - restart nova controller
+
+- name: Trigger handlers
+  meta: flush_handlers
+
+- name: remove unused sqlite database
+  sudo: true
+  file: path=/var/lib/cinder/cinder.sqlite state=absent

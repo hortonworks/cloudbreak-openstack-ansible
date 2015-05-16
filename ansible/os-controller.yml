@@ -7,4 +7,5 @@
     - glance
     - nova-controller
     - neutron
+    - cinder-controller
     - horizon
