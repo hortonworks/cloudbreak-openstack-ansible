@@ -18,12 +18,11 @@
   shell: ~/scripts/cinder-init.sh
   when: cinder_entities.changed
 
-#- name: write the nova config file
-#  template: src=nova.conf.j2 dest=/etc/nova/nova.conf backup=yes
-#  sudo: true
-#  notify:
-#    - populate novadb
-#    - restart nova controller
+- name: write the cinder config file
+  template: src=cinder.conf.j2 dest=/etc/cinder/cinder.conf backup=yes
+  sudo: true
+  notify:
+    - restart cinder controller
 
 - name: Trigger handlers
   meta: flush_handlers
