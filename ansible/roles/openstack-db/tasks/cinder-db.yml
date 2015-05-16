@@ -1,0 +1,16 @@
+---
+- name: Create a new database with name 'cinder'
+  mysql_db: name=cinder state=present
+
+- name: create db user for cinder
+  mysql_user:
+    name: cinder
+    password: "{{ os_dbs.cinder.password }}"
+    host: "{{ item }}"
+    state: present
+    priv: "cinder.*:ALL"
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+    - "%"

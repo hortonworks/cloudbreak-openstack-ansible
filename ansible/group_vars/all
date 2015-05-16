@@ -20,6 +20,8 @@ os_dbs:
     password: novapw
   neutron:
     password: neutronpw
+  cinder:
+    password: cinderpw
 
 service_users:
   glance:

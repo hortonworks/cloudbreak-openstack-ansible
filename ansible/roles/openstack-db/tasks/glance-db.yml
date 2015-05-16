@@ -1,7 +1,6 @@
 ---
 - name: Create a new database with name 'glance'
   mysql_db: name=glance state=present
-  register: glanceschema
 
 - name: create db user for glance
   mysql_user:

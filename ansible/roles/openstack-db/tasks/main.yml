@@ -45,13 +45,16 @@
   when: mariadb_updated.changed
 
 - name: DB setup for Keystone
-  include: keystonedb.yml
+  include: keystone-db.yml
 
 - name: DB setup for Glance
-  include: glancedb.yml
+  include: glance-db.yml
 
 - name: DB setup for Nova
-  include: novadb.yml
+  include: nova-db.yml
 
 - name: DB setup for Neutron
-  include: neutrondb.yml
+  include: neutron-db.yml
+
+- name: DB setup for Neutron
+  include: cinder-db.yml
