@@ -1,0 +1,8 @@
+---
+- name: restart horizon
+  sudo: true
+  service: name={{ item }} state=restarted
+  with_items:
+    - apache2
+    - memcached
+

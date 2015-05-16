@@ -9,3 +9,11 @@
     - python-memcache
     - apache2
 
+- name: write glance-registry.conf file
+  template: src=local_settings.py.j2 dest=/etc/openstack-dashboard/local_settings.py backup=yes
+  sudo: true
+  notify:
+    - restart horizon
+
+- name: Trigger handlers
+  meta: flush_handlers
