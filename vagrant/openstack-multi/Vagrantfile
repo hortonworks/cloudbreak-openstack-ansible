@@ -20,18 +20,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
   end
 
-
   config.vm.define "controller" do |controller|
     controller.vm.hostname = "controller"
     controller.vm.network "private_network", ip: "10.0.0.11"
     controller.vm.network "private_network", ip: "10.0.1.11"
     controller.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
-    controller.vm.provider :virtualbox do |vbccontroller|
-        vbccontroller.customize ["modifyvm", :id, "--memory", "4096"]
-        vbccontroller.customize ["modifyvm", :id, "--cpus", "2"]
-        vbccontroller.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
-        vbccontroller.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
-        vbccontroller.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
+    controller.vm.provider :virtualbox do |vbcontroller|
+        vbcontroller.customize ["modifyvm", :id, "--memory", "4096"]
+        vbcontroller.customize ["modifyvm", :id, "--cpus", "2"]
+        vbcontroller.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+        vbcontroller.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
+        vbcontroller.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
+        vbcontroller.customize ["createhd",  "--filename", "controller_d0", "--size", "2048"]
+        vbcontroller.customize ["createhd",  "--filename", "controller_d1", "--size", "2048"]
+        vbcontroller.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", "1", "--type", "hdd", "--medium", "controller_d0.vdi"]
+        vbcontroller.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", "2", "--type", "hdd", "--medium", "controller_d1.vdi"]
     end
   end
 
@@ -47,12 +50,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     compute1.vm.hostname = "compute1"
     compute1.vm.network "private_network", ip: "10.0.0.31"
     compute1.vm.network "private_network", ip: "10.0.1.31"
+    compute1.vm.provider :virtualbox do |vbcompute1|
+        vbcompute1.customize ["createhd",  "--filename", "compute1_d0", "--size", "2048"]
+        vbcompute1.customize ["createhd",  "--filename", "compute1_d1", "--size", "2048"]
+        vbcompute1.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", "1", "--type", "hdd", "--medium", "compute1_d0.vdi"]
+        vbcompute1.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", "2", "--type", "hdd", "--medium", "compute1_d1.vdi"]
+    end
+
   end
 
   config.vm.define "compute2" do |compute2|
     compute2.vm.hostname = "compute2"
     compute2.vm.network "private_network", ip: "10.0.0.32"
     compute2.vm.network "private_network", ip: "10.0.1.32"
+    compute2.vm.provider :virtualbox do |vbcompute2|
+        vbcompute2.customize ["createhd",  "--filename", "compute2_d0", "--size", "2048"]
+        vbcompute2.customize ["createhd",  "--filename", "compute2_d1", "--size", "2048"]
+        vbcompute2.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", "1", "--type", "hdd", "--medium", "compute2_d0.vdi"]
+        vbcompute2.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", "2", "--type", "hdd", "--medium", "compute2_d1.vdi"]
+    end
   end
 
   config.vm.provision :ansible do |ansible|
