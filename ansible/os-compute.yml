@@ -3,3 +3,4 @@
   roles:
     - nova
     - neutron-compute
+    - cinder-storage

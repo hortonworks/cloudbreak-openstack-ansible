@@ -56,5 +56,5 @@
 - name: DB setup for Neutron
   include: neutron-db.yml
 
-- name: DB setup for Neutron
+- name: DB setup for Cinder
   include: cinder-db.yml

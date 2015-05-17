@@ -1,0 +1,20 @@
+---
+- name: install cinder storage node components
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - cinder-volume
+    - python-mysqldb
+
+- name: write the cinder config file
+  template: src=cinder.conf.j2 dest=/etc/cinder/cinder.conf backup=yes
+  sudo: true
+  notify:
+    - restart cinder storage node services
+
+- name: Trigger handlers
+  meta: flush_handlers
+
+- name: remove unused sqlite database
+  sudo: true
+  file: path=/var/lib/cinder/cinder.sqlite state=absent

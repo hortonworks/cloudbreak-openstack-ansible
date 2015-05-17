@@ -22,6 +22,7 @@
   template: src=cinder.conf.j2 dest=/etc/cinder/cinder.conf backup=yes
   sudo: true
   notify:
+    - populate cinderdb
     - restart cinder controller
 
 - name: Trigger handlers

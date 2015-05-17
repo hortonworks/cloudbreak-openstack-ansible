@@ -15,10 +15,10 @@ rabbit_password = {{ rabbit_password }}
 
 auth_strategy = keystone
 
-my_ip = {{ os_hosts.controller.management_ip }}
+my_ip = {{ management_ip }}
 
 [database]
-connection = mysql://cinder:{{ os_dbs.nova.password }}@{{ os_hosts.controller.management_ip }}/cinder
+connection = mysql://cinder:{{ os_dbs.cinder.password }}@{{ os_hosts.controller.management_ip }}/cinder
 
 
 [keystone_authtoken]

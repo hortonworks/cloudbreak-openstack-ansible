@@ -5,7 +5,26 @@ iscsi_helper = tgtadm
 volume_name_template = volume-%s
 volume_group = cinder-volumes
 verbose = True
-auth_strategy = keystone
 state_path = /var/lib/cinder
 lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volumes
+
+rpc_backend = rabbit
+rabbit_host = {{ os_hosts.controller.management_ip }}
+rabbit_password = {{ rabbit_password }}
+
+auth_strategy = keystone
+
+my_ip = {{ management_ip }}
+
+glance_host = {{ os_hosts.controller.management_ip }}
+
+[database]
+connection = mysql://cinder:{{ os_dbs.cinder.password }}@{{ os_hosts.controller.management_ip }}/cinder
+
+[keystone_authtoken]
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000/v2.0
+identity_uri = http://{{ os_hosts.controller.management_ip }}:35357
+admin_tenant_name = service
+admin_user = cinder
+admin_password = {{ service_users.cinder.password }}
