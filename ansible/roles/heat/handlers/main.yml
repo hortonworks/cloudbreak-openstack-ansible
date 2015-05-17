@@ -1,0 +1,12 @@
+---
+- name: populate heatdb
+  sudo: true
+  shell: su -s /bin/sh -c "heat-manage db_sync" heat
+
+- name: restart heat services
+  sudo: true
+  service: name={{ item }} state=restarted
+  with_items:
+    - heat-api
+    - heat-api-cfn
+    - heat-engine

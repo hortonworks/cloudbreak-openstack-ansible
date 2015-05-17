@@ -22,6 +22,8 @@ os_dbs:
     password: neutronpw
   cinder:
     password: cinderpw
+  heat:
+    password: heatpw
 
 service_users:
   glance:
@@ -36,6 +38,9 @@ service_users:
   cinder:
     username: cinder
     password: Openstack01
+  heat:
+      username: heat
+      password: Openstack01
 
 os_users:
   admin:

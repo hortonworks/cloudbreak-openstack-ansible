@@ -8,4 +8,5 @@
     - nova-controller
     - neutron
     - cinder-controller
+    - heat
     - horizon

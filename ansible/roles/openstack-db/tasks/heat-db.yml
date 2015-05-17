@@ -1,0 +1,16 @@
+---
+- name: Create a new database with name 'heat'
+  mysql_db: name=heat state=present
+
+- name: create db user for heat
+  mysql_user:
+    name: heat
+    password: "{{ os_dbs.heat.password }}"
+    host: "{{ item }}"
+    state: present
+    priv: "heat.*:ALL"
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+    - "%"

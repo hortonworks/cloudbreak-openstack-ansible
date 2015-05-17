@@ -8,7 +8,7 @@ source scripts/admin-openrc.sh
 keystone user-list | grep -q cinder || keystone user-create --name cinder --pass {{ service_users.cinder.password }}
 keystone user-role-list --user cinder --tenant service | grep -q admin || keystone user-role-add --user cinder --tenant service --role admin
 
-echo "Create the service entity and API endpoints for the Identity service."
+echo "Create the service entity and API endpoints for the Block Storage service."
 keystone service-list | grep -q cinder || keystone service-create --name cinder --type volume --description "OpenStack Block Storage"
 keystone service-list | grep -q cinderv2 || keystone service-create --name cinderv2 --type volumev2 --description "OpenStack Block Storage"
 

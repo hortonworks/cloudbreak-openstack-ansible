@@ -58,3 +58,6 @@
 
 - name: DB setup for Cinder
   include: cinder-db.yml
+
+- name: DB setup for Heat
+  include: heat-db.yml

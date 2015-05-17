@@ -1,0 +1,34 @@
+---
+- name: install heat controller components
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - heat-api
+    - heat-api-cfn
+    - heat-engine
+    - python-heatclient
+
+- name: Creates scripts
+  file: path=~/scripts state=directory
+
+- name: create heat-entities
+  template: src=scripts/heat-init.sh.j2 dest=~/scripts/heat-init.sh mode="u+x"
+  register: heat_entities
+
+- name: execute heat-entities
+  shell: ~/scripts/heat-init.sh
+  when: heat_entities.changed
+
+- name: write the heat config file
+  template: src=heat.conf.j2 dest=/etc/heat/heat.conf backup=yes
+  sudo: true
+  notify:
+    - populate heatdb
+    - restart heat services
+
+- name: Trigger handlers
+  meta: flush_handlers
+
+- name: remove unused sqlite database
+  sudo: true
+  file: path=/var/lib/heat/heat.sqlite state=absent

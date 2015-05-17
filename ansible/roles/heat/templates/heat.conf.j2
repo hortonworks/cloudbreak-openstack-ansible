@@ -96,6 +96,9 @@
 # URL of the Heat metadata server. (string value)
 #heat_metadata_server_url=
 
+heat_metadata_server_url = http://{{ os_hosts.controller.management_ip }}:8000
+heat_waitcondition_server_url = http://{{ os_hosts.controller.management_ip }}:8000/v1/waitcondition
+
 # URL of the Heat waitcondition server. (string value)
 #heat_waitcondition_server_url=
 
@@ -336,6 +339,10 @@
 # The messaging driver to use, defaults to rabbit. Other
 # drivers include qpid and zmq. (string value)
 #rpc_backend=rabbit
+
+rpc_backend = rabbit
+rabbit_host = {{ os_hosts.controller.management_ip }}
+rabbit_password = {{ rabbit_password }}
 
 # The default exchange under which topics are scoped. May be
 # overridden by an exchange name specified in the
@@ -850,6 +857,8 @@ log_dir=/var/log/heat
 
 [database]
 
+connection = mysql://heat:{{ os_dbs.heat.password }}@{{ os_hosts.controller.management_ip }}/heat
+
 #
 # Options defined in oslo.db
 #
@@ -957,6 +966,8 @@ log_dir=/var/log/heat
 
 
 [ec2authtoken]
+
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000/v2.0
 
 #
 # Options defined in heat.api.aws.ec2token
@@ -1080,6 +1091,12 @@ log_dir=/var/log/heat
 
 
 [keystone_authtoken]
+
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000/v2.0
+identity_uri = http://{{ os_hosts.controller.management_ip }}:35357
+admin_tenant_name = service
+admin_user = heat
+admin_password = {{ service_users.heat.password }}
 
 #
 # Options defined in keystonemiddleware.auth_token

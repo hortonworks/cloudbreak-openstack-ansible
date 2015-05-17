@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+source scripts/admin-openrc.sh
+#source scripts/keystone-helper.sh
+
+keystone user-list | grep -q heat || keystone user-create --name heat --pass {{ service_users.heat.password }}
+keystone user-role-list --user heat --tenant service | grep -q admin || keystone user-role-add --user heat --tenant service --role admin
+
+keystone role-list | grep -q heat_stack_owner || keystone role-create --name heat_stack_owner
+keystone user-role-list --user demo --tenant demo | grep -q heat_stack_owner || keystone user-role-add --user demo --tenant demo --role heat_stack_owner
+
+
+keystone role-list | grep -q heat_stack_user || keystone role-create --name heat_stack_user
+
+
+#echo "Create the service entity and API endpoints for the Orchestration service."
+keystone service-list | grep -q heat || keystone service-create --name heat --type orchestration --description "Orchestration"
+keystone service-list | grep -q heat-cfn || keystone service-create --name heat-cfn --type cloudformation --description "Orchestration"
+
+
+keystone endpoint-list | grep -q "http://{{ os_hosts.controller.management_ip }}:8004/v1" || \
+keystone endpoint-create \
+  --service-id $(keystone service-list | awk '/ orchestration / {print $2}') \
+  --publicurl http://{{ os_hosts.controller.management_ip }}:8004/v1/%\(tenant_id\)s \
+  --internalurl http://{{ os_hosts.controller.management_ip }}:8004/v1/%\(tenant_id\)s \
+  --adminurl http://{{ os_hosts.controller.management_ip }}:8004/v1/%\(tenant_id\)s \
+  --region regionOne
+
+
+keystone endpoint-list | grep -q "http://{{ os_hosts.controller.management_ip }}:8000/v1" || \
+keystone endpoint-create \
+  --service-id $(keystone service-list | awk '/ cloudformation / {print $2}') \
+  --publicurl http://{{ os_hosts.controller.management_ip }}:8000/v1 \
+  --internalurl http://{{ os_hosts.controller.management_ip }}:8000/v1 \
+  --adminurl http://{{ os_hosts.controller.management_ip }}:8000/v1 \
+  --region regionOne
