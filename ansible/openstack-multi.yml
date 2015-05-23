@@ -1,8 +1,9 @@
 - name: Provision Openstack
-  hosts: all
+  hosts: vagrant-openstack
   roles:
-#    - updates
     - common
+#    - updates
+    - raid
 
 - name: Provision Controller
   include: os-controller.yml

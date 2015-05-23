@@ -7,7 +7,6 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.box = "ubuntu/trusty64"
-  #config.vm.box = "trusty64_upd"
 
   if Vagrant.has_plugin?("vagrant-cachier")
       config.cache.scope = :box
@@ -72,6 +71,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   end
 
   config.vm.provision :ansible do |ansible|
+        ansible.groups = {
+           "vagrant-openstack" => ["controller", "compute1", "compute2"]
+        }
         ansible.playbook = "../../ansible/openstack-multi.yml"
         ansible.raw_arguments = "--diff"
         #ansible.verbose = "vvv"

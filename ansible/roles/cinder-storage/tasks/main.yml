@@ -1,4 +1,10 @@
 ---
+- name: install lvm
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - lvm2
+
 - name: install cinder storage node components
   apt: name={{ item }} state=latest
   sudo: true
