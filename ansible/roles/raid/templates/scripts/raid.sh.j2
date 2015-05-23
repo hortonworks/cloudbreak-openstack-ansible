@@ -36,14 +36,14 @@ save_raid() {
 create_lvm() {
     sudo pvcreate /dev/md0
     sudo vgcreate cinder-volumes /dev/md0
-    sudo lvcreate -l 100%VG -n raidvol0 cinder-volumes
-    sudo mkfs.ext4 /dev/cinder-volumes/raidvol0
-    sudo mkdir -p /mnt/raid
-    sudo chmod 777 /mnt/raid
-    sudo bash -c "echo /dev/cinder-volumes/raidvol0 /mnt/raid ext4  rw,user,exec 0 0 >> /etc/fstab"
-    sudo bash -c "echo chmod 777 /mnt/raid >> /etc/rc.local"
-    sudo mount /mnt/raid
-    sudo chmod 777 /mnt/raid
+    #sudo lvcreate -l 100%VG -n raidvol0 cinder-volumes
+    #sudo mkfs.ext4 /dev/cinder-volumes/raidvol0
+    #sudo mkdir -p /mnt/raid
+    #sudo chmod 777 /mnt/raid
+    #sudo bash -c "echo /dev/cinder-volumes/raidvol0 /mnt/raid ext4  rw,user,exec 0 0 >> /etc/fstab"
+    #sudo bash -c "echo chmod 777 /mnt/raid >> /etc/rc.local"
+    #sudo mount /mnt/raid
+    #sudo chmod 777 /mnt/raid
 }
 
 create_fs() {
@@ -83,8 +83,8 @@ remove_raid() {
     echo "please remove it from /etc/fstab"
 }
 
-configure_raid1
-sleep 30
-check_raid
-save_raid
-create_lvm
+#configure_raid1
+#sleep 30
+#check_raid
+#save_raid
+#create_lvm

@@ -4,6 +4,7 @@
   sudo: true
   with_items:
     - mdadm
+    - lvm2
 
 - name: Creates scripts
   file: path=~/scripts state=directory
