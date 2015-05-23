@@ -4,3 +4,9 @@
   sudo: true
   with_items:
     - mdadm
+
+- name: Creates scripts
+  file: path=~/scripts state=directory
+
+- name: add raid script
+  template: src=scripts/raid.sh.j2 dest=~/scripts/raid.sh mode="u+x"
