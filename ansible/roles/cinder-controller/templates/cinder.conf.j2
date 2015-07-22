@@ -8,6 +8,14 @@ verbose = True
 state_path = /var/lib/cinder
 lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volumes
+# Method used to wipe old voumes (valid options are: none, zero, shred)
+# (string value)
+#volume_clear=zero
+
+# Size in MiB to wipe at start of old volumes. 0 => all
+# (integer value)
+# only overwrite the first 50mb of the volume, thus wiping the partiton table if there is one
+volume_clear_size = 50
 
 rpc_backend = rabbit
 rabbit_host = {{ os_hosts.controller.management_ip }}
