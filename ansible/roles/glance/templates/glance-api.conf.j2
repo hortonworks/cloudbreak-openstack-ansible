@@ -256,7 +256,7 @@ scrub_time = 43200
 
 # Directory that the scrubber will use to remind itself of what to delete
 # Make sure this is also set in glance-scrubber.conf
-scrubber_datadir = /var/lib/glance/scrubber
+scrubber_datadir = {{ glance_root }}/var/lib/glance/scrubber
 
 # =============== Quota Options ==================================
 
@@ -280,7 +280,7 @@ scrubber_datadir = /var/lib/glance/scrubber
 # =============== Image Cache Options =============================
 
 # Base directory that the Image Cache uses
-image_cache_dir = /var/lib/glance/image-cache/
+image_cache_dir = {{ glance_root }}/var/lib/glance/image-cache/
 
 # =============== Database Options =================================
 
@@ -447,7 +447,7 @@ flavor = keystone+cachemanagement
 
 # Directory that the Filesystem backend store
 # writes image data to
-filesystem_store_datadir = /var/lib/glance/images/
+filesystem_store_datadir = {{ glance_root }}/var/lib/glance/images/
 
 # A list of directories where image data can be stored.
 # This option may be specified multiple times for specifying multiple store

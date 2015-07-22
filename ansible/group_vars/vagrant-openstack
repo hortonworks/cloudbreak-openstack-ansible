@@ -1,6 +1,9 @@
 ---
 virt_type: qemu
 
+glance_root: /mnt/md0
+nova_root: /mnt/md0
+
 mtu_size: 1700
 
 installed_dir: /etc/installed

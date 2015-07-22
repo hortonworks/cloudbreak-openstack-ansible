@@ -2,8 +2,8 @@
 dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
 logdir=/var/log/nova
-state_path=/var/lib/nova
-lock_path=/var/lock/nova
+state_path={{ nova_root }}/var/lib/nova
+lock_path={{ nova_root }}/var/lock/nova
 force_dhcp_release=True
 libvirt_use_virtio_for_bridges=True
 verbose=True

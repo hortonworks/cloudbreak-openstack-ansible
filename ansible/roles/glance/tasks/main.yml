@@ -1,4 +1,10 @@
 ---
+- name: create glance_root
+  file: path={{ glance_root }}/var/{{ item }} state=directory mode=0755
+  sudo: true
+  with_items:
+    - lib
+
 - name: install glance
   apt: name={{ item }} state=latest
   sudo: true
@@ -9,6 +15,7 @@
 - name: write glance-api.conf file
   template: src=glance-api.conf.j2 dest=/etc/glance/glance-api.conf backup=yes
   sudo: true
+  register: write_glance_api_conf
   notify:
     - populate glancedb
     - restart glance-api
@@ -19,6 +26,11 @@
   notify:
     - populate glancedb
     - restart glance-registry
+
+- name: copy glance files to another location
+  shell: cp -r /var/lib/glance {{ glance_root }}/var/lib/glance && chown -R glance:glance {{ glance_root }}/var/lib/glance creates={{ glance_root }}/var/lib/glance
+  sudo: true
+  when: write_glance_api_conf.changed
 
 - name: Trigger handlers
   meta: flush_handlers

@@ -1,10 +1,16 @@
 ---
+- name: create nova_root
+  file: path={{ nova_root }}/var/{{ item }} state=directory mode=0755
+  sudo: true
+  with_items:
+    - lib
+    - lock
+
 - name: install qemu
   apt: name={{ item }} state=latest
   sudo: true
   with_items:
     - qemu
-  when: virt_type == 'qemu'
 
 - name: install nova components
   apt: name={{ item }} state=latest
@@ -16,11 +22,23 @@
 - name: write the nova config file
   template: src={{ item }}.j2 dest=/etc/nova/{{ item }} backup=yes
   sudo: true
+  register: write_nova_conf
   notify:
     - restart nova compute
   with_items:
     - nova.conf
     - nova-compute.conf
+
+- name: copy nova files to another location
+  shell: cp -r /var/lib/nova {{ nova_root }}/var/lib/nova && chown -R nova:nova {{ nova_root }}/var/lib/nova creates={{ nova_root }}/var/lib/nova
+  sudo: true
+  when: write_nova_conf.changed
+
+- name: copy nova lock files to another location
+  shell: cp -r /var/lock/nova {{ nova_root }}/var/lock/nova && chown -R nova:nova {{ nova_root }}/var/lock/nova creates={{ nova_root }}/var/lock/nova
+  sudo: true
+  when: write_nova_conf.changed
+
 
 - name: Trigger handlers
   meta: flush_handlers

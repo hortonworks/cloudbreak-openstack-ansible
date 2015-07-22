@@ -10,3 +10,4 @@
 - name: restart glance-registry
   sudo: true
   service: name=glance-registry state=restarted
+  
