@@ -17,7 +17,7 @@ ifconfig br-ex up
 #iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -m comment --comment "DevstackExt"
 
 
-route del default
-route add default gw 192.168.1.1 {{ external_net_if }}
-sleep 5
-iptables -t nat -A POSTROUTING -o {{ external_net_if }} -j MASQUERADE -m comment --comment "DevstackExt"
+#route del default
+#route add default gw 192.168.1.1 {{ external_net_if }}
+#sleep 5
+#iptables -t nat -A POSTROUTING -o {{ external_net_if }} -j MASQUERADE -m comment --comment "DevstackExt"
