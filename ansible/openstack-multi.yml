@@ -1,8 +1,7 @@
 - name: Provision Openstack
-  hosts: vagrant-openstack
+  hosts: all
   roles:
     - common
-#    - updates
     - raid
 
 - name: Provision Controller
