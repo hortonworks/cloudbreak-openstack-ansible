@@ -1,5 +1,4 @@
 ---
-host_dns_name: controller
 management_ip: 10.0.0.11
 
 mariadb_bind_ip: "{{ management_ip }}"
