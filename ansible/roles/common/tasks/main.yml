@@ -1,4 +1,14 @@
 ---
+- name: install basic utilities
+  apt: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - ntp
+    - sysstat
+    - tree
+    - traceroute
+    - software-properties-common
+    
 - name: ensure needed repositories are present
   command: apt-add-repository -y "{{ item }}"
   with_items:
@@ -9,15 +19,6 @@
 - name: Run the equivalent of "apt-get update" as a separate step
   apt: update_cache=yes
   sudo: true
-
-- name: install basic utilities
-  apt: name={{ item }} state=latest
-  sudo: true
-  with_items:
-    - ntp
-    - sysstat
-    - tree
-    - traceroute
 
 - name: creates installed directory to keep track what has already been installed
   file: path={{ installed_dir }} state=directory
