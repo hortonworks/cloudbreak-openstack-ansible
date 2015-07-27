@@ -1,16 +1,16 @@
 ---
 - name: Creates scripts
   sudo: true
-  file: path=/var/scripts state=directory mode="a+x"
+  file: path=/opt/scripts state=directory mode="a+x"
 
 #http://docs.openstack.org/juno/install-guide/install/apt/content/neutron-network-node.html
 
 - name: create mtu-cfg
   sudo: true
-  template: src=scripts/mtu-cfg.sh.j2 dest=/var/scripts/mtu-cfg.sh mode="a+x"
+  template: src=scripts/mtu-cfg.sh.j2 dest=/opt/scripts/mtu-cfg.sh mode="a+x"
   register: mtu_cfg
 
 - name: execute mtu-cfg.sh
   sudo: true
-  shell: /var/scripts/mtu-cfg.sh
+  shell: /opt/scripts/mtu-cfg.sh
   when: mtu_cfg.changed

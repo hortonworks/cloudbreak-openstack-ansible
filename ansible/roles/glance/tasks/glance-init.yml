@@ -10,15 +10,15 @@
 
 - name: Creates scripts
   sudo: true
-  file: path=/var/scripts state=directory mode="a+x"
+  file: path=/opt/scripts state=directory mode="a+x"
 
 - name: create glance-entities
   sudo: true
-  template: src=scripts/glance-init.sh.j2 dest=/var/scripts/glance-init.sh mode="a+x"
+  template: src=scripts/glance-init.sh.j2 dest=/opt/scripts/glance-init.sh mode="a+x"
   register: glance_entities
 
 - name: execute glance-entities
-  shell: /var/scripts/glance-init.sh
+  shell: /opt/scripts/glance-init.sh
   when: glance_entities.changed
 
 

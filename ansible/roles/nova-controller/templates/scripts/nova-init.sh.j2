@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source /var/scripts/admin-openrc.sh
+source /opt/scripts/admin-openrc.sh
 
 keystone user-list | grep -q nova || keystone user-create --name nova --pass {{ service_users.nova.password }}
 keystone user-role-list --user nova --tenant service | grep -q admin || keystone user-role-add --user nova --tenant service --role admin

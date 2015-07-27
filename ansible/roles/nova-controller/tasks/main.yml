@@ -13,15 +13,15 @@
 
 - name: Creates scripts
   sudo: true
-  file: path=/var/scripts state=directory mode="a+x"
+  file: path=/opt/scripts state=directory mode="a+x"
 
 - name: create nova-entities
   sudo: true
-  template: src=scripts/nova-init.sh.j2 dest=/var/scripts/nova-init.sh mode="a+x"
+  template: src=scripts/nova-init.sh.j2 dest=/opt/scripts/nova-init.sh mode="a+x"
   register: nova_entities
 
 - name: execute nova-entities
-  shell: /var/scripts/nova-init.sh
+  shell: /opt/scripts/nova-init.sh
   when: nova_entities.changed
 
 - name: write the nova config file

@@ -27,11 +27,11 @@
 
 - name: Creates scripts
   sudo: true
-  file: path=/var/scripts state=directory mode="a+x"
+  file: path=/opt/scripts state=directory mode="a+x"
 
 - name: write helper scripts
   sudo: true
-  template: src=scripts/{{ item }}.j2 dest=/var/scripts/{{ item }} mode="a+x"
+  template: src=scripts/{{ item }}.j2 dest=/opt/scripts/{{ item }} mode="a+x"
   with_items:
     - admin-openrc.sh
     - demo-openrc.sh
@@ -39,11 +39,11 @@
 
 - name: create keystone-entities
   sudo: true
-  template: src=scripts/keystone-init.sh.j2 dest=/var/scripts/keystone-init.sh mode="a+x"
+  template: src=scripts/keystone-init.sh.j2 dest=/opt/scripts/keystone-init.sh mode="a+x"
   register: keystone_entities
 
 - name: execute keystone-entities
-  shell: /var/scripts/keystone-init.sh
+  shell: /opt/scripts/keystone-init.sh
   when: keystone_entities.changed
 
 - name: write shell profile

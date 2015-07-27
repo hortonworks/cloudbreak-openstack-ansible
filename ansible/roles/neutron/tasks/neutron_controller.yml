@@ -10,15 +10,15 @@
 
 - name: create network-init
   sudo: true
-  template: src=scripts/network-init.sh.j2 dest=/var/scripts/network-init.sh mode="a+x"
+  template: src=scripts/network-init.sh.j2 dest=/opt/scripts/network-init.sh mode="a+x"
 
 - name: create neutron-entities
   sudo: true
-  template: src=scripts/neutron-init.sh.j2 dest=/var/scripts/neutron-init.sh mode="a+x"
+  template: src=scripts/neutron-init.sh.j2 dest=/opt/scripts/neutron-init.sh mode="a+x"
   register: neutron_entities
 
 - name: execute neutron-init.sh
-  shell: /var/scripts/neutron-init.sh
+  shell: /opt/scripts/neutron-init.sh
   when: neutron_entities.changed
 
 

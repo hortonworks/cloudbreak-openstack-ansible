@@ -33,11 +33,11 @@
 
 - name: create ovs-init
   sudo: true
-  template: src=scripts/ovs-init.sh.j2 dest=/var/scripts/ovs-init.sh mode="a+x"
+  template: src=scripts/ovs-init.sh.j2 dest=/opt/scripts/ovs-init.sh mode="a+x"
   register: ovs_init
 
 - name: execute ovs-init
   sudo: true
-  shell: /var/scripts/ovs-init.sh
+  shell: /opt/scripts/ovs-init.sh
   when: ovs_init.changed
 

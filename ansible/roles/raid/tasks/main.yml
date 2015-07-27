@@ -8,8 +8,8 @@
 
 - name: Creates scripts
   sudo: true
-  file: path=/var/scripts state=directory mode="a+x"
+  file: path=/opt/scripts state=directory mode="a+x"
 
 - name: add raid script
   sudo: true
-  template: src=scripts/raid.sh.j2 dest=/var/scripts/raid.sh mode="a+x"
+  template: src=scripts/raid.sh.j2 dest=/opt/scripts/raid.sh mode="a+x"

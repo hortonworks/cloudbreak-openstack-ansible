@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source /var/scripts/admin-openrc.sh
+source /opt/scripts/admin-openrc.sh
 
 keystone user-list | grep -q heat || keystone user-create --name heat --pass {{ service_users.heat.password }}
 keystone user-role-list --user heat --tenant service | grep -q admin || keystone user-role-add --user heat --tenant service --role admin
