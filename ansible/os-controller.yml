@@ -1,5 +1,5 @@
 - name: Provision Controller
-  hosts: controller
+  hosts: controller*
   roles:
     - openstack-db
     - rabbitmq

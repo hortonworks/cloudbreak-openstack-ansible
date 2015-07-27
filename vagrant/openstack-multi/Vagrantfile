@@ -19,8 +19,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
   end
 
-  config.vm.define "controller" do |controller|
-    controller.vm.hostname = "controller"
+  config.vm.define "controller-vagrant" do |controller|
+    controller.vm.hostname = "controller-vagrant"
     controller.vm.network "private_network", ip: "10.0.0.11"
     controller.vm.network "private_network", ip: "10.0.1.11"
     controller.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
@@ -33,29 +33,29 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
   end
 
- # config.vm.define "network1" do |network1|
- #  network1.vm.hostname = "network1"
+ # config.vm.define "network1-vagrant" do |network1|
+ #  network1.vm.hostname = "network1-vagrant"
  #   network1.vm.network "private_network", ip: "10.0.0.21"
  #   network1.vm.network "private_network", ip: "10.0.1.21"
  #   network1.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
  #    network1.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 eth3"
  # end
 
-  config.vm.define "compute1" do |compute1|
-    compute1.vm.hostname = "compute1"
+  config.vm.define "compute1-vagrant" do |compute1|
+    compute1.vm.hostname = "compute1-vagrant"
     compute1.vm.network "private_network", ip: "10.0.0.31"
     compute1.vm.network "private_network", ip: "10.0.1.31"
   end
 
-  config.vm.define "compute2" do |compute2|
-    compute2.vm.hostname = "compute2"
+  config.vm.define "compute2-vagrant" do |compute2|
+    compute2.vm.hostname = "compute2-vagrant"
     compute2.vm.network "private_network", ip: "10.0.0.32"
     compute2.vm.network "private_network", ip: "10.0.1.32"
   end
 
   config.vm.provision :ansible do |ansible|
         ansible.groups = {
-           "vagrant-openstack" => ["controller", "compute1", "compute2"]
+           "vagrant-openstack" => ["controller-vagrant", "compute1-vagrant", "compute2-vagrant"]
         }
         ansible.playbook = "../../ansible/openstack-multi.yml"
         ansible.raw_arguments = "--diff"

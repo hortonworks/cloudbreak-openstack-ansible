@@ -23,7 +23,3 @@
 - name: creates installed directory to keep track what has already been installed
   file: path={{ installed_dir }} state=directory
   sudo: true
-
-#- name: write hosts file
-#  template: src=hosts.j2 dest=/etc/hosts
-#  sudo: true
