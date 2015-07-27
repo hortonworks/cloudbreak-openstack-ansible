@@ -8,14 +8,16 @@
     - python-cinderclient
 
 - name: Creates scripts
-  file: path=~/scripts state=directory
+  sudo: true
+  file: path=/var/scripts state=directory mode="a+x"
 
 - name: create cinder-entities
-  template: src=scripts/cinder-init.sh.j2 dest=~/scripts/cinder-init.sh mode="u+x"
+  sudo: true
+  template: src=scripts/cinder-init.sh.j2 dest=/var/scripts/cinder-init.sh mode="a+x"
   register: cinder_entities
 
 - name: execute cinder-entities
-  shell: ~/scripts/cinder-init.sh
+  shell: /var/scripts/cinder-init.sh
   when: cinder_entities.changed
 
 - name: write the cinder config file

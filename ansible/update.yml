@@ -1,4 +1,5 @@
 - name: Update packages and kernel
   hosts: all
   roles:
+    - common
     - updates

@@ -7,7 +7,9 @@
     - lvm2
 
 - name: Creates scripts
-  file: path=~/scripts state=directory
+  sudo: true
+  file: path=/var/scripts state=directory mode="a+x"
 
 - name: add raid script
-  template: src=scripts/raid.sh.j2 dest=~/scripts/raid.sh mode="u+x"
+  sudo: true
+  template: src=scripts/raid.sh.j2 dest=/var/scripts/raid.sh mode="a+x"

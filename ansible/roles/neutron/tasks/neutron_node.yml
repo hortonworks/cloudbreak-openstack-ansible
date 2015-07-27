@@ -32,11 +32,12 @@
 
 
 - name: create ovs-init
-  template: src=scripts/ovs-init.sh.j2 dest=~/scripts/ovs-init.sh mode="u+x"
+  sudo: true
+  template: src=scripts/ovs-init.sh.j2 dest=/var/scripts/ovs-init.sh mode="a+x"
   register: ovs_init
 
 - name: execute ovs-init
   sudo: true
-  shell: scripts/ovs-init.sh
+  shell: /var/scripts/ovs-init.sh
   when: ovs_init.changed
 

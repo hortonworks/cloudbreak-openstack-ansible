@@ -10,7 +10,8 @@
   when: sysctl_copy.changed
 
 - name: Creates scripts
-  file: path=~/scripts state=directory
+  sudo: true
+  file: path=/var/scripts state=directory mode="a+x"
 
 - name: setup neutron controller
   include: neutron_controller.yml
@@ -21,7 +22,8 @@
   when: neutron_node
 
 - name: write the neutron patch tenantid file
-  template: src=scripts/update-neutron-tenantid.sh.j2 dest=~/scripts/update-neutron-tenantid.sh mode="u+x"
+  sudo: true
+  template: src=scripts/update-neutron-tenantid.sh.j2 dest=/var/scripts/update-neutron-tenantid.sh mode="a+x"
 
 - name: write the neutron config file
   template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf.templ
@@ -33,7 +35,7 @@
 
 - name: set neutron tenantid
   sudo: true
-  shell: scripts/update-neutron-tenantid.sh
+  shell: /var/scripts/update-neutron-tenantid.sh
   when: neutron_config.changed
   register: update_neutron_tenantid
 

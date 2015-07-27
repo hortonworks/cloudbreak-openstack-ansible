@@ -26,21 +26,24 @@
   changed_when: false
 
 - name: Creates scripts
-  file: path=~/scripts state=directory
+  sudo: true
+  file: path=/var/scripts state=directory mode="a+x"
 
 - name: write helper scripts
-  template: src=scripts/{{ item }}.j2 dest=~/scripts/{{ item }} mode="u+x"
+  sudo: true
+  template: src=scripts/{{ item }}.j2 dest=/var/scripts/{{ item }} mode="a+x"
   with_items:
     - admin-openrc.sh
     - demo-openrc.sh
     - keystone-helper.sh
 
 - name: create keystone-entities
-  template: src=scripts/keystone-init.sh.j2 dest=~/scripts/keystone-init.sh mode="u+x"
+  sudo: true
+  template: src=scripts/keystone-init.sh.j2 dest=/var/scripts/keystone-init.sh mode="a+x"
   register: keystone_entities
 
 - name: execute keystone-entities
-  shell: ~/scripts/keystone-init.sh
+  shell: /var/scripts/keystone-init.sh
   when: keystone_entities.changed
 
 - name: write shell profile

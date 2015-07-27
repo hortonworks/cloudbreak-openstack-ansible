@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-source scripts/admin-openrc.sh
+source /var/scripts/admin-openrc.sh
 
 keystone user-list | grep -q glance || keystone user-create --name glance --pass {{ service_users.glance.password }}
 keystone user-role-list --user glance --tenant service | grep -q admin || keystone user-role-add --user glance --tenant service --role admin
