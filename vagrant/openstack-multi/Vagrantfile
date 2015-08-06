@@ -61,7 +61,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ansible.raw_arguments = "--diff"
         #ansible.verbose = "vvv"
         #ansible.skip_tags = ["configuration"]
-        #ansible.tags = ["debug"]
+        #ansible.tags = ["restart-components"]
+        ansible.skip_tags = ["restart-components"]
   end
 
 end

@@ -37,3 +37,11 @@
 - name: remove unused sqlite database
   sudo: true
   file: path=/var/lib/nova/nova.sqlite state=absent
+
+- name: restart nova-controller components by handlers
+  shell: echo 'Restarting nova-controller components....'
+  tags:
+    - restart-components
+  notify:
+    - populate novadb
+    - restart nova controller

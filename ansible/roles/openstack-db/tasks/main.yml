@@ -61,3 +61,10 @@
 
 - name: DB setup for Heat
   include: heat-db.yml
+
+- name: restart openstack-db by handlers
+  shell: echo 'Restarting openstack-db(mariadb)....'
+  tags:
+    - restart-components
+  notify:
+    - restart mariadb

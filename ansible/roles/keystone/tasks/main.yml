@@ -48,3 +48,11 @@
 
 - name: write shell profile
   template: src=profile.j2 dest=~/.profile
+
+- name: restart keystone components by handlers
+  shell: echo 'Restarting keystone components....'
+  tags:
+    - restart-components
+  notify:
+    - populate identitydb
+    - restart keystone
