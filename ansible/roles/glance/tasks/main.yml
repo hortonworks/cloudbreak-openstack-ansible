@@ -42,3 +42,12 @@
 
 - name: Setup Glance entities
   include: glance-init.yml
+
+- name: restart glance components by handlers
+  shell: echo 'Restarting glance components....'
+  tags:
+    - restart-components
+  notify:
+    - populate glancedb
+    - restart glance-api
+    - restart glance-registry

@@ -61,3 +61,11 @@
   sudo: true
   file: path=/var/lib/neutron/neutron.sqlite state=absent
   when: neutron_controller
+
+- name: restart neutron components by handlers
+  shell: echo 'Restarting neutron components....'
+  tags:
+    - restart-components
+  notify:
+    - restart neutron server
+    - restart neutron controller

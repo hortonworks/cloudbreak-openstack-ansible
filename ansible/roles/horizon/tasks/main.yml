@@ -17,3 +17,10 @@
 
 - name: Trigger handlers
   meta: flush_handlers
+
+- name: restart horizon components by handlers
+  shell: echo 'Restarting horizon components....'
+  tags:
+    - restart-components
+  notify:
+    - restart horizon

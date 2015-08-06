@@ -31,3 +31,10 @@
 
 - name: Trigger handlers
   meta: flush_handlers
+
+- name: restart neutron-compute components by handlers
+  shell: echo 'Restarting neutron-compute components....'
+  tags:
+    - restart-components
+  notify:
+    - restart neutron-compute
