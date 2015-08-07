@@ -1,4 +1,6 @@
 [DEFAULT]
+debug=True
+verbose=True
 dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
 logdir=/var/log/nova
@@ -6,7 +8,6 @@ state_path=/var/lib/nova
 lock_path=/var/lock/nova
 force_dhcp_release=True
 libvirt_use_virtio_for_bridges=True
-verbose=True
 ec2_private_dns_show_ip=True
 api_paste_config=/etc/nova/api-paste.ini
 enabled_apis=ec2,osapi_compute,metadata
@@ -46,7 +47,7 @@ auth_strategy = keystone
 admin_auth_url = http://{{ os_hosts.controller.management_ip }}:35357/v2.0
 admin_tenant_name = service
 admin_username = neutron
-admin_password = {{ os_dbs.neutron.password }}
+admin_password = {{ service_users.neutron.password }}
 
 service_metadata_proxy = True
 metadata_proxy_shared_secret = {{ metadata_proxy_shared_secret }}

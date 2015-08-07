@@ -1,4 +1,6 @@
 [DEFAULT]
+debug=True
+verbose=True
 dhcpbridge_flagfile=/etc/nova/nova.conf
 dhcpbridge=/usr/bin/nova-dhcpbridge
 logdir=/var/log/nova
@@ -6,7 +8,6 @@ state_path={{ nova_root }}/var/lib/nova
 lock_path={{ nova_root }}/var/lock/nova
 force_dhcp_release=True
 libvirt_use_virtio_for_bridges=True
-verbose=True
 ec2_private_dns_show_ip=True
 api_paste_config=/etc/nova/api-paste.ini
 enabled_apis=ec2,osapi_compute,metadata
