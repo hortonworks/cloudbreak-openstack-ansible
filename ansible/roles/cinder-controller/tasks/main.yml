@@ -39,5 +39,4 @@
   tags:
     - restart-components
   notify:
-    - populate cinderdb
     - restart cinder controller

@@ -48,6 +48,5 @@
   tags:
     - restart-components
   notify:
-    - populate glancedb
     - restart glance-api
     - restart glance-registry

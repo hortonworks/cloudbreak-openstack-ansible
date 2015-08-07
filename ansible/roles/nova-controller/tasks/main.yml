@@ -43,5 +43,4 @@
   tags:
     - restart-components
   notify:
-    - populate novadb
     - restart nova controller

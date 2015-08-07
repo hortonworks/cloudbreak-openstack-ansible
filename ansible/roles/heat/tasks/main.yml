@@ -40,5 +40,4 @@
   tags:
     - restart-components
   notify:
-    - populate heatdb
     - restart heat services

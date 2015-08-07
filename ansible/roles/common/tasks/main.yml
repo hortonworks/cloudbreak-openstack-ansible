@@ -8,6 +8,7 @@
     - tree
     - traceroute
     - software-properties-common
+    - iperf
     
 - name: ensure needed repositories are present
   command: apt-add-repository -y "{{ item }}"

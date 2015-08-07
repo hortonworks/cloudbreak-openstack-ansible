@@ -54,5 +54,4 @@
   tags:
     - restart-components
   notify:
-    - populate identitydb
     - restart keystone
