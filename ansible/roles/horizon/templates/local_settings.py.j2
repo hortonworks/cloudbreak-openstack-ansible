@@ -7,6 +7,8 @@ from openstack_dashboard import exceptions
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+SESSION_TIMEOUT = 36000
+
 # Required for Django 1.5.
 # If horizon is running in production (DEBUG is False), set this
 # with the list of host/domain names that the application can serve.
