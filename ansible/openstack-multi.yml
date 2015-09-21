@@ -4,8 +4,8 @@
    - common
    - raid
 
-#- name: Provision Controller
-#  include: os-controller.yml
+- name: Provision Controller
+  include: os-controller.yml
 
 #- name: Provision Network
 #  include: os-network.yml

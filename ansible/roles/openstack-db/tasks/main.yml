@@ -1,17 +1,22 @@
 ---
 - name: install mariadb
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=latest
   sudo: true
   register: mariadb_updated
   with_items:
+    - mariadb
     - mariadb-server
-    - python-mysqldb
+    - MySQL-python
 
 - name: write the mariadb config file
-  template: src=my.cnf.j2 dest=/etc/mysql/my.cnf backup=yes
+  template: src=mariadb_openstack.cnf.j2 dest=/etc/my.cnf.d/mariadb_openstack.cnf backup=yes
   sudo: true
   notify:
     - restart mariadb
+
+- name: ensure mariadb is running
+  sudo: true
+  service: name=mariadb state=started enabled=yes
 
 - name: Trigger handlers
   meta: flush_handlers
