@@ -1,10 +1,22 @@
 ---
 - name: Install rabbitmq-server
-  apt: name=rabbitmq-server=3.2.* state=present
+  yum: name=rabbitmq-server state=present
   sudo: true
 
-- name: Configure rabbitmq guest pw
-  shell: "rabbitmqctl change_password guest {{ rabbit_password }} && touch {{ installed_dir }}/rabbit_guest_pw"
+
+- name: ensure rabbitmq-server is running
+  sudo: true
+  service: name=rabbitmq-server state=started enabled=yes
+
+
+- name: Configure rabbitmq openstack user and pass
+  shell: "rabbitmqctl add_user openstack {{ rabbit_password }} && touch {{ installed_dir }}/rabbit_openstack_user"
   sudo: true
   args:
-    creates: "{{installed_dir }}/rabbit_guest_pw"
+    creates: "{{installed_dir }}/rabbit_openstack_user"
+
+- name: Configure rabbitmq openstack permission
+  shell: 'rabbitmqctl set_permissions openstack ".*" ".*" ".*" && touch {{ installed_dir }}/rabbit_openstack_permission'
+  sudo: true
+  args:
+    creates: "{{installed_dir }}/rabbit_openstack_permission"

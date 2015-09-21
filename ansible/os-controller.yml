@@ -2,7 +2,7 @@
   hosts: controller*
   roles:
     - openstack-db
-#    - rabbitmq
+    - rabbitmq
 #    - keystone
 #    - glance
 #    - nova-controller
