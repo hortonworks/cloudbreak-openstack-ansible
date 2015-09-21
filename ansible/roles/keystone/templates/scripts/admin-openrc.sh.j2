@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
+export OS_PROJECT_DOMAIN_ID=default
+export OS_USER_DOMAIN_ID=default
+export OS_PROJECT_NAME=admin
 export OS_TENANT_NAME=admin
 export OS_USERNAME={{ os_users.admin.username }}
 export OS_PASSWORD={{ os_users.admin.password }}
-export OS_AUTH_URL=http://{{ os_hosts.controller.management_ip }}:35357/v2.0
+export OS_AUTH_URL=http://{{ os_hosts.controller.management_ip }}:5000/v3

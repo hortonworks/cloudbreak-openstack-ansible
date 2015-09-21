@@ -3,6 +3,6 @@
   sudo: true
   shell: su -s /bin/sh -c "keystone-manage db_sync" keystone
 
-- name: restart keystone
+- name: restart httpd
   sudo: true
-  service: name=keystone state=restarted
+  service: name=httpd state=restarted

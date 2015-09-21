@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-
-
-create_keystone_user() {
-  local keystone_user_username=$1
-  local keystone_user_password=$2
-  keystone user-list | grep -q ${keystone_user_username} || keystone user-create --name ${keystone_user_username} --pass ${keystone_user_password}
-}

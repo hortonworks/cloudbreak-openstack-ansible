@@ -14,12 +14,13 @@
   notify:
     - restart mariadb
 
+- name: Trigger handlers
+  meta: flush_handlers
+
 - name: ensure mariadb is running
   sudo: true
   service: name=mariadb state=started enabled=yes
 
-- name: Trigger handlers
-  meta: flush_handlers
 
 #  This can be executed non ineractively only in version 5.7.x
 #- name: secure installation

@@ -1,33 +1,27 @@
 #!/usr/bin/env bash
 
-export OS_SERVICE_TOKEN={{ keystone_admin_token }}
-export OS_SERVICE_ENDPOINT=http://{{ os_hosts.controller.management_ip }}:35357/v2.0
-
-keystone tenant-list | grep -q admin || keystone tenant-create --name admin --description "Admin Tenant"
-keystone user-list | grep -q admin || keystone user-create --name admin --pass {{ os_users.admin.password }} --email admin@openstack.com
-keystone role-list | grep -q admin || keystone role-create --name admin
-
-#Add the admin role to the admin tenant and user:
-keystone user-role-list --user admin --tenant admin | grep -q admin || keystone user-role-add --user admin --tenant admin --role admin
-
-keystone tenant-list | grep -q demo || keystone tenant-create --name demo --description "Demo Tenant"
-keystone user-list | grep -q demo || keystone user-create --name demo --tenant demo --pass {{ os_users.demo.password }} --email demo@openstack.com
-
-echo OpenStack services also require a tenant,
-keystone tenant-list | grep -q service || keystone tenant-create --name service --description "Service Tenant"
+export OS_TOKEN={{ keystone_admin_token }}
+export OS_URL=http://{{ os_hosts.controller.management_ip }}:35357/v2.0
 
 
-echo "Create the service entity and API endpoints for the Identity service."
-keystone service-list | grep -q keystone || keystone service-create --name keystone --type identity --description "OpenStack Identity"
+openstack service list  | grep -q keystone  || openstack service create --name keystone --description "OpenStack Identity" identity
+openstack endpoint list | grep -q keystone  || openstack endpoint create \
+                                                 --publicurl http://{{ os_hosts.controller.management_ip }}:5000/v2.0 \
+                                                 --internalurl http://{{ os_hosts.controller.management_ip }}:5000/v2.0 \
+                                                 --adminurl http://{{ os_hosts.controller.management_ip }}:35357/v2.0 \
+                                                 --region RegionOne \
+                                                 identity
 
 
-#Create the Identity service API endpoints:
-echo "http://{{ os_hosts.controller.management_ip }}:5000/v2.0"
 
-keystone endpoint-list | grep -q "http://{{ os_hosts.controller.management_ip }}:5000/v2.0" || \
-  keystone endpoint-create \
-  --service-id $(keystone service-list | awk '/ identity / {print $2}') \
-  --publicurl http://{{ os_hosts.controller.management_ip }}:5000/v2.0 \
-  --internalurl http://{{ os_hosts.controller.management_ip }}:5000/v2.0 \
-  --adminurl http://{{ os_hosts.controller.management_ip }}:35357/v2.0 \
-  --region regionOne
+openstack project list | grep -q admin || openstack project create --description "Admin Project" admin
+openstack user list    | grep -q admin || openstack user create admin --password {{ os_users.admin.password }}
+openstack role list    | grep -q admin || openstack role create admin
+openstack role list --user admin --project admin | grep -q admin || openstack role add --project admin --user admin admin
+
+openstack project list | grep -q service || openstack project create --description "Service Project" service
+
+openstack project list | grep -q demo || openstack project create --description "Demo Project" demo
+openstack user list    | grep -q demo || openstack user create demo --password {{ os_users.demo.password }}
+openstack role list    | grep -q user || openstack role create user
+openstack role list --user demo --project demo | grep -q user ||  openstack role add --project demo --user demo user

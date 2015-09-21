@@ -9,7 +9,7 @@
 # production (highly recommended), remove AdminTokenAuthMiddleware from your
 # paste application pipelines (for example, in keystone-paste.ini). (string
 # value)
-#admin_token = ADMIN
+admin_token={{ keystone_admin_token }}
 
 # (Deprecated) The port which the OpenStack Compute service listens on. This
 # option was only used for string replacement in the templated catalog backend.
@@ -118,7 +118,7 @@
 
 # Print more verbose output (set logging level to INFO instead of default
 # WARNING level). (boolean value)
-#verbose = false
+verbose = true
 
 # The name of a logging configuration file. This file is appended to any
 # existing logging configuration files. For details about logging configuration
@@ -417,6 +417,7 @@
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
 #connection = mysql://keystone:keystone@localhost/keystone
+connection=mysql://keystone:{{ os_dbs.keystone.password }}@{{ os_hosts.controller.management_ip }}/keystone
 
 # The SQLAlchemy connection string to use to connect to the slave database.
 # (string value)
@@ -1123,7 +1124,7 @@
 #
 
 # Memcache servers in the format of "host:port". (list value)
-#servers = localhost:11211
+servers = localhost:11211
 
 # Number of seconds memcached server is considered dead before it is tried
 # again. This is used by the key value store system (e.g. token pooled
@@ -1495,6 +1496,8 @@
 # value)
 #driver = keystone.contrib.revoke.backends.sql.Revoke
 
+driver = keystone.contrib.revoke.backends.sql.Revoke
+
 # This value (calculated in seconds) is added to token expiration before a
 # revocation event may be removed from the backend. (integer value)
 #expiration_buffer = 1800
@@ -1678,6 +1681,7 @@
 
 # Amount of time a token should remain valid (in seconds). (integer value)
 #expiration = 3600
+expiration = 36000
 
 # Controls the token construction, validation, and revocation operations. Core
 # providers are "keystone.token.providers.[fernet|pkiz|pki|uuid].Provider".
@@ -1686,6 +1690,9 @@
 
 # Token persistence backend driver. (string value)
 #driver = keystone.token.persistence.backends.sql.Token
+
+provider = keystone.token.providers.uuid.Provider
+driver = keystone.token.persistence.backends.memcache.Token
 
 # Toggle for token system caching. This has no effect unless global caching is
 # enabled. (boolean value)

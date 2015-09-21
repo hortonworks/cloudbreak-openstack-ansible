@@ -1,29 +1,66 @@
 ---
 - name: install keystone
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=latest
   sudo: true
   with_items:
-    - keystone
-    - python-keystoneclient
+    - openstack-keystone
+    - httpd
+    - mod_wsgi
+    - python-openstackclient
+    - memcached
+    - python-memcached
 
 - name: write the keystone config file
   template: src=keystone.conf.j2 dest=/etc/keystone/keystone.conf backup=yes
   sudo: true
   notify:
     - populate identitydb
-    - restart keystone
+    - restart httpd
+
+- name: write the wsgi-keystone config file
+  template: src=wsgi-keystone.conf.j2 dest=/etc/httpd/conf.d/wsgi-keystone.conf backup=yes
+  sudo: true
+  notify:
+    - restart httpd
+
+- name: Create the directory structure for the WSGI components
+  file: path=/var/www/cgi-bin/keystone state=directory
+  sudo: true
+  register: wsgi_keystone_dir
+
+- name: Create the directory structure for the WSGI components
+  shell: curl http://git.openstack.org/cgit/openstack/keystone/plain/httpd/keystone.py?h=stable/kilo | tee /var/www/cgi-bin/keystone/main /var/www/cgi-bin/keystone/admin
+  sudo: true
+  when: wsgi_keystone_dir.changed
+
+- name: Adjust ownership on this directory and the files in it
+  shell: chown -R keystone:keystone /var/www/cgi-bin/keystone
+  sudo: true
+  when: wsgi_keystone_dir.changed
+
+- name: Adjust permissions on this directory and the files in it
+  shell: chmod 755 /var/www/cgi-bin/keystone/*
+  sudo: true
+  when: wsgi_keystone_dir.changed
 
 - name: Trigger handlers
   meta: flush_handlers
+
+- name: ensure services are running
+  sudo: true
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - memcached
+    - httpd
 
 - name: remove unused sqlite database
   sudo: true
   file: path=/var/lib/keystone/keystone.db state=absent
 
-- name: periodic task that purges expired tokens hourly
-  sudo: true
-  shell: crontab -l -u keystone 2>&1 | grep -q token_flush || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
-  changed_when: false
+#- name: periodic task that purges expired tokens hourly
+#  sudo: true
+#  shell: crontab -l -u keystone 2>&1 | grep -q token_flush || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
+#  changed_when: false
 
 - name: Creates scripts
   sudo: true
@@ -35,7 +72,6 @@
   with_items:
     - admin-openrc.sh
     - demo-openrc.sh
-    - keystone-helper.sh
 
 - name: create keystone-entities
   sudo: true
@@ -47,11 +83,11 @@
   when: keystone_entities.changed
 
 - name: write shell profile
-  template: src=profile.j2 dest=~/.profile
+  template: src=bashrc.j2 dest=~/.bashrc
 
 - name: restart keystone components by handlers
   shell: echo 'Restarting keystone components....'
   tags:
     - restart-components
   notify:
-    - restart keystone
+    - restart httpd

@@ -3,7 +3,7 @@
   roles:
     - openstack-db
     - rabbitmq
-#    - keystone
+    - keystone
 #    - glance
 #    - nova-controller
 #    - neutron

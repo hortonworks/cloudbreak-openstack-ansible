@@ -3,11 +3,9 @@
   yum: name=rabbitmq-server state=present
   sudo: true
 
-
 - name: ensure rabbitmq-server is running
   sudo: true
   service: name=rabbitmq-server state=started enabled=yes
-
 
 - name: Configure rabbitmq openstack user and pass
   shell: "rabbitmqctl add_user openstack {{ rabbit_password }} && touch {{ installed_dir }}/rabbit_openstack_user"
