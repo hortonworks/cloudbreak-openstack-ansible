@@ -1,11 +1,7 @@
 ---
-- name: Run the equivalent of "apt-get update" as a separate step
-  apt: update_cache=yes
+- name: upgrade all packages
   sudo: true
-
-- name: Update all packages to the latest version
-  apt: upgrade=dist
-  sudo: true
+  yum: name=* state=latest
 
 - name: register running kernel version
   command: uname -r
@@ -13,10 +9,11 @@
   register: running_kernel
 
 - name: register installed kernel version
-  shell: dpkg --get-selections  | grep "linux-image-[0-9]" | sort | tail -1 | awk '{print $1}' | sed "s/linux-image-//"
+  sudo: true
+  shell: yum list kernel | grep kernel.x86_64 | tail -1 | awk '{print $2}'
   register: installed_kernel
   changed_when: installed_kernel.stdout != running_kernel.stdout
 
-- name: reboot if kernel version has changed
-  include: reboot.yml
-  when: installed_kernel.stdout != running_kernel.stdout
+#- name: reboot if kernel version has changed
+#  include: reboot.yml
+#  when: installed_kernel.stdout != running_kernel.stdout

@@ -6,11 +6,11 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "boxcutter/centos71"
 
-  if Vagrant.has_plugin?("vagrant-cachier")
-      config.cache.scope = :box
-  end
+  #if Vagrant.has_plugin?("vagrant-cachier")
+  #    config.cache.scope = :box
+  #end
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "2048"]
@@ -23,13 +23,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     controller.vm.hostname = "controller-vagrant"
     controller.vm.network "private_network", ip: "10.0.0.11"
     controller.vm.network "private_network", ip: "10.0.1.11"
-    controller.vm.network "public_network", bridge: "en0: Wi-Fi (AirPort)"
     controller.vm.provider :virtualbox do |vbcontroller|
         vbcontroller.customize ["modifyvm", :id, "--memory", "4096"]
         vbcontroller.customize ["modifyvm", :id, "--cpus", "2"]
-        vbcontroller.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
-        vbcontroller.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
-        vbcontroller.customize ["modifyvm", :id, "--nicpromisc4", "allow-all"]
     end
   end
 
@@ -41,17 +37,17 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
  #    network1.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 eth3"
  # end
 
-  config.vm.define "compute1-vagrant" do |compute1|
-    compute1.vm.hostname = "compute1-vagrant"
-    compute1.vm.network "private_network", ip: "10.0.0.31"
-    compute1.vm.network "private_network", ip: "10.0.1.31"
-  end
+ # config.vm.define "compute1-vagrant" do |compute1|
+ #   compute1.vm.hostname = "compute1-vagrant"
+ #   compute1.vm.network "private_network", ip: "10.0.0.31"
+ #   compute1.vm.network "private_network", ip: "10.0.1.31"
+ # end
 
-  config.vm.define "compute2-vagrant" do |compute2|
-    compute2.vm.hostname = "compute2-vagrant"
-    compute2.vm.network "private_network", ip: "10.0.0.32"
-    compute2.vm.network "private_network", ip: "10.0.1.32"
-  end
+ # config.vm.define "compute2-vagrant" do |compute2|
+ #   compute2.vm.hostname = "compute2-vagrant"
+ #   compute2.vm.network "private_network", ip: "10.0.0.32"
+ #   compute2.vm.network "private_network", ip: "10.0.1.32"
+ # end
 
   config.vm.provision :ansible do |ansible|
         ansible.groups = {
@@ -62,7 +58,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         #ansible.verbose = "vvv"
         #ansible.skip_tags = ["configuration"]
         #ansible.tags = ["restart-components"]
-        ansible.skip_tags = ["restart-components"]
+        #ansible.skip_tags = ["restart-components"]
   end
 
 end

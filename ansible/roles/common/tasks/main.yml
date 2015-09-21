@@ -1,25 +1,35 @@
 ---
+- name: disable selinux
+  sudo: true
+  selinux: state=permissive policy=targeted
+
+- name: install epel release repo
+  yum: name=epel-release state=latest
+  sudo: true
+
 - name: install basic utilities
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=latest
   sudo: true
   with_items:
     - ntp
     - sysstat
     - tree
     - traceroute
-    - software-properties-common
     - iperf
-    
-- name: ensure needed repositories are present
-  command: apt-add-repository -y "{{ item }}"
-  with_items:
-      - cloud-archive:juno
-  sudo: true
-  changed_when: false
 
-- name: Run the equivalent of "apt-get update" as a separate step
-  apt: update_cache=yes
+- name: ensure ntpd is running
   sudo: true
+  service: name=ntpd state=started enabled=yes
+
+- name: install openstack kilo repo
+  sudo: true
+  yum: name=http://rdo.fedorapeople.org/openstack-kilo/rdo-release-kilo.rpm state=present
+
+- name: install openstack-selinux
+  yum: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - openstack-selinux
 
 - name: creates installed directory to keep track what has already been installed
   file: path={{ installed_dir }} state=directory

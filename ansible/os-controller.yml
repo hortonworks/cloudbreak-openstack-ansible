@@ -2,11 +2,11 @@
   hosts: controller*
   roles:
     - openstack-db
-    - rabbitmq
-    - keystone
-    - glance
-    - nova-controller
-    - neutron
-    - cinder-controller
-    - heat
-    - horizon
+#    - rabbitmq
+#    - keystone
+#    - glance
+#    - nova-controller
+#    - neutron
+#    - cinder-controller
+#    - heat
+#    - horizon

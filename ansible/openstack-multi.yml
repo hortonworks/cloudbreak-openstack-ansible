@@ -1,14 +1,14 @@
 - name: Provision Openstack
   hosts: all
   roles:
-    - common
-    - raid
+   - common
+   - raid
 
-- name: Provision Controller
-  include: os-controller.yml
+#- name: Provision Controller
+#  include: os-controller.yml
 
 #- name: Provision Network
 #  include: os-network.yml
 
-- name: Provision Compute
-  include: os-compute.yml
+#- name: Provision Compute
+#  include: os-compute.yml

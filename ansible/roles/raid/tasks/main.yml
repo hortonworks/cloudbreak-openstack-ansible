@@ -1,6 +1,6 @@
 ---
 - name: install raid utilities
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=latest
   sudo: true
   with_items:
     - mdadm

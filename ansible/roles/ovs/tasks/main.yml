@@ -1,9 +1,0 @@
----
-- name: Install openvswitch
-  apt: name= state=latest
-  sudo: true
-  with_items:
-    - openvswitch-switch
-    - bridge-utils
-    - traceroute
-    - tcpdump
