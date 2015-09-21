@@ -6,10 +6,11 @@
     - lib
 
 - name: install glance
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=latest
   sudo: true
   with_items:
-    - glance
+    - openstack-glance
+    - python-glance
     - python-glanceclient
 
 - name: write glance-api.conf file

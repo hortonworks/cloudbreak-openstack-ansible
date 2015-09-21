@@ -1,6 +1,6 @@
 [DEFAULT]
 # Show more verbose log output (sets INFO log level output)
-#verbose=True
+verbose=True
 
 # Show debugging output in logs (sets DEBUG log level output)
 #debug=False
@@ -90,7 +90,7 @@
 
 # Driver or drivers to handle sending notifications. Set to
 # 'messaging' to send notifications to a message queue.
-# notification_driver = noop
+notification_driver = noop
 
 # Default publisher_id for outgoing notifications.
 # default_publisher_id = image.localhost
@@ -168,6 +168,7 @@
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
 #connection=mysql://glance:glance@localhost/glance
+connection = mysql://glance:{{ os_dbs.glance.password }}@{{ os_hosts.controller.management_ip }}/glance
 
 # The SQL mode to be used for MySQL sessions. This option,
 # including the default, overrides any server-set SQL mode. To
@@ -252,6 +253,15 @@
 #admin_tenant_name=%SERVICE_TENANT_NAME%
 #admin_user=%SERVICE_USER%
 #admin_password=%SERVICE_PASSWORD%
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000
+auth_url = http://{{ os_hosts.controller.management_ip }}:35357
+auth_plugin = password
+project_domain_id = default
+user_domain_id = default
+project_name = service
+username = glance
+password = {{ service_users.glance.password }}
+
 
 [paste_deploy]
 # Name of the paste configuration file that defines the available pipelines
@@ -262,6 +272,7 @@
 # [pipeline:glance-registry-keystone], you would configure the flavor below
 # as 'keystone'.
 #flavor=
+flavor=keystone
 
 [profiler]
 # If False fully disable profiling feature.
