@@ -1,4 +1,7 @@
 ---
 - name: restart nova compute
   sudo: true
-  service: name=nova-compute state=restarted
+  service: name={{ item }} state=restarted
+  with_items:
+    - libvirtd
+    - openstack-nova-compute
