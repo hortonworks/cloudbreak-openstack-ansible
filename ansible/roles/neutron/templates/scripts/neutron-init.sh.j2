@@ -2,19 +2,17 @@
 
 source /opt/scripts/admin-openrc.sh
 
-keystone user-list | grep -q neutron || keystone user-create --name neutron --pass {{ service_users.neutron.password }}
-keystone user-role-list --user neutron --tenant service | grep -q admin || keystone user-role-add --user neutron --tenant service --role admin
 
-echo "Create the service entity and API endpoints for the Identity service."
-keystone service-list | grep -q neutron || keystone service-create --name neutron --type network --description "OpenStack Networking"
+openstack user list    | grep -q neutron || openstack user create neutron --password {{ service_users.neutron.password }}
+openstack role list --user neutron --project service | grep -q admin || openstack role add --project service --user neutron admin
+
+openstack service list  | grep -q neutron  || openstack service create --name neutron --description "OpenStack Networking" network
 
 
-#Create the neutron endpoints:
+openstack endpoint list | grep -q network  || openstack endpoint create \
+                                                --publicurl http://{{ os_hosts.controller.management_ip }}:9696 \
+                                                --adminurl http://{{ os_hosts.controller.management_ip }}:9696 \
+                                                --internalurl http://{{ os_hosts.controller.management_ip }}:9696 \
+                                                --region RegionOne \
+                                                network
 
-keystone endpoint-list | grep -q "http://{{ os_hosts.controller.management_ip }}:9696" || \
-keystone endpoint-create \
-  --service-id $(keystone service-list | awk '/ network / {print $2}') \
-  --publicurl http://{{ os_hosts.controller.management_ip }}:9696 \
-  --adminurl http://{{ os_hosts.controller.management_ip }}:9696 \
-  --internalurl http://{{ os_hosts.controller.management_ip }}:9696 \
-  --region regionOne

@@ -3,11 +3,16 @@
 # debug = True
 
 # The Neutron user information for accessing the Neutron API.
-auth_url = http://{{ os_hosts.controller.management_ip }}:5000/v2.0
-auth_region = regionOne
-admin_tenant_name = service
-admin_user = neutron
-admin_password = {{ service_users.neutron.password }}
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000
+auth_url = http://{{ os_hosts.controller.management_ip }}:35357
+auth_region = RegionOne
+auth_plugin = password
+project_domain_id = default
+user_domain_id = default
+project_name = service
+username = neutron
+password = {{ service_users.neutron.password }}
+
 
 # Network service endpoint type to pull from the keystone catalog
 # endpoint_type = adminURL
@@ -35,13 +40,22 @@ nova_metadata_ip = {{ os_hosts.controller.management_ip }}
 # When proxying metadata requests, Neutron signs the Instance-ID header with a
 # shared secret to prevent spoofing.  You may select any string for a secret,
 # but it must match here and in the configuration used by the Nova Metadata
-# Server. NOTE: Nova uses a different key: neutron_metadata_proxy_shared_secret
+# Server. NOTE: Nova uses the same config key, but in [neutron] section.
 # metadata_proxy_shared_secret =
 
 metadata_proxy_shared_secret = {{ metadata_proxy_shared_secret }}
 
 # Location of Metadata Proxy UNIX domain socket
 # metadata_proxy_socket = $state_path/metadata_proxy
+
+# Metadata Proxy UNIX domain socket mode, 3 values allowed:
+# 'deduce': deduce mode from metadata_proxy_user/group values,
+# 'user': set metadata proxy socket mode to 0o644, to use when
+# metadata_proxy_user is agent effective user or root,
+# 'group': set metadata proxy socket mode to 0o664, to use when
+# metadata_proxy_group is agent effective group,
+# 'all': set metadata proxy socket mode to 0o666, to use otherwise.
+# metadata_proxy_socket_mode = deduce
 
 # Number of separate worker processes for metadata server. Defaults to
 # half the number of CPU cores

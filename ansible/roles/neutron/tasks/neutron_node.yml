@@ -1,12 +1,15 @@
 ---
 - name: install neutron
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=latest
   sudo: true
   with_items:
-    - neutron-plugin-ml2
-    - neutron-plugin-openvswitch-agent
-    - neutron-l3-agent
-    - neutron-dhcp-agent
+    - openstack-neutron
+    - openstack-neutron-ml2
+    - openstack-neutron-openvswitch
+
+- name: copy neutron-openvswitch-agent.service
+  copy: src=neutron-openvswitch-agent.service dest=/usr/lib/systemd/system/neutron-openvswitch-agent.service
+  sudo: true
 
 - name: write the neutron config files
   template: src={{ item }}.j2 dest=/etc/neutron/{{ item }}

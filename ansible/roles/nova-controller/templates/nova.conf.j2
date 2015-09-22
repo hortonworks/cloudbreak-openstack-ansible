@@ -1053,6 +1053,10 @@ auth_strategy=keystone
 # The full class name of the network API class to use (string
 # value)
 #network_api_class=nova.network.api.API
+network_api_class = nova.network.neutronv2.api.API
+security_group_api = neutron
+linuxnet_interface_driver = nova.network.linux_net.LinuxOVSInterfaceDriver
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
 
 
 #
@@ -3037,6 +3041,16 @@ password = {{ service_users.nova.password }}
 
 
 [neutron]
+
+url = http://{{ os_hosts.controller.management_ip }}:9696
+auth_strategy = keystone
+admin_auth_url = http://{{ os_hosts.controller.management_ip }}:35357/v2.0
+admin_tenant_name = service
+admin_username = neutron
+admin_password = {{ service_users.neutron.password }}
+
+service_metadata_proxy = True
+metadata_proxy_shared_secret = {{ metadata_proxy_shared_secret }}
 
 #
 # Options defined in nova.api.metadata.handler

@@ -3,18 +3,19 @@
   sudo: true
   service: name={{ item }} state=restarted
   with_items:
-    - neutron-plugin-openvswitch-agent
+    - neutron-openvswitch-agent
     - neutron-l3-agent
     - neutron-dhcp-agent
     - neutron-metadata-agent
+    - neutron-ovs-cleanup
   when: neutron_node
 
 - name: restart neutron controller
   sudo: true
   service: name={{ item }} state=restarted
   with_items:
-    - nova-api
-    - nova-scheduler
-    - nova-conductor
+    - openstack-nova-api
+    - openstack-nova-scheduler
+    - openstack-nova-conductor
     - neutron-server
   when: neutron_controller
