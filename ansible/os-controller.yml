@@ -1,10 +1,10 @@
 - name: Provision Controller
   hosts: controller*
   roles:
-    - openstack-db
-    - rabbitmq
-    - keystone
-#    - glance
+#    - openstack-db
+#    - rabbitmq
+#    - keystone
+     - glance
 #    - nova-controller
 #    - neutron
 #    - cinder-controller

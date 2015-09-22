@@ -46,7 +46,7 @@
 - name: Trigger handlers
   meta: flush_handlers
 
-- name: ensure services are running
+- name: ensure keystone services are running
   sudo: true
   service: name={{ item }} state=started enabled=yes
   with_items:

@@ -53,7 +53,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         ansible.groups = {
            "vagrant-openstack" => ["controller-vagrant", "compute1-vagrant", "compute2-vagrant"]
         }
-        ansible.playbook = "../../ansible/openstack-multi.yml"
+        ansible.playbook = "../../ansible/os-controller.yml"
         ansible.raw_arguments = "--diff"
         #ansible.verbose = "vvv"
         #ansible.skip_tags = ["configuration"]

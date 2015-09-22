@@ -36,6 +36,14 @@
 - name: Trigger handlers
   meta: flush_handlers
 
+- name: ensure glance services are running
+  sudo: true
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - openstack-glance-api
+    - openstack-glance-registry
+
+
 - name: remove unused sqlite database
   sudo: true
   file: path=/var/lib/glance/glance.sqlite state=absent
