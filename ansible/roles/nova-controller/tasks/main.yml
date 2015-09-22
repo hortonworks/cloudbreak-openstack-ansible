@@ -1,14 +1,14 @@
 ---
 - name: install nova controller components
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=latest
   sudo: true
   with_items:
-    - nova-api
-    - nova-cert
-    - nova-conductor
-    - nova-consoleauth
-    - nova-novncproxy
-    - nova-scheduler
+    - openstack-nova-api
+    - openstack-nova-cert
+    - openstack-nova-conductor
+    - openstack-nova-console
+    - openstack-nova-novncproxy
+    - openstack-nova-scheduler
     - python-novaclient
 
 - name: Creates scripts
@@ -33,6 +33,18 @@
 
 - name: Trigger handlers
   meta: flush_handlers
+
+- name: ensure nova-controller services are running
+  sudo: true
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - openstack-nova-api
+    - openstack-nova-cert
+    - openstack-nova-consoleauth
+    - openstack-nova-scheduler
+    - openstack-nova-conductor
+    - openstack-nova-novncproxy
+
 
 - name: remove unused sqlite database
   sudo: true
