@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 
-service openvswitch-switch restart
-sleep 5
 ovs-vsctl add-br br-ex
 ifconfig br-ex 172.25.5.1 netmask 255.255.255.0
 ifconfig br-ex up

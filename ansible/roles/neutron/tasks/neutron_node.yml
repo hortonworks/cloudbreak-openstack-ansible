@@ -33,6 +33,11 @@
 #  sudo: true
 #  when: dnsmasq_neutron.changed
 
+- name: ensure openvswitch service is running
+  sudo: true
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - openvswitch
 
 - name: create ovs-init
   sudo: true

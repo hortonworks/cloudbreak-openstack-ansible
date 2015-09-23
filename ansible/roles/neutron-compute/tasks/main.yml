@@ -10,11 +10,16 @@
   when: sysctl_copy.changed
 
 - name: install neutron compute networking components
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=latest
   sudo: true
   with_items:
-    - neutron-plugin-ml2
-    - neutron-plugin-openvswitch-agent
+    - openstack-neutron
+    - openstack-neutron-ml2
+    - openstack-neutron-openvswitch
+
+- name: copy neutron-openvswitch-agent.service (compute node)
+  copy: src=neutron-openvswitch-agent.service dest=/usr/lib/systemd/system/neutron-openvswitch-agent.service
+  sudo: true
 
 - name: write the neutron config file
   template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
@@ -29,8 +34,19 @@
   notify:
     - restart neutron-compute
 
+- name: create plugin.ini symlink for compute node
+  file: src=/etc/neutron/plugins/ml2/ml2_conf.ini dest=/etc/neutron/plugin.ini state=link
+  sudo: true
+
 - name: Trigger handlers
   meta: flush_handlers
+
+- name: ensure neutron-compute services are running
+  sudo: true
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - openvswitch
+    - neutron-openvswitch-agent
 
 - name: restart neutron-compute components by handlers
   shell: echo 'Restarting neutron-compute components....'

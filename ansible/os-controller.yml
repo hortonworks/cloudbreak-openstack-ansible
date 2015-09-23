@@ -6,7 +6,7 @@
     - keystone
     - glance
     - nova-controller
-#    - neutron
+    - neutron
 #    - cinder-controller
 #    - heat
 #    - horizon

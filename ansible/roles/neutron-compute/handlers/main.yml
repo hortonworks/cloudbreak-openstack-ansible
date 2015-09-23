@@ -3,6 +3,6 @@
   sudo: true
   service: name={{ item }} state=restarted
   with_items:
-    - openvswitch-switch
-    - neutron-plugin-openvswitch-agent
-    - nova-compute
+    - openvswitch
+    - neutron-openvswitch-agent
+    - openstack-nova-compute

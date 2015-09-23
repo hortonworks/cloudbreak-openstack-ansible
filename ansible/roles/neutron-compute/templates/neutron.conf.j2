@@ -1,6 +1,7 @@
 [DEFAULT]
 # Print more verbose output (set logging level to INFO instead of default WARNING level).
-# verbose = False
+verbose = True
+debug = True
 
 # =========Start Global Config Option for Distributed L3 Router===============
 # Setting the "router_distributed" flag to "True" will default to the creation
@@ -58,6 +59,9 @@
 # entrypoint name.
 #
 # core_plugin =
+core_plugin = ml2
+service_plugins = router
+allow_overlapping_ips = True
 # Example: core_plugin = ml2
 
 # (ListOpt) List of service plugin entrypoints to be loaded from the
@@ -81,7 +85,7 @@
 
 # The strategy to be used for auth.
 # Supported values are 'keystone'(default), 'noauth'.
-# auth_strategy = keystone
+auth_strategy = keystone
 
 # Base MAC address. The first 3 octets will remain unchanged. If the
 # 4h octet is not 00, it will also be used. The others will be
@@ -542,7 +546,7 @@
 
 # The messaging driver to use, defaults to rabbit. Other
 # drivers include qpid and zmq. (string value)
-# rpc_backend=rabbit
+rpc_backend=rabbit
 
 # The default exchange under which topics are scoped. May be
 # overridden by an exchange name specified in the
@@ -685,11 +689,14 @@
 # ===========  end of items for agent management extension =====
 
 [keystone_authtoken]
-auth_uri = http://127.0.0.1:35357/v2.0/
-identity_uri = http://127.0.0.1:5000
-admin_tenant_name = %SERVICE_TENANT_NAME%
-admin_user = %SERVICE_USER%
-admin_password = %SERVICE_PASSWORD%
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000
+auth_url = http://{{ os_hosts.controller.management_ip }}:35357
+auth_plugin = password
+project_domain_id = default
+user_domain_id = default
+project_name = service
+username = neutron
+password = {{ service_users.neutron.password }}
 
 [database]
 # This line MUST be changed to actually run the plugin.
@@ -912,6 +919,9 @@ lock_path = $state_path/lock
 #
 # From oslo.messaging
 #
+rabbit_host = {{ os_hosts.controller.management_ip }}
+rabbit_userid = openstack
+rabbit_password = {{ rabbit_password }}
 
 # Use durable queues in AMQP. (boolean value)
 # Deprecated group/name - [DEFAULT]/rabbit_durable_queues
