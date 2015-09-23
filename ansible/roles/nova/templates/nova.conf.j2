@@ -3811,7 +3811,7 @@ admin_password = {{ service_users.neutron.password }}
 # a lock path must be set. (string value)
 # Deprecated group;name - DEFAULT;lock_path
 #lock_path=/var/lib/nova/tmp
-lock_path = /var/lib/nova/tmp
+lock_path = {{ nova_root }}/var/lib/nova/tmp
 
 
 [oslo_messaging_amqp]

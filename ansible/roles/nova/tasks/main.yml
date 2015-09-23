@@ -18,6 +18,10 @@
   with_items:
     - lib
 
+- name: copy nova files to another location
+  command: creates="{{ nova_root }}/var/lib/nova" mv /var/lib/nova {{ nova_root }}/var/lib/nova
+  sudo: true
+
 - name: write the nova config file
   template: src={{ item }}.j2 dest=/etc/nova/{{ item }} backup=yes
   sudo: true
