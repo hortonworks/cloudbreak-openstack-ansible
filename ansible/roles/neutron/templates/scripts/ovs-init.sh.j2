@@ -4,18 +4,4 @@
 ovs-vsctl add-br br-ex
 ifconfig br-ex 172.25.5.1 netmask 255.255.255.0
 ifconfig br-ex up
-
-#ifconfig eth3 0
-#ovs-vsctl add-port br-ex eth3
-#dhclient eth3
-#route del default && route add default gw 192.168.1.1 br-ex
-
-#ovs-vsctl add-port br-ex {{ external_net_if }}
-
-#iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE -m comment --comment "DevstackExt"
-
-
-#route del default
-#route add default gw 192.168.1.1 {{ external_net_if }}
-#sleep 5
 #iptables -t nat -A POSTROUTING -o {{ external_net_if }} -j MASQUERADE -m comment --comment "DevstackExt"
