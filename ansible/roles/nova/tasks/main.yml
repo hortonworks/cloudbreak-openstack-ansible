@@ -38,10 +38,6 @@
     - libvirtd
     - openstack-nova-compute
 
-- name: remove unused sqlite database
-  sudo: true
-  file: path=/var/lib/nova/nova.sqlite state=absent
-
 - name: restart nova components by handlers
   shell: echo 'Restarting nova components....'
   tags:

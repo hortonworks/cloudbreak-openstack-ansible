@@ -43,12 +43,6 @@
     - openstack-glance-api
     - openstack-glance-registry
 
-
-- name: remove unused sqlite database
-  sudo: true
-  file: path=/var/lib/glance/glance.sqlite state=absent
-
-
 - name: Setup Glance entities
   include: glance-init.yml
 

@@ -31,10 +31,6 @@
 - name: Trigger handlers
   meta: flush_handlers
 
-- name: remove unused sqlite database
-  sudo: true
-  file: path=/var/lib/heat/heat.sqlite state=absent
-
 - name: restart heat components by handlers
   shell: echo 'Restarting heat components....'
   tags:

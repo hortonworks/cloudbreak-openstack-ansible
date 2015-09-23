@@ -53,10 +53,6 @@
     - memcached
     - httpd
 
-- name: remove unused sqlite database
-  sudo: true
-  file: path=/var/lib/keystone/keystone.db state=absent
-
 #- name: periodic task that purges expired tokens hourly
 #  sudo: true
 #  shell: crontab -l -u keystone 2>&1 | grep -q token_flush || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone

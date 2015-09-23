@@ -45,11 +45,6 @@
     - openstack-nova-conductor
     - openstack-nova-novncproxy
 
-
-- name: remove unused sqlite database
-  sudo: true
-  file: path=/var/lib/nova/nova.sqlite state=absent
-
 - name: restart nova-controller components by handlers
   shell: echo 'Restarting nova-controller components....'
   tags:

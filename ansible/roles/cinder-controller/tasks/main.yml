@@ -30,10 +30,6 @@
 - name: Trigger handlers
   meta: flush_handlers
 
-- name: remove unused sqlite database
-  sudo: true
-  file: path=/var/lib/cinder/cinder.sqlite state=absent
-
 - name: restart cinder components by handlers
   shell: echo 'Restarting cinder components....'
   tags:
