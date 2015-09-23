@@ -10,5 +10,5 @@
 #- name: Provision Network
 #  include: os-network.yml
 
-#- name: Provision Compute
-#  include: os-compute.yml
+- name: Provision Compute
+  include: os-compute.yml

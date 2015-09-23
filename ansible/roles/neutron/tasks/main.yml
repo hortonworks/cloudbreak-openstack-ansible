@@ -52,9 +52,6 @@
   sudo: true
   service: name={{ item }} state=started enabled=yes
   with_items:
-    - openstack-nova-api
-    - openstack-nova-scheduler
-    - openstack-nova-conductor
     - neutron-server
   when: neutron_controller
 

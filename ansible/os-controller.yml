@@ -9,4 +9,4 @@
     - neutron
 #    - cinder-controller
 #    - heat
-#    - horizon
+    - horizon

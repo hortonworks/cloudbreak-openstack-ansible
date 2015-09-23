@@ -43,21 +43,22 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
    compute1.vm.network "private_network", ip: "10.0.1.31"
  end
 
- # config.vm.define "compute2-vagrant" do |compute2|
- #   compute2.vm.hostname = "compute2-vagrant"
- #   compute2.vm.network "private_network", ip: "10.0.0.32"
- #   compute2.vm.network "private_network", ip: "10.0.1.32"
- # end
+ config.vm.define "compute2-vagrant" do |compute2|
+   compute2.vm.hostname = "compute2-vagrant"
+   compute2.vm.network "private_network", ip: "10.0.0.32"
+   compute2.vm.network "private_network", ip: "10.0.1.32"
+ end
 
   config.vm.provision :ansible do |ansible|
         ansible.groups = {
            "vagrant-openstack" => ["controller-vagrant", "compute1-vagrant", "compute2-vagrant"]
         }
         #ansible.playbook = "../../ansible/os-controller.yml"
+        #ansible.playbook = "../../ansible/os-compute.yml"
         ansible.playbook = "../../ansible/openstack-multi.yml"
         ansible.raw_arguments = "--diff"
         #ansible.verbose = "vvv"
-               #ansible.tags = ["restart-components"]
+        #ansible.tags = ["restart-components"]
         ansible.skip_tags = ["restart-components"]
   end
 
