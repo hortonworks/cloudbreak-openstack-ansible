@@ -3,6 +3,7 @@
   roles:
    - common
    - raid
+   - docker
 
 - name: Provision Controller
   include: os-controller.yml

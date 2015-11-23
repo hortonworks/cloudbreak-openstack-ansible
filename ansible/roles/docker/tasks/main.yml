@@ -1,0 +1,21 @@
+---
+- name: copy docker repo
+  copy: src=docker.repo dest=/etc/yum.repos.d/docker.repo
+  sudo: true
+
+- name: install docker
+  yum: name={{ item }} state=latest
+  sudo: true
+  with_items:
+    - docker-engine
+  notify:
+    - restart docker
+
+- name: Trigger handlers
+  meta: flush_handlers
+
+- name: ensure docker service is running
+  sudo: true
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - docker
