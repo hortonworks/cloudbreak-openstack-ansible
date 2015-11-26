@@ -10,6 +10,8 @@ installed_dir: /etc/installed
 
 keystone_admin_token: 7f5ad4e1bdfd216bf944
 
+heat_domain_pass: Openstack01
+
 metadata_proxy_shared_secret: metasecret01
 rabbit_password: rabbitpw
 

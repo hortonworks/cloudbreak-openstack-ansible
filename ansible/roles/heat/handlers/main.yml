@@ -7,6 +7,6 @@
   sudo: true
   service: name={{ item }} state=restarted
   with_items:
-    - heat-api
-    - heat-api-cfn
-    - heat-engine
+    - openstack-heat-api
+    - openstack-heat-api-cfn
+    - openstack-heat-engine
