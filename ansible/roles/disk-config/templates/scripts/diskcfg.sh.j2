@@ -1,0 +1,38 @@
+#!/bin/bash
+
+#source /vagrant/bootstrap.sh
+
+create_fs_controller() {
+    sudo mkfs.xfs /dev/sdb
+    sudo mkdir -p /mnt/md0
+    sudo chmod 777 /mnt/glance_root
+    sudo bash -c "echo /dev/sdb /mnt/glance_root xfs  rw,user,exec 0 0 >> /etc/fstab"
+    sudo bash -c "echo chmod 777 /mnt/glance_root >> /etc/rc.local"
+    sudo mount /mnt/glance_root
+    sudo chmod 777 /mnt/glance_root
+}
+
+
+create_fs_compute() {
+    sudo mkfs.xfs /dev/sdc
+    sudo mkdir -p /mnt/nova_root
+    sudo chmod 777 /mnt/nova_root
+    sudo bash -c "echo /dev/sdc /mnt/nova_root xfs  rw,user,exec 0 0 >> /etc/fstab"
+    sudo bash -c "echo chmod 777 /mnt/nova_root >> /etc/rc.local"
+    sudo mount /mnt/nova_root
+    sudo chmod 777 /mnt/nova_root
+}
+
+create_lvm_cinder() {
+    sudo pvcreate /dev/sdb
+    sudo vgcreate cinder-volumes /dev/sdb
+}
+
+#https://romanrm.net/dd-benchmark
+bechmark() {
+    sync; dd if=/dev/zero of=bf bs=8k count=500000 conv=fdatasync; rm bf
+}
+
+#create_fs_controller
+#create_fs_compute
+#create_lvm

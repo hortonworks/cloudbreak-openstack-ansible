@@ -1,4 +1,4 @@
 - name: Install raid config
   hosts: all
   roles:
-    - raid
+    - disk-config

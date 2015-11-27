@@ -1,8 +1,8 @@
 ---
 virt_type: qemu
 
-glance_root: /mnt/md0
-nova_root: /mnt/md0
+glance_root: /mnt/glance_root
+nova_root: /mnt/nova_root
 
 mtu_size: 1700
 
