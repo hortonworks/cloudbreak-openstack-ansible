@@ -1,11 +1,11 @@
 ---
 - name: install cinder controller components
-  apt: name={{ item }} state=latest
+  yum: name={{ item }} state=latest
   sudo: true
   with_items:
-    - cinder-api
-    - cinder-scheduler
+    - openstack-cinder
     - python-cinderclient
+    - python-oslo-db
 
 - name: Creates scripts
   sudo: true

@@ -4,28 +4,30 @@ source /opt/scripts/admin-openrc.sh
 
 #create_keystone_user {{ service_users.cinder.username }} {{ service_users.cinder.password }}
 
-keystone user-list | grep -q cinder || keystone user-create --name cinder --pass {{ service_users.cinder.password }}
-keystone user-role-list --user cinder --tenant service | grep -q admin || keystone user-role-add --user cinder --tenant service --role admin
+openstack user create cinder --password {{ service_users.cinder.password }} --or-show
+openstack role list --user cinder --project service | grep -q admin || openstack role add --project service --user cinder admin
+
 
 echo "Create the service entity and API endpoints for the Block Storage service."
-keystone service-list | grep -q cinder || keystone service-create --name cinder --type volume --description "OpenStack Block Storage"
-keystone service-list | grep -q cinderv2 || keystone service-create --name cinderv2 --type volumev2 --description "OpenStack Block Storage"
+openstack service list  | grep -q volume  || openstack service create --name cinder --description "OpenStack Block Storage" volume
+openstack service list  | grep -q volumev2  || openstack service create --name cinderv2 --description "OpenStack Block Storage" volumev2
 
 
 #Create the cinder endpoint:
 
-keystone endpoint-list | grep -q "http://{{ os_hosts.controller.management_ip }}:8776/v1" || \
-keystone endpoint-create \
-  --service-id $(keystone service-list | awk '/ volume / {print $2}') \
-  --publicurl http://{{ os_hosts.controller.management_ip }}:8776/v1/%\(tenant_id\)s \
-  --internalurl http://{{ os_hosts.controller.management_ip }}:8776/v1/%\(tenant_id\)s \
-  --adminurl http://{{ os_hosts.controller.management_ip }}:8776/v1/%\(tenant_id\)s \
-  --region regionOne
-
-keystone endpoint-list | grep -q "http://{{ os_hosts.controller.management_ip }}:8776/v2" || \
-keystone endpoint-create \
-  --service-id $(keystone service-list | awk '/ volumev2 / {print $2}') \
+openstack endpoint list | grep -q volume || \
+openstack endpoint create \
   --publicurl http://{{ os_hosts.controller.management_ip }}:8776/v2/%\(tenant_id\)s \
   --internalurl http://{{ os_hosts.controller.management_ip }}:8776/v2/%\(tenant_id\)s \
   --adminurl http://{{ os_hosts.controller.management_ip }}:8776/v2/%\(tenant_id\)s \
-  --region regionOne
+  --region RegionOne \
+  volume
+
+
+openstack endpoint list | grep -q volumev2 || \
+openstack endpoint create \
+  --publicurl http://{{ os_hosts.controller.management_ip }}:8776/v2/%\(tenant_id\)s \
+  --internalurl http://{{ os_hosts.controller.management_ip }}:8776/v2/%\(tenant_id\)s \
+  --adminurl http://{{ os_hosts.controller.management_ip }}:8776/v2/%\(tenant_id\)s \
+  --region RegionOne \
+  volumev2

@@ -1,12 +1,14 @@
 [DEFAULT]
+verbose = True
+logdir = /var/log/cinder
+state_path = /var/lib/cinder
+lock_path = /var/lib/cinder
+iscsi_helper = lioadm
+
 rootwrap_config = /etc/cinder/rootwrap.conf
 api_paste_confg = /etc/cinder/api-paste.ini
-iscsi_helper = tgtadm
 volume_name_template = volume-%s
 volume_group = cinder-volumes
-verbose = True
-state_path = /var/lib/cinder
-lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volumes
 # Method used to wipe old voumes (valid options are: none, zero, shred)
 # (string value)
@@ -18,8 +20,6 @@ volumes_dir = /var/lib/cinder/volumes
 volume_clear_size = 50
 
 rpc_backend = rabbit
-rabbit_host = {{ os_hosts.controller.management_ip }}
-rabbit_password = {{ rabbit_password }}
 
 auth_strategy = keystone
 
@@ -28,10 +28,20 @@ my_ip = {{ management_ip }}
 [database]
 connection = mysql://cinder:{{ os_dbs.cinder.password }}@{{ os_hosts.controller.management_ip }}/cinder
 
+[oslo_messaging_rabbit]
+rabbit_host = {{ os_hosts.controller.management_ip }}
+rabbit_password = {{ rabbit_password }}
+rabbit_userid = openstack
 
 [keystone_authtoken]
-auth_uri = http://{{ os_hosts.controller.management_ip }}:5000/v2.0
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000
 identity_uri = http://{{ os_hosts.controller.management_ip }}:35357
-admin_tenant_name = service
-admin_user = cinder
-admin_password = {{ service_users.cinder.password }}
+project_domain_id = default
+user_domain_id = default
+project_name = service
+username = cinder
+password = {{ service_users.cinder.password }}
+
+
+[oslo_concurrency]
+lock_path = /var/lock/cinder
