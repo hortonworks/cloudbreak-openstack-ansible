@@ -1,10 +1,10 @@
 [DEFAULT]
+verbose = True
+
 rootwrap_config = /etc/cinder/rootwrap.conf
 api_paste_confg = /etc/cinder/api-paste.ini
 iscsi_helper = tgtadm
 volume_name_template = volume-%s
-volume_group = cinder-volumes
-verbose = True
 state_path = /var/lib/cinder
 lock_path = /var/lock/cinder
 volumes_dir = /var/lib/cinder/volumes
@@ -18,12 +18,13 @@ volumes_dir = /var/lib/cinder/volumes
 volume_clear_size = 50
 
 rpc_backend = rabbit
-rabbit_host = {{ os_hosts.controller.management_ip }}
-rabbit_password = {{ rabbit_password }}
+
 
 auth_strategy = keystone
 
 my_ip = {{ management_ip }}
+
+enabled_backends = lvm
 
 glance_host = {{ os_hosts.controller.management_ip }}
 
@@ -31,8 +32,25 @@ glance_host = {{ os_hosts.controller.management_ip }}
 connection = mysql://cinder:{{ os_dbs.cinder.password }}@{{ os_hosts.controller.management_ip }}/cinder
 
 [keystone_authtoken]
-auth_uri = http://{{ os_hosts.controller.management_ip }}:5000/v2.0
-identity_uri = http://{{ os_hosts.controller.management_ip }}:35357
-admin_tenant_name = service
-admin_user = cinder
-admin_password = {{ service_users.cinder.password }}
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000
+auth_url = http://{{ os_hosts.controller.management_ip }}:35357
+auth_plugin = password
+project_domain_id = default
+user_domain_id = default
+project_name = service
+username = cinder
+password = {{ service_users.cinder.password }}
+
+[lvm]
+volume_driver = cinder.volume.drivers.lvm.LVMVolumeDriver
+volume_group = cinder-volumes
+iscsi_protocol = iscsi
+iscsi_helper = lioadm
+
+[oslo_messaging_rabbit]
+rabbit_userid = openstack
+rabbit_host = {{ os_hosts.controller.management_ip }}
+rabbit_password = {{ rabbit_password }}
+
+[oslo_concurrency]
+lock_path = /var/lock/cinder

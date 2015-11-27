@@ -3,8 +3,13 @@
   yum: name={{ item }} state=latest
   sudo: true
   with_items:
-    - mdadm
     - lvm2
+
+- name: ensure lvm2-lvmetad  is running running
+  sudo: true
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - lvm2-lvmetad
 
 - name: Creates scripts
   sudo: true
@@ -12,4 +17,4 @@
 
 - name: add raid script
   sudo: true
-  template: src=scripts/raid.sh.j2 dest=/opt/scripts/raid.sh mode="a+x"
+  template: src=scripts/diskcfg.sh.j2 dest=/opt/scripts/diskcfg.sh mode="a+x"

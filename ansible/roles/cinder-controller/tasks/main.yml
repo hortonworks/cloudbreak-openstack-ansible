@@ -30,6 +30,13 @@
 - name: Trigger handlers
   meta: flush_handlers
 
+- name: ensure cinder controller services are running
+  sudo: true
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - openstack-cinder-scheduler
+    - openstack-cinder-api
+
 - name: restart cinder components by handlers
   shell: echo 'Restarting cinder components....'
   tags:

@@ -3,5 +3,5 @@
   sudo: true
   service: name={{ item }} state=restarted
   with_items:
-    - tgt
-    - cinder-volume
+    - openstack-cinder-volume
+    - target

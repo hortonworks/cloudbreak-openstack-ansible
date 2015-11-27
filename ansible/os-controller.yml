@@ -7,6 +7,6 @@
     - glance
     - nova-controller
     - neutron
-#    - cinder-controller
+    - cinder-controller
     - heat
     - horizon
