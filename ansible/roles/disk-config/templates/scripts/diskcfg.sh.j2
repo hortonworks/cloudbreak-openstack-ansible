@@ -4,7 +4,7 @@
 
 create_fs_controller() {
     sudo mkfs.xfs /dev/sdb
-    sudo mkdir -p /mnt/md0
+    sudo mkdir -p /mnt/glance_root
     sudo chmod 777 /mnt/glance_root
     sudo bash -c "echo /dev/sdb /mnt/glance_root xfs  rw,user,exec 0 0 >> /etc/fstab"
     sudo bash -c "echo chmod 777 /mnt/glance_root >> /etc/rc.local"

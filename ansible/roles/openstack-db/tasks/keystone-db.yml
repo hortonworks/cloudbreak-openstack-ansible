@@ -9,8 +9,4 @@
     host: "{{ item }}"
     state: present
     priv: "keystone.*:ALL"
-  with_items:
-    - localhost
-    - 127.0.0.1
-    - ::1
-    - "%"
+  with_items: "{{ db_access_host }}"

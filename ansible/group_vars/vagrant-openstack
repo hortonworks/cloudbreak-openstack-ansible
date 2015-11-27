@@ -15,6 +15,12 @@ heat_domain_pass: Openstack01
 metadata_proxy_shared_secret: metasecret01
 rabbit_password: rabbitpw
 
+db_access_host:
+  - localhost
+  - 127.0.0.1
+  - ::1
+  - "%"
+
 os_dbs:
   keystone:
     password: keystonepw
