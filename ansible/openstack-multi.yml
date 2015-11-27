@@ -2,7 +2,7 @@
   hosts: all
   roles:
    - common
-   - diskcfg
+   - disk-config
    - docker
 
 - name: Provision Controller
