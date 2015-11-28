@@ -23,17 +23,35 @@ db_access_host:
 
 os_dbs:
   keystone:
+    schema: keystone
+    username: keystone
     password: keystonepw
+    hosts: "{{ db_access_host }}"
   glance:
+    schema: glance
+    username: glance
     password: glancepw
+    hosts: "{{ db_access_host }}"
   nova:
+    schema: nova
+    username: nova
     password: novapw
+    hosts: "{{ db_access_host }}"
   neutron:
+    schema: neutron
+    username: neutron
     password: neutronpw
+    hosts: "{{ db_access_host }}"
   cinder:
+    schema: cinder
+    username: cinder
     password: cinderpw
+    hosts: "{{ db_access_host }}"
   heat:
+    schema: heat
+    username: heat
     password: heatpw
+    hosts: "{{ db_access_host }}"
 
 service_users:
   glance:
@@ -49,8 +67,8 @@ service_users:
     username: cinder
     password: Openstack01
   heat:
-      username: heat
-      password: Openstack01
+    username: heat
+    password: Openstack01
 
 os_users:
   admin:

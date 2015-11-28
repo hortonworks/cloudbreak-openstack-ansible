@@ -50,23 +50,8 @@
   mysql_db: db=test state=absent
   when: mariadb_updated.changed
 
-- name: DB setup for Keystone
-  include: keystone-db.yml
-
-- name: DB setup for Glance
-  include: glance-db.yml
-
-- name: DB setup for Nova
-  include: nova-db.yml
-
-- name: DB setup for Neutron
-  include: neutron-db.yml
-
-- name: DB setup for Cinder
-  include: cinder-db.yml
-
-- name: DB setup for Heat
-  include: heat-db.yml
+- name: DB setup
+  include: db.yml
 
 - name: restart openstack-db by handlers
   shell: echo 'Restarting openstack-db(mariadb)....'

@@ -1,0 +1,15 @@
+---
+- name: Create a new database
+  mysql_db: name={{ item.value.schema }} state=present
+  with_dict: "{{ os_dbs }}"
+
+- name: create db users
+  mysql_user:
+    name: "{{ item.0.username }}"
+    password: "{{ item.0.password }}"
+    host: "{{ item.1 }}"
+    state: present
+    priv: "{{ item.0.schema }}.*:ALL"
+  with_subelements:
+    - os_dbs
+    - hosts
