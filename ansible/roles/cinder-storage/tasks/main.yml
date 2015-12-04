@@ -23,6 +23,11 @@
   notify:
     - restart cinder storage node services
 
+
+- name: The /var/lock/cinder does not exsist, therefore the volumes are not deleted
+  sudo: true
+  file: path=/var/lock/cinder state=directory owner=cinder group=cinder
+
 - name: Trigger handlers
   meta: flush_handlers
 
