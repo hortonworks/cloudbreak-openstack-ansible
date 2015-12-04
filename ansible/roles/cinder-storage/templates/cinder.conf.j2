@@ -47,6 +47,11 @@ volume_group = cinder-volumes
 iscsi_protocol = iscsi
 iscsi_helper = lioadm
 
+# Size in MiB to wipe at start of old volumes. 0 => all
+# (integer value)
+# only overwrite the first 50mb of the volume, thus wiping the partiton table if there is one
+volume_clear_size = 50
+
 [oslo_messaging_rabbit]
 rabbit_userid = openstack
 rabbit_host = {{ os_hosts.controller.management_ip }}
