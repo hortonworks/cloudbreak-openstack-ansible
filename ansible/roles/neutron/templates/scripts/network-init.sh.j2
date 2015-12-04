@@ -7,7 +7,18 @@ neutron subnet-create ext-net 172.25.5.0/24 --name ext-subnet  --allocation-pool
 
 #neutron subnet-create ext-net --name ext-subnet  --allocation-pool start=192.168.1.201,end=192.168.1.220  --disable-dhcp --gateway 192.168.1.1 192.168.1.0/24
 
-#source /opt/scripts/demo-openrc.sh
+neutron net-create admin-net
+neutron subnet-create admin-net 192.168.45.0/24 --name admin-subnet --gateway 192.168.45.1
+neutron router-create admin-router
+neutron router-interface-add admin-router admin-subnet
+neutron router-gateway-set admin-router ext-net
+
+
+nova secgroup-add-rule default tcp 1 65535 0.0.0.0/0
+nova secgroup-add-rule default udp 1 65535 0.0.0.0/0
+nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0
+
+source /opt/scripts/demo-openrc.sh
 
 neutron net-create demo-net
 neutron subnet-create demo-net 192.168.44.0/24 --name demo-subnet --gateway 192.168.44.1
