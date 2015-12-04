@@ -31,6 +31,12 @@
     - populate novadb
     - restart nova controller
 
+- name: write the policy.json
+  copy: src=policy.json dest=/etc/nova/policy.json group=nova backup=yes
+  sudo: true
+  notify:
+    - restart nova controller
+
 - name: Trigger handlers
   meta: flush_handlers
 
