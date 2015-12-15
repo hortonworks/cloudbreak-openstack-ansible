@@ -32,7 +32,7 @@
     - restart nova controller
 
 - name: write the policy.json
-  copy: src=policy.json dest=/etc/nova/policy.json group=nova backup=yes
+  template: src=policy.json.j2 dest=/etc/nova/policy.json group=nova backup=yes
   sudo: true
   notify:
     - restart nova controller
