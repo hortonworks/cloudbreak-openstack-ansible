@@ -2,7 +2,7 @@
 
 source /opt/scripts/admin-openrc.sh
 
-neutron net-create ext-net --router:external --provider:physical_network external --provider:network_type flat
+neutron net-create ext-net --router:external --provider:physical_network {{ external_net_if }} --provider:network_type flat
 neutron subnet-create ext-net 172.25.5.0/24 --name ext-subnet  --allocation-pool start=172.25.5.101,end=172.25.5.200  --disable-dhcp --gateway 172.25.5.1
 
 # neutron subnet-create ext-net 172.21.250.0/24 --name ext-subnet  \

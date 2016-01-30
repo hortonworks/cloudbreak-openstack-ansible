@@ -63,7 +63,7 @@ mechanism_drivers = openvswitch
 
 {% if neutron_node %}
 
-flat_networks = external
+flat_networks = *
 
 {% endif %}
 
@@ -111,7 +111,7 @@ firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewal
 
 [ovs]
 local_ip = {{ tunnel_if_ip }}
-bridge_mappings = external:br-ex
+bridge_mappings = {{ external_net_if }}:br-ex
 
 [agent]
 tunnel_types = gre
