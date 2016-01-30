@@ -3,6 +3,8 @@
 Launching it in Vagrant is as simple as:
 ```
 cd vagrant/openstack-multi
+#Note: install vagrant-cachier plugin is optional, it just makes the installation faster for the 2nd time
+vagrant plugin install vagrant-cachier
 vagrant up
 ```
 
