@@ -2,8 +2,8 @@
 management_ip: 10.0.0.21
 
 tunnel_if_ip: 10.0.1.21
-tunnel_if: eth2
-external_net_if: eth0
+tunnel_if: enp0s9
+external_net_if: enp0s3
 
 neutron_controller: false
 neutron_node: true

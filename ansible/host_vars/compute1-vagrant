@@ -2,5 +2,5 @@
 management_ip: 10.0.0.31
 
 tunnel_if_ip: 10.0.1.31
-tunnel_if: eth2
+tunnel_if: enp0s9
 

@@ -4,8 +4,8 @@ management_ip: 10.0.0.11
 mariadb_bind_ip: "{{ management_ip }}"
 
 tunnel_if_ip: 10.0.1.11
-tunnel_if: eth2
-external_net_if: eth3
+tunnel_if: enp0s9
+external_net_if: enp0s3
 
 neutron_controller: true
 neutron_node: true
