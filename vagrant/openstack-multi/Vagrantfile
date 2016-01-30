@@ -14,13 +14,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
-    vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
   end
 
   config.vm.define "controller-vagrant" do |controller|
     controller.vm.hostname = "controller-vagrant"
     controller.vm.network "private_network", ip: "10.0.0.11"
-    controller.vm.network "private_network", ip: "10.0.1.11"
     controller.vm.provider :virtualbox do |vbcontroller|
         vbcontroller.customize ["modifyvm", :id, "--memory", "4096"]
         vbcontroller.customize ["modifyvm", :id, "--cpus", "2"]
@@ -39,7 +37,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.define "compute#{i}-vagrant" do |node|
       node.vm.hostname = "compute#{i}-vagrant"
       node.vm.network "private_network", ip: "10.0.0.3#{i}"
-      node.vm.network "private_network", ip: "10.0.1.3#{i}"
       node.vm.provider :virtualbox do |vb|
           vb.customize ["modifyvm", :id, "--memory", "2048"]
           vb.customize ["modifyvm", :id, "--cpus", "1"]

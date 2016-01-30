@@ -1,5 +1,4 @@
 ---
 management_ip: 10.0.0.32
 
-tunnel_if_ip: 10.0.1.32
-tunnel_if: enp0s9
+tunnel_if_ip: 10.0.0.32
