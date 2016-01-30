@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "boxcutter/centos71"
+  config.vm.box = "akanto/centos-7"
 
   if Vagrant.has_plugin?("vagrant-cachier")
       config.cache.scope = :box
