@@ -6,7 +6,6 @@
     - openstack-neutron
     - openstack-neutron-ml2
     - python-neutronclient
-    - which
 
 - name: create neutron-entities
   sudo: true

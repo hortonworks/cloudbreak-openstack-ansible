@@ -17,6 +17,7 @@
     - traceroute
     - iperf
     - net-tools
+    - which
 
 - name: ensure ntpd is running
   sudo: true

@@ -9,6 +9,8 @@ external_net_if: enp0s3
 neutron_controller: true
 neutron_node: true
 
+# Usable mainly in vagrant where we would like to use nat instead of creating a separate pool on phisical network for floatingips
+neutron_external_nat_mode: true
 
 
 
