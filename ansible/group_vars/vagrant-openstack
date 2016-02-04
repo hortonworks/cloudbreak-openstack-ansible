@@ -15,6 +15,10 @@ heat_domain_pass: Openstack01
 metadata_proxy_shared_secret: metasecret01
 rabbit_password: rabbitpw
 
+# Comma-separated list of DNS servers which will be used by dnsmasq
+# as forwarders.
+dnsmasq_dns_servers: 8.8.8.8
+
 db_access_host:
   - localhost
   - 127.0.0.1
