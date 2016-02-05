@@ -34,6 +34,8 @@
 
 - name: delete anonymous MariaDB server user for {{ ansible_hostname }}
   mysql_user:
+    login_user: root
+    login_password: ""
     name: ""
     host: "{{ item }}"
     state: absent
@@ -47,7 +49,11 @@
   when: mariadb_updated.changed
 
 - name: remove the MariaDB test database
-  mysql_db: db=test state=absent
+  mysql_db:
+    login_user: root
+    login_password: ""
+    db: test
+    state: absent
   when: mariadb_updated.changed
 
 - name: DB setup
