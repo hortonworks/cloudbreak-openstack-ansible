@@ -40,6 +40,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       node.vm.provider :virtualbox do |vb|
           vb.customize ["modifyvm", :id, "--memory", "2048"]
           vb.customize ["modifyvm", :id, "--cpus", "1"]
+          disk = ".vagrant/cinder-disk-#{i}.vdi"
+          unless File.exist?(disk)
+            vb.customize ['createhd', '--filename', disk, '--size', 30 * 1024]
+          end
+          vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
       end
     end
   end
