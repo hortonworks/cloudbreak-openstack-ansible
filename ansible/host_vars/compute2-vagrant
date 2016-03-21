@@ -2,3 +2,5 @@
 management_ip: 10.0.0.32
 
 tunnel_if_ip: 10.0.0.32
+
+cinder_volumes: /dev/sdb

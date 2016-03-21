@@ -17,12 +17,16 @@
   with_items:
     - lvm2-lvmetad
 
+- name: create volume group for cinder
+  sudo: true
+  lvg: vg=cinder-volumes pvs={{ cinder_volumes }}
+  when: cinder_volumes | default("") != ""
+
 - name: write the cinder config file
   template: src=cinder.conf.j2 dest=/etc/cinder/cinder.conf backup=yes
   sudo: true
   notify:
     - restart cinder storage node services
-
 
 - name: The /var/lock/cinder does not exsist, therefore the volumes are not deleted
   sudo: true
