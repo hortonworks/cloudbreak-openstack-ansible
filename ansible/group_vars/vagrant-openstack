@@ -4,7 +4,7 @@ virt_type: qemu
 glance_root: /mnt/glance_root
 nova_root: /mnt/nova_root
 
-mtu_size: 1700
+mtu_size: 1500
 
 installed_dir: /etc/installed
 

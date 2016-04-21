@@ -3,7 +3,7 @@
   file: path=~/images state=directory
 
 - name: Download cirros
-  get_url: url=http://download.cirros-cloud.net/0.3.3/cirros-0.3.3-x86_64-disk.img dest=~/images/cirros-0.3.3-x86_64-disk.img
+  get_url: url=http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img dest=~/images/cirros-0.3.4-x86_64-disk.img
 
 #- name: Download ubuntu
 #  get_url: url=http://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img dest=~/images/trusty-server-cloudimg-amd64-disk1.img
@@ -20,6 +20,3 @@
 - name: execute glance-entities
   shell: /opt/scripts/glance-init.sh
   when: glance_entities.changed
-
-
-
