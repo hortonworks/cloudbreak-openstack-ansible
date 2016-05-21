@@ -36,3 +36,14 @@
 - name: creates installed directory to keep track what has already been installed
   file: path={{ installed_dir }} state=directory
   sudo: true
+
+- name: install yum plugin versionlock
+  yum: name=yum-plugin-versionlock state=latest
+  sudo: true
+
+- name: add python-urllib3,python-requests package specifier with version
+  command: yum versionlock {{ item }}
+  sudo: true
+  with_items:
+    - python-requests-2.7.0-6.el7.noarch
+    - python-urllib3-1.10.4-1.20150503gita91975b.el7.noarch
