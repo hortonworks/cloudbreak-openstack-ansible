@@ -1,4 +1,4 @@
-# OpenStack Kilo Ansible playbooks
+# OpenStack Liberty Ansible playbooks
 
 Launching it in Vagrant is as simple as:
 ```
