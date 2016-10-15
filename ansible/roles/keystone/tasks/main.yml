@@ -10,6 +10,12 @@
     - memcached
     - python-memcached
 
+- name: ensure memcached is running
+  become: true
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - memcached
+
 - name: write the keystone config file
   template: src=keystone.conf.j2 dest=/etc/keystone/keystone.conf backup=yes
   become: true
@@ -17,46 +23,41 @@
     - populate identitydb
     - restart httpd
 
-- name: write the wsgi-keystone config file
-  template: src=wsgi-keystone.conf.j2 dest=/etc/httpd/conf.d/wsgi-keystone.conf backup=yes
+- name: create keystone-manage
   become: true
+  template: src=scripts/keystone-manage.sh.j2 dest=/opt/scripts/keystone-manage.sh mode="a+x"
+  register: keystone_manage
+
+- name: execute keystone-manage
+  become: true
+  shell: /opt/scripts/keystone-manage.sh
+  when: keystone_manage.changed
+
+- name: create httpd config
+  become: true
+  template: src=httpd.conf.j2 dest=/etc/httpd/conf/httpd.conf
   notify:
     - restart httpd
 
-- name: Create the directory structure for the WSGI components
-  file: path=/var/www/cgi-bin/keystone state=directory
+- name: link wsgi-keystone.conf
   become: true
-  register: wsgi_keystone_dir
-
-- name: Create the directory structure for the WSGI components
-  shell: curl http://git.openstack.org/cgit/openstack/keystone/plain/httpd/keystone.py?h=stable/kilo | tee /var/www/cgi-bin/keystone/main /var/www/cgi-bin/keystone/admin
-  become: true
-  when: wsgi_keystone_dir.changed
-
-- name: Adjust ownership on this directory and the files in it
-  shell: chown -R keystone:keystone /var/www/cgi-bin/keystone
-  become: true
-  when: wsgi_keystone_dir.changed
-
-- name: Adjust permissions on this directory and the files in it
-  shell: chmod 755 /var/www/cgi-bin/keystone/*
-  become: true
-  when: wsgi_keystone_dir.changed
+  file: src=/usr/share/keystone/wsgi-keystone.conf dest=/etc/httpd/conf.d/wsgi-keystone.conf state=link
 
 - name: Trigger handlers
   meta: flush_handlers
 
-- name: ensure keystone services are running
+- name: ensure httpd service is running
   become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
-    - memcached
     - httpd
 
-#- name: periodic task that purges expired tokens hourly
-#  become: true
-#  shell: crontab -l -u keystone 2>&1 | grep -q token_flush || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
-#  changed_when: false
+#
+##- name: periodic task that purges expired tokens hourly
+##  become: true
+##  shell: crontab -l -u keystone 2>&1 | grep -q token_flush || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
+##  changed_when: false
+#
 
 - name: Creates scripts
   become: true
@@ -69,17 +70,18 @@
     - admin-openrc.sh
     - demo-openrc.sh
 
-- name: create keystone-entities
+- name: write shell profile
+  template: src=bashrc.j2 dest=~/.bashrc
+
+- name: create keystone-manage
   become: true
   template: src=scripts/keystone-init.sh.j2 dest=/opt/scripts/keystone-init.sh mode="a+x"
   register: keystone_entities
 
 - name: execute keystone-entities
+  become: true
   shell: /opt/scripts/keystone-init.sh
   when: keystone_entities.changed
-
-- name: write shell profile
-  template: src=bashrc.j2 dest=~/.bashrc
 
 - name: restart keystone components by handlers
   shell: echo 'Restarting keystone components....'

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+keystone-manage bootstrap --bootstrap-password {{ os_users.admin.password }} \
+  --bootstrap-admin-url http://{{ os_hosts.controller.management_ip }}:35357/v3/ \
+  --bootstrap-internal-url http://{{ os_hosts.controller.management_ip }}:35357/v3/ \
+  --bootstrap-public-url http://{{ os_hosts.controller.management_ip }}:5000/v3/ \
+  --bootstrap-region-id RegionOne
+

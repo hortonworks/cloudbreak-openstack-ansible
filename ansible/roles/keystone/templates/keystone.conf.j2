@@ -2654,6 +2654,7 @@ connection=mysql://keystone:{{ os_dbs.keystone.password }}@{{ os_hosts.controlle
 # certificates be installed and distributed to facilitate signing tokens and
 # later validating those signatures. (string value)
 #provider = uuid
+provider = fernet
 
 # Entry point for the token persistence backend driver in the
 # `keystone.token.persistence` namespace. Keystone provides `kvs`, `memcache`,

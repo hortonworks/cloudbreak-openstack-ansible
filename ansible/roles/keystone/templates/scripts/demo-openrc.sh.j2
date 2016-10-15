@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
-export OS_PROJECT_DOMAIN_ID=default
-export OS_USER_DOMAIN_ID=default
+export OS_PROJECT_DOMAIN_NAME=default
+export OS_USER_DOMAIN_NAME=default
 export OS_PROJECT_NAME=demo
-export OS_TENANT_NAME=demo
 export OS_USERNAME={{ os_users.demo.username }}
 export OS_PASSWORD={{ os_users.demo.password }}
 export OS_AUTH_URL=http://{{ os_hosts.controller.management_ip }}:5000/v3
+export OS_IDENTITY_API_VERSION=3
+export OS_IMAGE_API_VERSION=2
