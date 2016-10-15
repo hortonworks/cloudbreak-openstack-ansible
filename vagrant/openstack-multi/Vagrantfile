@@ -6,7 +6,8 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.box = "akanto/centos-7"
+  #http://stackoverflow.com/questions/32518591/centos7-with-private-network-lost-fixed-ip
+  config.vm.box = "geerlingguy/centos7"
 
   if Vagrant.has_plugin?("vagrant-cachier")
       config.cache.scope = :box
