@@ -3,16 +3,13 @@
 source /opt/scripts/admin-openrc.sh
 
 openstack user list    | grep -q glance || openstack user create glance --password {{ service_users.glance.password }}
-openstack role list --user glance --project service | grep -q admin || openstack role add --project service --user glance admin
+openstack role assignment list --user glance --project service  --names | grep -q admin || openstack role add --project service --user glance admin
 
 openstack service list  | grep -q glance  || openstack service create --name glance --description "OpenStack Image service" image
 
-openstack endpoint list | grep -q image  || openstack endpoint create \
-  --publicurl http://{{ os_hosts.controller.management_ip }}:9292 \
-  --internalurl http://{{ os_hosts.controller.management_ip }}:9292 \
-  --adminurl http://{{ os_hosts.controller.management_ip }}:9292 \
-  --region RegionOne \
-  image
+openstack endpoint list --service image --interface public | grep -q image   || openstack endpoint create --region RegionOne image public http://{{ os_hosts.controller.management_ip }}:9292
+openstack endpoint list --service image --interface admin | grep -q image    || openstack endpoint create --region RegionOne image admin http://{{ os_hosts.controller.management_ip }}:9292
+openstack endpoint list --service image --interface internal | grep -q image || openstack endpoint create --region RegionOne image internal http://{{ os_hosts.controller.management_ip }}:9292
 
 glance image-list | grep -q cirros || glance image-create --name "cirros-0.3.4-x86_64-disk.img" --file ~/images/cirros-0.3.4-x86_64-disk.img --disk-format=qcow2 --container-format=bare
 #glance image-list | grep -q trusty || glance image-create --name "trusty-server-cloudimg-amd64-disk1" --file ~/images/trusty-server-cloudimg-amd64-disk1.img --disk-format qcow2 --container-format bare --is-public True --progress

@@ -1746,6 +1746,8 @@
 # Deprecated group/name - [DATABASE]/sql_connection
 # Deprecated group/name - [sql]/connection
 #connection = <None>
+connection = mysql+pymysql://glance:{{ os_dbs.glance.password }}@{{ os_hosts.controller.management_ip }}/glance
+
 
 # The SQLAlchemy connection string to use to connect to the slave database.
 # (string value)
@@ -1835,6 +1837,10 @@
 
 
 [glance_store]
+
+stores = file,http
+default_store = file
+filesystem_store_datadir = {{ glance_root }}/var/lib/glance/images/
 
 #
 # From glance.store
@@ -3177,6 +3183,16 @@
 
 [keystone_authtoken]
 
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000
+auth_url = http://{{ os_hosts.controller.management_ip }}:35357
+memcached_servers = {{ os_hosts.controller.management_ip }}:11211
+auth_type = password
+project_domain_id = default
+user_domain_id = default
+project_name = service
+username = glance
+password = {{ service_users.glance.password }}
+
 #
 # From keystonemiddleware.auth_token
 #
@@ -3978,7 +3994,7 @@
 #     * config_file
 #
 #  (string value)
-#flavor = keystone
+flavor = keystone
 
 #
 # Name of the paste configuration file.
