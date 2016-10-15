@@ -1,7 +1,7 @@
 ---
 - name: install cinder storage node components
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - qemu
     - lvm2
@@ -12,31 +12,31 @@
     - MySQL-python
 
 - name: ensure lvm2-lvmetad  is running running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - lvm2-lvmetad
 
 - name: create volume group for cinder
-  sudo: true
+  become: true
   lvg: vg=cinder-volumes pvs={{ cinder_volumes }}
   when: cinder_volumes | default("") != ""
 
 - name: write the cinder config file
   template: src=cinder.conf.j2 dest=/etc/cinder/cinder.conf backup=yes
-  sudo: true
+  become: true
   notify:
     - restart cinder storage node services
 
 - name: The /var/lock/cinder does not exsist, therefore the volumes are not deleted
-  sudo: true
+  become: true
   file: path=/var/lock/cinder state=directory owner=cinder group=cinder
 
 - name: Trigger handlers
   meta: flush_handlers
 
 - name: ensure cinder storage services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - openstack-cinder-volume

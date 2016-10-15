@@ -1,10 +1,10 @@
 ---
 - name: populate novadb
-  sudo: true
+  become: true
   shell: su -s /bin/sh -c "nova-manage db sync" nova
 
 - name: restart nova controller
-  sudo: true
+  become: true
   service: name={{ item }} state=restarted
   with_items:
     - openstack-nova-api

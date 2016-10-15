@@ -1,8 +1,8 @@
 ---
 - name: populate identitydb
-  sudo: true
+  become: true
   shell: su -s /bin/sh -c "keystone-manage db_sync" keystone
 
 - name: restart httpd
-  sudo: true
+  become: true
   service: name=httpd state=restarted

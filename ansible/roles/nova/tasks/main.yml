@@ -1,30 +1,30 @@
 ---
 - name: install qemu
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - qemu
 
 - name: install nova components
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-nova-compute
     - sysfsutils
 
 - name: create nova_root
   file: path={{ nova_root }}/var/{{ item }} state=directory mode=0755 owner=nova group=nova
-  sudo: true
+  become: true
   with_items:
     - lib
 
 - name: copy nova files to another location
   command: creates="{{ nova_root }}/var/lib/nova" mv /var/lib/nova {{ nova_root }}/var/lib/nova
-  sudo: true
+  become: true
 
 - name: write the nova config file
   template: src={{ item }}.j2 dest=/etc/nova/{{ item }} backup=yes
-  sudo: true
+  become: true
   register: write_nova_conf
   notify:
     - restart nova compute
@@ -36,7 +36,7 @@
   meta: flush_handlers
 
 - name: ensure nova services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - libvirtd

@@ -1,7 +1,7 @@
 ---
 - name: install neutron
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-neutron
     - openstack-neutron-ml2
@@ -9,11 +9,11 @@
 
 - name: copy neutron-openvswitch-agent.service
   copy: src=neutron-openvswitch-agent.service dest=/usr/lib/systemd/system/neutron-openvswitch-agent.service
-  sudo: true
+  become: true
 
 - name: write the neutron config files
   template: src={{ item }}.j2 dest=/etc/neutron/{{ item }}
-  sudo: true
+  become: true
   with_items:
     - l3_agent.ini
     - dhcp_agent.ini
@@ -23,29 +23,29 @@
 
 - name: write dnsmasq-neutron file
   template: src={{ item }}.j2 dest=/etc/neutron/{{ item }}
-  sudo: true
+  become: true
   with_items:
     - dnsmasq-neutron.conf
   register: dnsmasq_neutron
 
 #- name: pkill dnsmasq
 #  shell: pgrep dnsmasq && pkill dnsmasq
-#  sudo: true
+#  become: true
 #  when: dnsmasq_neutron.changed
 
 - name: ensure openvswitch service is running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - openvswitch
 
 - name: create ovs-init
-  sudo: true
+  become: true
   template: src=scripts/ovs-init.sh.j2 dest=/opt/scripts/ovs-init.sh mode="a+x"
   register: ovs_init
 
 - name: execute ovs-init
-  sudo: true
+  become: true
   shell: /opt/scripts/ovs-init.sh
   when: ovs_init.changed
 

@@ -1,7 +1,7 @@
 ---
 - name: install keystone
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-keystone
     - httpd
@@ -12,65 +12,65 @@
 
 - name: write the keystone config file
   template: src=keystone.conf.j2 dest=/etc/keystone/keystone.conf backup=yes
-  sudo: true
+  become: true
   notify:
     - populate identitydb
     - restart httpd
 
 - name: write the wsgi-keystone config file
   template: src=wsgi-keystone.conf.j2 dest=/etc/httpd/conf.d/wsgi-keystone.conf backup=yes
-  sudo: true
+  become: true
   notify:
     - restart httpd
 
 - name: Create the directory structure for the WSGI components
   file: path=/var/www/cgi-bin/keystone state=directory
-  sudo: true
+  become: true
   register: wsgi_keystone_dir
 
 - name: Create the directory structure for the WSGI components
   shell: curl http://git.openstack.org/cgit/openstack/keystone/plain/httpd/keystone.py?h=stable/kilo | tee /var/www/cgi-bin/keystone/main /var/www/cgi-bin/keystone/admin
-  sudo: true
+  become: true
   when: wsgi_keystone_dir.changed
 
 - name: Adjust ownership on this directory and the files in it
   shell: chown -R keystone:keystone /var/www/cgi-bin/keystone
-  sudo: true
+  become: true
   when: wsgi_keystone_dir.changed
 
 - name: Adjust permissions on this directory and the files in it
   shell: chmod 755 /var/www/cgi-bin/keystone/*
-  sudo: true
+  become: true
   when: wsgi_keystone_dir.changed
 
 - name: Trigger handlers
   meta: flush_handlers
 
 - name: ensure keystone services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - memcached
     - httpd
 
 #- name: periodic task that purges expired tokens hourly
-#  sudo: true
+#  become: true
 #  shell: crontab -l -u keystone 2>&1 | grep -q token_flush || echo '@hourly /usr/bin/keystone-manage token_flush >/var/log/keystone/keystone-tokenflush.log 2>&1' >> /var/spool/cron/crontabs/keystone
 #  changed_when: false
 
 - name: Creates scripts
-  sudo: true
+  become: true
   file: path=/opt/scripts state=directory mode="a+x"
 
 - name: write helper scripts
-  sudo: true
+  become: true
   template: src=scripts/{{ item }}.j2 dest=/opt/scripts/{{ item }} mode="a+x"
   with_items:
     - admin-openrc.sh
     - demo-openrc.sh
 
 - name: create keystone-entities
-  sudo: true
+  become: true
   template: src=scripts/keystone-init.sh.j2 dest=/opt/scripts/keystone-init.sh mode="a+x"
   register: keystone_entities
 

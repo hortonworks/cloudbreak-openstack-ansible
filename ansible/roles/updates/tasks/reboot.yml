@@ -1,7 +1,7 @@
 ---
 - name: reboot when there has been a kernel upgrade
   command: shutdown -r now "Ansible updates triggered"
-  sudo: true
+  become: true
 
 - name: waiting for server to come back
   sudo: false

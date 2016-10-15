@@ -1,16 +1,16 @@
 ---
 - name: copy sysctl.conf
   copy: src=sysctl.conf dest=/etc/sysctl.conf
-  sudo: true
+  become: true
   register: sysctl_copy
 
 - name: execute neutron-entities
   shell: sysctl -p
-  sudo: true
+  become: true
   when: sysctl_copy.changed
 
 - name: Creates scripts
-  sudo: true
+  become: true
   file: path=/opt/scripts state=directory mode="a+x"
 
 - name: setup neutron controller
@@ -23,7 +23,7 @@
 
 - name: write the neutron config file
   template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
-  sudo: true
+  become: true
   register: neutron_config
   notify:
     - restart neutron server
@@ -31,17 +31,17 @@
 
 - name: write the neutron ml2 file
   template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
-  sudo: true
+  become: true
   notify:
     - restart neutron server
     - restart neutron controller
 
 - name: create plugin.ini symlink
   file: src=/etc/neutron/plugins/ml2/ml2_conf.ini dest=/etc/neutron/plugin.ini state=link
-  sudo: true
+  become: true
 
 - name: populate neutrondb
-  sudo: true
+  become: true
   shell: su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/ml2/ml2_conf.ini upgrade head" neutron
   when: neutron_controller and neutron_config.changed
 
@@ -49,14 +49,14 @@
   meta: flush_handlers
 
 - name: ensure neutron-controller services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - neutron-server
   when: neutron_controller
 
 - name: ensure neutron-node services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - neutron-openvswitch-agent

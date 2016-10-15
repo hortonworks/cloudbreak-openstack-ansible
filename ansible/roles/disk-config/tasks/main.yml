@@ -1,20 +1,20 @@
 ---
 - name: install raid utilities
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - lvm2
 
 - name: ensure lvm2-lvmetad  is running running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - lvm2-lvmetad
 
 - name: Creates scripts
-  sudo: true
+  become: true
   file: path=/opt/scripts state=directory mode="a+x"
 
 - name: add raid script
-  sudo: true
+  become: true
   template: src=scripts/diskcfg.sh.j2 dest=/opt/scripts/diskcfg.sh mode="a+x"

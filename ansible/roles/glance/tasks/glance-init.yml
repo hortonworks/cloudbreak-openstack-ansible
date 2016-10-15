@@ -9,11 +9,11 @@
 #  get_url: url=http://cloud-images.ubuntu.com/trusty/current/trusty-server-cloudimg-amd64-disk1.img dest=~/images/trusty-server-cloudimg-amd64-disk1.img
 
 - name: Creates scripts
-  sudo: true
+  become: true
   file: path=/opt/scripts state=directory mode="a+x"
 
 - name: create glance-entities
-  sudo: true
+  become: true
   template: src=scripts/glance-init.sh.j2 dest=/opt/scripts/glance-init.sh mode="a+x"
   register: glance_entities
 

@@ -1,6 +1,6 @@
 ---
 - name: restart cinder storage node services
-  sudo: true
+  become: true
   service: name={{ item }} state=restarted
   with_items:
     - openstack-cinder-volume

@@ -1,10 +1,10 @@
 ---
 - name: populate heatdb
-  sudo: true
+  become: true
   shell: su -s /bin/sh -c "heat-manage db_sync" heat
 
 - name: restart heat services
-  sudo: true
+  become: true
   service: name={{ item }} state=restarted
   with_items:
     - openstack-heat-api

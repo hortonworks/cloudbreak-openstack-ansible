@@ -1,7 +1,7 @@
 ---
 - name: install mariadb
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   register: mariadb_updated
   with_items:
     - mariadb
@@ -10,7 +10,7 @@
 
 - name: write the mariadb config file
   template: src=mariadb_openstack.cnf.j2 dest=/etc/my.cnf.d/mariadb_openstack.cnf backup=yes
-  sudo: true
+  become: true
   notify:
     - restart mariadb
 
@@ -18,13 +18,13 @@
   meta: flush_handlers
 
 - name: ensure mariadb is running
-  sudo: true
+  become: true
   service: name=mariadb state=started enabled=yes
 
 
 #  This can be executed non ineractively only in version 5.7.x
 #- name: secure installation
-#  sudo: true
+#  become: true
 #  command: mysql_secure_installation && touch /etc/mysql/mysql_secure_installation
 #  args:
 #    creates: /etc/mysql/mysql_secure_installation

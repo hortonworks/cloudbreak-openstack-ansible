@@ -1,14 +1,14 @@
 ---
 - name: install neutron controller components
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-neutron
     - openstack-neutron-ml2
     - python-neutronclient
 
 - name: create neutron-entities
-  sudo: true
+  become: true
   template: src=scripts/neutron-init.sh.j2 dest=/opt/scripts/neutron-init.sh mode="a+x"
   register: neutron_entities
 
@@ -18,6 +18,6 @@
 
 
 - name: create network-init
-  sudo: true
+  become: true
   template: src=scripts/network-init.sh.j2 dest=/opt/scripts/network-init.sh mode="a+x"
 

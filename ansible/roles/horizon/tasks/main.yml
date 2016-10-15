@@ -1,7 +1,7 @@
 ---
 - name: install horizon
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-dashboard
     - httpd
@@ -10,16 +10,16 @@
     - python-memcached
 
 - name: On RHEL and CentOS, configure SELinux to permit the web server to connect to OpenStack services
-  sudo: true
+  become: true
   seboolean: name=httpd_can_network_connect state=yes persistent=yes
 
 - name: Due to a packaging bug, the dashboard CSS fails to load properly. Run the following command to resolve this issue
-  sudo: true
+  become: true
   file: path=/usr/share/openstack-dashboard/static state=directory recurse=yes owner=apache group=apache
 
 - name: write local_settings.py file
   template: src=local_settings.j2 dest=/etc/openstack-dashboard/local_settings backup=yes
-  sudo: true
+  become: true
   notify:
     - restart horizon
 
@@ -27,7 +27,7 @@
   meta: flush_handlers
 
 - name: ensure horizon services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - httpd

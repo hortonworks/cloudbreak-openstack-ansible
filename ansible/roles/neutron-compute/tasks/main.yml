@@ -1,17 +1,17 @@
 ---
 - name: copy sysctl.conf
   copy: src=sysctl.conf dest=/etc/sysctl.conf
-  sudo: true
+  become: true
   register: sysctl_copy
 
 - name: execute sysctl.conf changes apply
   shell: sysctl -p
-  sudo: true
+  become: true
   when: sysctl_copy.changed
 
 - name: install neutron compute networking components
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-neutron
     - openstack-neutron-ml2
@@ -19,30 +19,30 @@
 
 - name: copy neutron-openvswitch-agent.service (compute node)
   copy: src=neutron-openvswitch-agent.service dest=/usr/lib/systemd/system/neutron-openvswitch-agent.service
-  sudo: true
+  become: true
 
 - name: write the neutron config file
   template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
-  sudo: true
+  become: true
   register: neutron_config
   notify:
     - restart neutron-compute
 
 - name: write the neutron ml2 file
   template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
-  sudo: true
+  become: true
   notify:
     - restart neutron-compute
 
 - name: create plugin.ini symlink for compute node
   file: src=/etc/neutron/plugins/ml2/ml2_conf.ini dest=/etc/neutron/plugin.ini state=link
-  sudo: true
+  become: true
 
 - name: Trigger handlers
   meta: flush_handlers
 
 - name: ensure neutron-compute services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - openvswitch

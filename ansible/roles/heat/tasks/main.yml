@@ -1,7 +1,7 @@
 ---
 - name: install heat controller components
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-heat-api
     - openstack-heat-api-cfn
@@ -9,18 +9,18 @@
     - python-heatclient
 
 - name: Creates scripts
-  sudo: true
+  become: true
   file: path=/opt/scripts state=directory mode="a+x"
 
 - name: write the heat config file
   template: src=heat.conf.j2 dest=/etc/heat/heat.conf backup=yes owner="heat" group="heat"
-  sudo: true
+  become: true
   notify:
     - populate heatdb
     - restart heat services
 
 - name: create heat-entities
-  sudo: true
+  become: true
   template: src=scripts/heat-init.sh.j2 dest=/opt/scripts/heat-init.sh mode="a+x"
   register: heat_entities
 
@@ -33,7 +33,7 @@
   meta: flush_handlers
 
 - name: ensure heat services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - openstack-heat-api

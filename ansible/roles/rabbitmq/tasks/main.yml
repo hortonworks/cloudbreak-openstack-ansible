@@ -1,20 +1,20 @@
 ---
 - name: Install rabbitmq-server
   yum: name=rabbitmq-server state=present
-  sudo: true
+  become: true
 
 - name: ensure rabbitmq-server is running
-  sudo: true
+  become: true
   service: name=rabbitmq-server state=started enabled=yes
 
 - name: Configure rabbitmq openstack user and pass
   shell: "rabbitmqctl add_user openstack {{ rabbit_password }} && touch {{ installed_dir }}/rabbit_openstack_user"
-  sudo: true
+  become: true
   args:
     creates: "{{installed_dir }}/rabbit_openstack_user"
 
 - name: Configure rabbitmq openstack permission
   shell: 'rabbitmqctl set_permissions openstack ".*" ".*" ".*" && touch {{ installed_dir }}/rabbit_openstack_permission'
-  sudo: true
+  become: true
   args:
     creates: "{{installed_dir }}/rabbit_openstack_permission"

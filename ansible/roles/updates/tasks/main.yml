@@ -1,6 +1,6 @@
 ---
 - name: upgrade all packages
-  sudo: true
+  become: true
   yum: name=* state=latest
 
 - name: register running kernel version
@@ -9,7 +9,7 @@
   register: running_kernel
 
 - name: register installed kernel version
-  sudo: true
+  become: true
   shell: yum list kernel | grep kernel.x86_64 | tail -1 | awk '{print $2}'
   register: installed_kernel
   changed_when: installed_kernel.stdout != running_kernel.stdout

@@ -1,13 +1,13 @@
 ---
 - name: populate glancedb
-  sudo: true
+  become: true
   shell: su -s /bin/sh -c "glance-manage db_sync" glance
 
 - name: restart glance-api
-  sudo: true
+  become: true
   service: name=openstack-glance-api  state=restarted
 
 - name: restart glance-registry
-  sudo: true
+  become: true
   service: name=openstack-glance-registry state=restarted
   

@@ -1,5 +1,5 @@
 - name: Install virt
-  sudo: true
+  become: true
   apt: name={{ item }} state=latest
   with_items:
     - libvirt-bin

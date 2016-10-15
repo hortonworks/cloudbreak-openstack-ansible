@@ -1,13 +1,13 @@
 ---
 - name: create glance_root
   file: path={{ glance_root }}/var/{{ item }} state=directory mode=0755
-  sudo: true
+  become: true
   with_items:
     - lib
 
 - name: install glance
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-glance
     - python-glance
@@ -15,7 +15,7 @@
 
 - name: write glance-api.conf file
   template: src=glance-api.conf.j2 dest=/etc/glance/glance-api.conf backup=yes
-  sudo: true
+  become: true
   register: write_glance_api_conf
   notify:
     - populate glancedb
@@ -23,21 +23,21 @@
 
 - name: write glance-registry.conf file
   template: src=glance-registry.conf.j2 dest=/etc/glance/glance-registry.conf backup=yes
-  sudo: true
+  become: true
   notify:
     - populate glancedb
     - restart glance-registry
 
 - name: copy glance files to another location
   shell: cp -r /var/lib/glance {{ glance_root }}/var/lib/glance && chown -R glance:glance {{ glance_root }}/var/lib/glance creates={{ glance_root }}/var/lib/glance
-  sudo: true
+  become: true
   when: write_glance_api_conf.changed
 
 - name: Trigger handlers
   meta: flush_handlers
 
 - name: ensure glance services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - openstack-glance-api

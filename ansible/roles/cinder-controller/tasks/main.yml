@@ -1,18 +1,18 @@
 ---
 - name: install cinder controller components
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-cinder
     - python-cinderclient
     - python-oslo-db
 
 - name: Creates scripts
-  sudo: true
+  become: true
   file: path=/opt/scripts state=directory mode="a+x"
 
 - name: create cinder-entities
-  sudo: true
+  become: true
   template: src=scripts/cinder-init.sh.j2 dest=/opt/scripts/cinder-init.sh mode="a+x"
   register: cinder_entities
 
@@ -22,7 +22,7 @@
 
 - name: write the cinder config file
   template: src=cinder.conf.j2 dest=/etc/cinder/cinder.conf backup=yes
-  sudo: true
+  become: true
   notify:
     - populate cinderdb
     - restart cinder controller
@@ -31,7 +31,7 @@
   meta: flush_handlers
 
 - name: ensure cinder controller services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - openstack-cinder-scheduler

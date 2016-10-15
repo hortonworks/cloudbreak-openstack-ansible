@@ -1,6 +1,6 @@
 ---
 - name: restart neutron server
-  sudo: true
+  become: true
   service: name={{ item }} state=restarted
   with_items:
     - neutron-openvswitch-agent
@@ -11,7 +11,7 @@
   when: neutron_node
 
 - name: restart neutron controller
-  sudo: true
+  become: true
   service: name={{ item }} state=restarted
   with_items:
     - openstack-nova-api

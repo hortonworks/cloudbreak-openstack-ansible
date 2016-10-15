@@ -1,7 +1,7 @@
 ---
 - name: install nova controller components
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-nova-api
     - openstack-nova-cert
@@ -12,11 +12,11 @@
     - python-novaclient
 
 - name: Creates scripts
-  sudo: true
+  become: true
   file: path=/opt/scripts state=directory mode="a+x"
 
 - name: create nova-entities
-  sudo: true
+  become: true
   template: src=scripts/nova-init.sh.j2 dest=/opt/scripts/nova-init.sh mode="a+x"
   register: nova_entities
 
@@ -26,14 +26,14 @@
 
 - name: write the nova config file
   template: src=nova.conf.j2 dest=/etc/nova/nova.conf backup=yes
-  sudo: true
+  become: true
   notify:
     - populate novadb
     - restart nova controller
 
 - name: write the policy.json
   template: src=policy.json.j2 dest=/etc/nova/policy.json group=nova backup=yes
-  sudo: true
+  become: true
   notify:
     - restart nova controller
 
@@ -41,7 +41,7 @@
   meta: flush_handlers
 
 - name: ensure nova-controller services are running
-  sudo: true
+  become: true
   service: name={{ item }} state=started enabled=yes
   with_items:
     - openstack-nova-api
