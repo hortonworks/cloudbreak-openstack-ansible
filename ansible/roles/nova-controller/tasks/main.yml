@@ -29,13 +29,14 @@
   become: true
   notify:
     - populate novadb
+    - populate nova_apidb
     - restart nova controller
 
-- name: write the policy.json
-  template: src=policy.json.j2 dest=/etc/nova/policy.json group=nova backup=yes
-  become: true
-  notify:
-    - restart nova controller
+#- name: write the policy.json
+#  template: src=policy.json.j2 dest=/etc/nova/policy.json group=nova backup=yes
+#  become: true
+#  notify:
+#    - restart nova controller
 
 - name: Trigger handlers
   meta: flush_handlers

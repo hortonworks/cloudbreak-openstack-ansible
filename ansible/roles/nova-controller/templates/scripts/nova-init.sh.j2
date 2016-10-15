@@ -3,14 +3,10 @@
 source /opt/scripts/admin-openrc.sh
 
 openstack user list    | grep -q nova || openstack user create nova --password {{ service_users.nova.password }}
-openstack role list --user nova --project service | grep -q admin || openstack role add --project service --user nova admin
+openstack role assignment list --user nova --project service --names | grep -q admin || openstack role add --project service --user nova admin
 
 openstack service list  | grep -q nova  || openstack service create --name nova --description "OpenStack Compute" compute
 
-
-openstack endpoint list | grep -q compute  || openstack endpoint create \
-                                              --publicurl http://{{ os_hosts.controller.management_ip }}:8774/v2/%\(tenant_id\)s \
-                                              --internalurl http://{{ os_hosts.controller.management_ip }}:8774/v2/%\(tenant_id\)s \
-                                              --adminurl http://{{ os_hosts.controller.management_ip }}:8774/v2/%\(tenant_id\)s \
-                                              --region RegionOne \
-                                              compute
+openstack endpoint list --service compute --interface public | grep -q compute   || openstack endpoint create --region RegionOne compute public http://{{ os_hosts.controller.management_ip }}:8774/v2.1/%\(tenant_id\)s
+openstack endpoint list --service compute --interface admin | grep -q compute    || openstack endpoint create --region RegionOne compute admin http://{{ os_hosts.controller.management_ip }}:8774/v2.1/%\(tenant_id\)s
+openstack endpoint list --service compute --interface internal | grep -q compute || openstack endpoint create --region RegionOne compute internal http://{{ os_hosts.controller.management_ip }}:8774/v2.1/%\(tenant_id\)s

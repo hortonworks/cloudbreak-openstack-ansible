@@ -1,7 +1,11 @@
 ---
 - name: populate novadb
   become: true
-  shell: su -s /bin/sh -c "nova-manage db sync" nova
+  shell: /bin/sh -c "nova-manage db sync" nova
+
+- name: populate novaapi_db
+  become: true
+  shell: /bin/sh -c "nova-manage api_db sync" nova
 
 - name: restart nova controller
   become: true

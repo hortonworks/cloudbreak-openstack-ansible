@@ -3,7 +3,7 @@
 source /opt/scripts/admin-openrc.sh
 
 openstack user list    | grep -q glance || openstack user create glance --password {{ service_users.glance.password }}
-openstack role assignment list --user glance --project service  --names | grep -q admin || openstack role add --project service --user glance admin
+openstack role assignment list --user glance --project service --names | grep -q admin || openstack role add --project service --user glance admin
 
 openstack service list  | grep -q glance  || openstack service create --name glance --description "OpenStack Image service" image
 

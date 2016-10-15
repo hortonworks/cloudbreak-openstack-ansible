@@ -1,5 +1,8 @@
 [DEFAULT]
 
+use_neutron = True
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
+
 #
 # From nova.conf
 #
@@ -11,7 +14,7 @@
 # specified as the username.
 #  (string value)
 # Allowed values: keystone, noauth2
-#auth_strategy=keystone
+auth_strategy=keystone
 
 #
 # When True, the 'X-Forwarded-For' header is treated as the canonical remote
@@ -1326,6 +1329,7 @@
 # * vpn_ip
 #  (string value)
 #my_ip=127.0.0.1
+my_ip = {{ os_hosts.controller.management_ip }}
 
 #
 # The IP address which is used to connect to the block storage network.
@@ -3049,7 +3053,7 @@
 #periodic_fuzzy_delay=60
 
 # A list of APIs to enable by default (list value)
-#enabled_apis=osapi_compute,metadata
+enabled_apis=osapi_compute,metadata
 
 # A list of APIs with enabled SSL (list value)
 #enabled_ssl_apis =
@@ -3605,7 +3609,7 @@
 # This option is deprecated for removal.
 # Its value may be silently ignored in the future.
 # Reason: Replaced by DEFAULT;transport_url
-#rpc_backend=rabbit
+rpc_backend=rabbit
 
 # The default exchange under which topics are scoped. May be overridden by an
 # exchange name specified in the transport_url option. (string value)
@@ -3659,6 +3663,7 @@
 # The SQLAlchemy connection string to use to connect to the database. (string
 # value)
 #connection=mysql://nova:nova@localhost/nova
+connection = mysql+pymysql://nova:{{ os_dbs.nova.password }}@{{ os_hosts.controller.management_ip }}/nova
 
 # If True, SQLite uses synchronous mode. (boolean value)
 #sqlite_synchronous=true
@@ -4676,6 +4681,7 @@
 # Deprecated group;name - [DATABASE]/sql_connection
 # Deprecated group;name - [sql]/connection
 #connection=<None>
+connection = mysql+pymysql://nova:{{ os_dbs.nova.password }}@{{ os_hosts.controller.management_ip }}/nova
 
 # The SQLAlchemy connection string to use to connect to the slave database.
 # (string value)
@@ -4800,6 +4806,8 @@
 
 
 [glance]
+
+api_servers = http://{{ os_hosts.controller.management_ip }}:9292
 
 #
 # From nova.conf
@@ -5427,6 +5435,16 @@
 
 
 [keystone_authtoken]
+
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000
+auth_url = http://{{ os_hosts.controller.management_ip }}:35357
+memcached_servers = {{ os_hosts.controller.management_ip }}:11211
+auth_type = password
+project_domain_name = default
+user_domain_name = default
+project_name = service
+username = nova
+password = {{ service_users.nova.password }}
 
 #
 # From keystonemiddleware.auth_token
@@ -6694,7 +6712,7 @@
 # path must be set. (string value)
 # Deprecated group;name - DEFAULT;lock_path
 #lock_path=/var/lib/nova/tmp
-
+lock_path = /var/lib/nova/tmp
 
 [oslo_messaging_amqp]
 
@@ -6881,6 +6899,10 @@
 
 
 [oslo_messaging_rabbit]
+
+rabbit_host = {{ os_hosts.controller.management_ip }}
+rabbit_userid = openstack
+rabbit_password = {{ rabbit_password }}
 
 #
 # From oslo.messaging
@@ -8334,6 +8356,10 @@
 
 
 [vnc]
+
+vncserver_listen = $my_ip
+vncserver_proxyclient_address = $my_ip
+
 #
 # Virtual Network Computer (VNC) can be used to provide remote desktop
 # console access to instances for tenants and/or administrators.
