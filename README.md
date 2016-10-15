@@ -1,4 +1,6 @@
-# OpenStack Liberty Ansible playbooks
+# OpenStack Newton Ansible playbooks
+
+It is based on: http://docs.openstack.org/newton/install-guide-rdo/
 
 Launching it in Vagrant is as simple as:
 ```
