@@ -19,9 +19,14 @@
 - name: write the keystone config file
   template: src=keystone.conf.j2 dest=/etc/keystone/keystone.conf backup=yes
   become: true
+  register: keystone_cfg
   notify:
-    - populate identitydb
     - restart httpd
+
+- name: populate identitydb
+  become: true
+  shell: /bin/sh -c "keystone-manage db_sync" keystone
+  when: keystone_cfg.changed
 
 - name: create keystone-manage
   become: true

@@ -1,8 +1,4 @@
 ---
-- name: populate identitydb
-  become: true
-  shell: /bin/sh -c "keystone-manage db_sync" keystone
-
 - name: restart httpd
   become: true
   service: name=httpd state=restarted

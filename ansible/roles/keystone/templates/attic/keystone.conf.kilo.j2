@@ -1,5 +1,6 @@
 [DEFAULT]
-verbose = True
+admin_token = {{ keystone_admin_token }}
+verbose = true
 
 [assignment]
 
@@ -9,14 +10,10 @@ verbose = True
 
 [catalog]
 
-[cors]
-
-[cors.subdomain]
-
 [credential]
 
 [database]
-connection = mysql+pymysql://keystone:{{ os_dbs.keystone.password }}@{{ os_hosts.controller.management_ip }}/keystone
+connection = mysql://keystone:{{ os_dbs.keystone.password }}@{{ os_hosts.controller.management_ip }}/keystone
 
 [domain_config]
 
@@ -25,6 +22,8 @@ connection = mysql+pymysql://keystone:{{ os_dbs.keystone.password }}@{{ os_hosts
 [endpoint_policy]
 
 [eventlet_server]
+
+[eventlet_server_ssl]
 
 [federation]
 
@@ -40,7 +39,10 @@ connection = mysql+pymysql://keystone:{{ os_dbs.keystone.password }}@{{ os_hosts
 
 [matchmaker_redis]
 
+[matchmaker_ring]
+
 [memcache]
+servers = localhost:11211
 
 [oauth1]
 
@@ -48,11 +50,9 @@ connection = mysql+pymysql://keystone:{{ os_dbs.keystone.password }}@{{ os_hosts
 
 [oslo_messaging_amqp]
 
-[oslo_messaging_notifications]
+[oslo_messaging_qpid]
 
 [oslo_messaging_rabbit]
-
-[oslo_messaging_zmq]
 
 [oslo_middleware]
 
@@ -62,26 +62,23 @@ connection = mysql+pymysql://keystone:{{ os_dbs.keystone.password }}@{{ os_hosts
 
 [policy]
 
-[profiler]
-
 [resource]
 
 [revoke]
+driver = keystone.contrib.revoke.backends.sql.Revoke
 
 [role]
 
 [saml]
 
-[security_compliance]
-
-[shadow_users]
-
 [signing]
 
-[token]
-provider = fernet
+[ssl]
 
-[tokenless_auth]
+[token]
+expiration = 36000
+provider = keystone.token.providers.uuid.Provider
+driver = keystone.token.persistence.backends.memcache.Token
 
 [trust]
 

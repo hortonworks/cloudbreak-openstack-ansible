@@ -1,0 +1,38 @@
+[DEFAULT]
+verbose = True
+debug = True
+scrubber_datadir = {{ glance_root }}/var/lib/glance/scrubber
+image_cache_dir = {{ glance_root }}/var/lib/glance/image-cache/
+
+[oslo_policy]
+
+[database]
+connection = mysql://glance:{{ os_dbs.glance.password }}@{{ os_hosts.controller.management_ip }}/glance
+
+[oslo_concurrency]
+
+[keystone_authtoken]
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000
+auth_url = http://{{ os_hosts.controller.management_ip }}:35357
+auth_plugin = password
+project_domain_id = default
+user_domain_id = default
+project_name = service
+username = glance
+password = {{ service_users.glance.password }}
+
+[paste_deploy]
+flavor = keystone
+
+[store_type_location_strategy]
+
+[profiler]
+
+[task]
+
+[taskflow_executor]
+
+[glance_store]
+default_store = file
+filesystem_store_datadir = {{ glance_root }}/var/lib/glance/images/
+
