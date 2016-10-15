@@ -1,15 +1,15 @@
 ---
 - name: disable selinux
-  sudo: true
+  become: true
   selinux: state=permissive policy=targeted
 
 - name: install epel release repo
   yum: name=epel-release state=latest
-  sudo: true
+  become: true
 
 - name: install basic utilities
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - ntp
     - sysstat
@@ -20,19 +20,19 @@
     - which
 
 - name: ensure ntpd is running
-  sudo: true
+  become: true
   service: name=ntpd state=started enabled=yes
 
-- name: install openstack liberty repo
-  sudo: true
-  yum: name=http://rdo.fedorapeople.org/openstack-liberty/rdo-release-liberty.rpm state=present
+- name: install openstack newton repo
+  become: true
+  yum: name=centos-release-openstack-newton state=present
 
 - name: install openstack-selinux
   yum: name={{ item }} state=latest
-  sudo: true
+  become: true
   with_items:
     - openstack-selinux
 
 - name: creates installed directory to keep track what has already been installed
   file: path={{ installed_dir }} state=directory
-  sudo: true
+  become: true
