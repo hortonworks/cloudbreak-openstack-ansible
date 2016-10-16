@@ -2,5 +2,5 @@
   hosts: compute*
   roles:
     - nova
-    - neutron-compute
-    - cinder-storage
+#    - neutron-compute
+#    - cinder-storage

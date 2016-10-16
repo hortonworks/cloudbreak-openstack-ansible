@@ -1,0 +1,11 @@
+[linux_bridge]
+physical_interface_mappings = provider:{{ external_net_if }}
+
+[vxlan]
+enable_vxlan = True
+local_ip = {{ tunnel_if_ip }}
+l2_population = True
+
+[securitygroup]
+enable_security_group = True
+firewall_driver = neutron.agent.linux.iptables_firewall.IptablesFirewallDriver

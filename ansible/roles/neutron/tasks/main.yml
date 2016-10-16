@@ -22,7 +22,7 @@
   when: neutron_node
 
 - name: write the neutron config file
-  template: src=neutron.conf.j2 dest=/etc/neutron/neutron.conf
+  template: src=neutron/neutron.conf.j2 dest=/etc/neutron/neutron.conf
   become: true
   register: neutron_config
   notify:
@@ -30,7 +30,7 @@
     - restart neutron controller
 
 - name: write the neutron ml2 file
-  template: src=ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
+  template: src=neutron/plugins/ml2/ml2_conf.ini.j2 dest=/etc/neutron/plugins/ml2/ml2_conf.ini
   become: true
   notify:
     - restart neutron server

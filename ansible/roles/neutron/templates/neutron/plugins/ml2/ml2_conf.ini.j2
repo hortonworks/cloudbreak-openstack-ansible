@@ -1,0 +1,24 @@
+[DEFAULT]
+
+[ml2]
+type_drivers = flat,vlan,vxlan
+tenant_network_types = vxlan
+mechanism_drivers = linuxbridge,l2population
+extension_drivers = port_security
+
+[ml2_type_flat]
+{% if neutron_node %}
+flat_networks = provider
+{% endif %}
+
+[ml2_type_geneve]
+
+[ml2_type_gre]
+
+[ml2_type_vlan]
+
+[ml2_type_vxlan]
+vni_ranges = 1:1000
+
+[securitygroup]
+enable_ipset = True

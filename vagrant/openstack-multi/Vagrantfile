@@ -7,7 +7,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   #http://stackoverflow.com/questions/32518591/centos7-with-private-network-lost-fixed-ip
-  config.vm.box = "geerlingguy/centos7"
+  config.vm.box = "akanto/centos-7"
 
   if Vagrant.has_plugin?("vagrant-cachier")
       config.cache.scope = :box
@@ -34,21 +34,21 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
  #    network1.vm.provision "shell", inline: "route del default && route add default gw 192.168.1.1 eth3"
  # end
 
-  #(1..2).each do |i|
-  #  config.vm.define "compute#{i}-vagrant" do |node|
-  #    node.vm.hostname = "compute#{i}-vagrant"
-  #    node.vm.network "private_network", ip: "10.0.0.3#{i}"
-  #    node.vm.provider :virtualbox do |vb|
-  #        vb.customize ["modifyvm", :id, "--memory", "2048"]
-  #        vb.customize ["modifyvm", :id, "--cpus", "1"]
-  #        disk = ".vagrant/cinder-disk-#{i}.vdi"
-  #        unless File.exist?(disk)
-  #          vb.customize ['createhd', '--filename', disk, '--size', 30 * 1024]
-  #        end
-  #        vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
-  #    end
-  #  end
-  #end
+  (1..1).each do |i|
+    config.vm.define "compute#{i}-vagrant" do |node|
+      node.vm.hostname = "compute#{i}-vagrant"
+      node.vm.network "private_network", ip: "10.0.0.3#{i}"
+      node.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id, "--memory", "2048"]
+          vb.customize ["modifyvm", :id, "--cpus", "1"]
+          disk = ".vagrant/cinder-disk-#{i}.vdi"
+          unless File.exist?(disk)
+            vb.customize ['createhd', '--filename', disk, '--size', 30 * 1024]
+          end
+          vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', disk]
+      end
+    end
+  end
 
   config.vm.provision :ansible do |ansible|
         ansible.groups = {

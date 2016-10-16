@@ -6,46 +6,35 @@
     - openstack-neutron
     - openstack-neutron-ml2
     - openstack-neutron-openvswitch
+    - ebtables
 
-- name: copy neutron-openvswitch-agent.service
-  copy: src=neutron-openvswitch-agent.service dest=/usr/lib/systemd/system/neutron-openvswitch-agent.service
-  become: true
-
-- name: write the neutron config files
-  template: src={{ item }}.j2 dest=/etc/neutron/{{ item }}
+- name: write neutron config files
+  template: src=neutron/{{ item }}.j2 dest=/etc/neutron/{{ item }}
   become: true
   with_items:
     - l3_agent.ini
     - dhcp_agent.ini
     - metadata_agent.ini
+    - dnsmasq-neutron.conf
   notify:
     - restart neutron server
 
-- name: write dnsmasq-neutron file
-  template: src={{ item }}.j2 dest=/etc/neutron/{{ item }}
+- name: write plugin config files
+  template: src=neutron/plugins/ml2/{{ item }}.j2 dest=/etc/neutron/plugins/ml2/{{ item }}
   become: true
   with_items:
-    - dnsmasq-neutron.conf
-  register: dnsmasq_neutron
+    - linuxbridge_agent.ini
+  notify:
+    - restart neutron server
 
-#- name: pkill dnsmasq
-#  shell: pgrep dnsmasq && pkill dnsmasq
+
+#- name: create ovs-init
 #  become: true
-#  when: dnsmasq_neutron.changed
-
-- name: ensure openvswitch service is running
-  become: true
-  service: name={{ item }} state=started enabled=yes
-  with_items:
-    - openvswitch
-
-- name: create ovs-init
-  become: true
-  template: src=scripts/ovs-init.sh.j2 dest=/opt/scripts/ovs-init.sh mode="a+x"
-  register: ovs_init
-
-- name: execute ovs-init
-  become: true
-  shell: /opt/scripts/ovs-init.sh
-  when: ovs_init.changed
+#  template: src=scripts/ovs-init.sh.j2 dest=/opt/scripts/ovs-init.sh mode="a+x"
+#  register: ovs_init
+#
+#- name: execute ovs-init
+#  become: true
+#  shell: /opt/scripts/ovs-init.sh
+#  when: ovs_init.changed
 
