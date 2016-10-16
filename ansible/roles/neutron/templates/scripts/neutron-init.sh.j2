@@ -3,16 +3,12 @@
 source /opt/scripts/admin-openrc.sh
 
 
-openstack user list    | grep -q neutron || openstack user create neutron --password {{ service_users.neutron.password }}
-openstack role list --user neutron --project service | grep -q admin || openstack role add --project service --user neutron admin
+openstack user list    | grep -q neutron || openstack user create neutron --domain default --password {{ service_users.neutron.password }}
+openstack role assignment list --user neutron --project service --names | grep -q admin || openstack role add --project service --user neutron admin
 
 openstack service list  | grep -q neutron  || openstack service create --name neutron --description "OpenStack Networking" network
 
-
-openstack endpoint list | grep -q network  || openstack endpoint create \
-                                                --publicurl http://{{ os_hosts.controller.management_ip }}:9696 \
-                                                --adminurl http://{{ os_hosts.controller.management_ip }}:9696 \
-                                                --internalurl http://{{ os_hosts.controller.management_ip }}:9696 \
-                                                --region RegionOne \
-                                                network
+openstack endpoint list --service network --interface public | grep -q network   || openstack endpoint create --region RegionOne network public http://{{ os_hosts.controller.management_ip }}:9696
+openstack endpoint list --service network --interface admin | grep -q network    || openstack endpoint create --region RegionOne network admin http://{{ os_hosts.controller.management_ip }}:9696
+openstack endpoint list --service network --interface internal | grep -q network || openstack endpoint create --region RegionOne network internal http://{{ os_hosts.controller.management_ip }}:9696
 
