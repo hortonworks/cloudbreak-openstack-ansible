@@ -3,6 +3,16 @@
   become: true
   selinux: state=permissive policy=targeted
 
+#- name: permissive firewalld
+#  become: true
+#  firewalld: source={{ firewalld_source }} zone=public permanent=true state=enabled
+
+- name: ensure firewalld is not running
+  become: true
+  service: name={{ item }} state=stopped enabled=no
+  with_items:
+    - firewalld
+
 - name: install epel release repo
   yum: name=epel-release state=latest
   become: true
@@ -11,7 +21,7 @@
   yum: name={{ item }} state=latest
   become: true
   with_items:
-    - ntp
+    - chrony
     - sysstat
     - tree
     - traceroute
@@ -19,9 +29,9 @@
     - net-tools
     - which
 
-- name: ensure ntpd is running
+- name: ensure chronyd is running
   become: true
-  service: name=ntpd state=started enabled=yes
+  service: name=chronyd state=started enabled=yes
 
 - name: install openstack newton repo
   become: true
