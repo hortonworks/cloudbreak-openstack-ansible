@@ -1,0 +1,41 @@
+[ml2]
+type_drivers = flat,vlan,gre,vxlan
+tenant_network_types = vxlan
+mechanism_drivers = openvswitch
+
+[ml2_type_flat]
+{% if neutron_node %}
+flat_networks = *
+{% endif %}
+
+[ml2_type_vlan]
+
+[ml2_type_gre]
+tunnel_id_ranges = 1:1000
+
+[ml2_type_vxlan]
+vni_ranges = 65537:69999
+
+[securitygroup]
+enable_security_group = True
+enable_ipset = True
+firewall_driver = neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver
+{% if neutron_node %}
+
+[ovs]
+local_ip = {{ tunnel_if_ip }}
+bridge_mappings = {{ external_net_if }}:br-ex
+tunnel_type = vxlan
+tunnel_bridge = br-tun
+integration_bridge = br-int
+tunnel_id_ranges = 65537:69999
+tenant_network_type = vxlan
+enable_tunneling = true
+
+[agent]
+root_helper = sudo neutron-rootwrap /etc/neutron/rootwrap.conf
+tunnel_types = vxlan
+vxlan_udp_port = 4789
+l2_population = False
+{% endif %}
+

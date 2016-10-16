@@ -1,0 +1,13 @@
+[DEFAULT]
+auth_uri = http://{{ os_hosts.controller.management_ip }}:5000
+auth_url = http://{{ os_hosts.controller.management_ip }}:35357
+auth_region = RegionOne
+auth_plugin = password
+project_domain_id = default
+user_domain_id = default
+project_name = service
+username = neutron
+password = {{ service_users.neutron.password }}
+nova_metadata_ip = {{ os_hosts.controller.management_ip }}
+metadata_proxy_shared_secret = {{ metadata_proxy_shared_secret }}
+
