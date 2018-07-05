@@ -1,0 +1,8 @@
+---
+- name: Transfer the script
+  sudo: true
+  copy: src=iscsi-delete-target.sh dest=/opt/iscsi-delete-target.sh mode=0777
+
+- name: Execute the script
+  sudo: true
+  command: /opt/iscsi-delete-target.sh
